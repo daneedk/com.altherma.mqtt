@@ -1,0 +1,55 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Operation Mode"
+  },
+  "desc": {
+    "en": ""
+  },
+  "values": [
+    {
+      "id": "heating",
+      "title": {
+        "en": "Heating"
+      }
+    },
+    {
+      "id": "fanonly",
+      "title": {
+        "en": "Fan Only"
+      }
+    }
+  ],
+  "color": "#9033FC",
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "$flow": {
+    "triggers": [
+      {
+        "id": "onoff_true",
+        "highlight": true,
+        "title": {
+          "en": "Thermostat turned on"
+        }
+      },
+      {
+        "id": "onoff_false",
+        "highlight": true,
+        "title": {
+          "en": "Thermostat turned off"
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "id": "on",
+        "title": {
+          "en": "Thermostat is turned !{{on|off}}"
+        }
+      }
+    ],
+    "actions": [
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "name": {
+    "en": "Daikin Altherma Heatpump"
+  },
+  "class": "heatpump",
+  "capabilities": [
+    "operation_mode",
+    "thermostat_on_off",
+    "space_heating",
+    "measure_temperature.outdoor",
+    "measure_temperature.leavingWater",
+    "measure_temperature.returningWater",
+    "measure_temperature.deltaT",
+    "measure_temperature.target",
+    "measure_temperature.lwSetPoint",
+    "measure_water",
+    "measure_power",
+    "meter_power.day",
+    "meter_power.month",
+    "meter_power.year"
+  ],
+  "capabilitiesOptions": {
+    "measure_temperature.outdoor": {
+      "title": {
+        "en": "Outdoor temperature",
+        "nl": "Buitentemperatuur"
+      },
+      "units": "°C",
+      "insights": true
+    },
+    "measure_temperature.leavingWater": {
+      "title": {
+        "en": "Leaving Water temperature",
+        "nl": ""
+      },
+      "units": "°C",
+      "insights": true
+    },
+    "measure_temperature.returningWater": {
+      "title": {
+        "en": "Returning water temperature",
+        "nl": ""
+      },
+      "units": "°C",
+      "insights": true
+    },
+    "measure_temperature.deltaT": {
+      "title": {
+        "en": "ΔT (flow–return)",
+        "nl": "ΔT (aanvoer–retour)"
+      },
+      "units": "°C",
+      "insights": true
+    },
+    "measure_temperature.target": {
+      "title": {
+        "en": "Target temperature",
+        "nl": ""
+      },
+      "units": "°C",
+      "insights": true
+    },
+    "measure_temperature.lwSetPoint": {
+      "title": {
+        "en": "Leaving water setpoint",
+        "nl": ""
+      },
+      "units": "°C",
+      "insights": true,
+      "uiComponent": null      
+    },
+    "meter_power.day": {
+      "title": {
+        "en": "Energy Today"
+      }
+    },
+    "meter_power.month": {
+      "title": {
+        "en": "Energy this Month"
+      }      
+    },
+    "meter_power.year": {
+      "title": {
+        "en": "Energy this Year"
+      }      
+    }
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "list_triggers",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_triggers"
+      }
+    },
+    {
+      "id": "add_triggers",
+      "template": "add_devices"
+    }
+  ]
+}

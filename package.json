@@ -1,0 +1,9 @@
+{
+  "name": "com.altherma.mqtt",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {},
+  "dependencies": {
+    "async-mqtt": "^2.6.3"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "setup": {
+    "notification": "Daikin Altherma is installed, please open the app settings to configure it."
+  },
+  "settings": {
+    "title": "Your Daikin Altherma in Homey with ESPAltherma",
+    "intro": "To use your Daikin Altherma in Homey with ESPAltherema, Homey must be authenticated at your MQTT broker.",
+    "auth": {
+      "header": "MQTT broker Authentication State",
+      "authenticated": "The Daikin Altherma App for Homey is successfully authenticated at your MQTT broker.",
+      "notauthenticated": "The Daikin Altherma App for Homey is not authenticated at your MQTT broker. Please enter the information and click Connect."
+
+    },
+    "host": "MQTT address",
+    "port": "MQTT port",
+    "usetls": "Use TLS",
+    "username": "Username",
+    "password": "Password",
+    "connect": "Connect",
+    "enabledebug": "Turn on debug logging",
+    "debuginfo": "Open the browser console to view the debug log"
+  }
+}

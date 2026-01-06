@@ -1,0 +1,50 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Space Heating"
+  },
+  "values": [
+    { 
+      "id": "on", 
+      "title": { 
+        "en": "On" 
+      } 
+    },
+    { 
+      "id": "off", 
+      "title": { 
+        "en": "Off" 
+      } 
+    }
+  ],
+  "color": "#9033FC",
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "insightsTitle": {
+    "en": "Space Heating"
+  },
+  "uiComponent": "sensor",
+  "uiQuickAction": false,
+  "$flow": {
+    "triggers": [
+      {
+        "id": "mode_on",
+        "highlight": true,
+        "title": { "en": "Space Heating turned on" }
+      },
+      {
+        "id": "mode_off",
+        "highlight": true,
+        "title": { "en": "Space Heating turned off" }
+      }
+    ],
+    "conditions": [
+      {
+        "id": "is_on",
+        "title": { "en": "Space Heating is !{{on|off}}" }
+      }
+    ],
+    "actions": []
+  }
+}

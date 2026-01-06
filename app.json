@@ -1,0 +1,310 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.altherma.mqtt",
+  "version": "0.0.1",
+  "compatibility": ">=12.10.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Daikin Altherma"
+  },
+  "description": {
+    "en": "Get all information from your Daikin Altherma"
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Danee de Kruyff",
+    "email": "daneedekruyff@outlook.com"
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Daikin Altherma Boiler"
+      },
+      "class": "boiler",
+      "capabilities": [
+        "measure_temperature.dhwtank",
+        "measure_temperature.target_dhwtank",
+        "powerful_dhwtank"
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature.dhwtank": {
+          "title": {
+            "en": "DHW tank temperature",
+            "nl": "Buitentemperatuur"
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.target_dhwtank": {
+          "title": {
+            "en": "DHW tank target temperature",
+            "nl": "Buitentemperatuur"
+          },
+          "units": "°C",
+          "insights": true
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [],
+      "images": {
+        "small": "/drivers/boiler/assets/images/small.png",
+        "large": "/drivers/boiler/assets/images/large.png",
+        "xlarge": "/drivers/boiler/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_triggers",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_triggers"
+          }
+        },
+        {
+          "id": "add_triggers",
+          "template": "add_devices"
+        }
+      ],
+      "id": "boiler"
+    },
+    {
+      "name": {
+        "en": "Daikin Altherma Heatpump"
+      },
+      "class": "heatpump",
+      "capabilities": [
+        "operation_mode",
+        "thermostat_on_off",
+        "space_heating",
+        "measure_temperature.outdoor",
+        "measure_temperature.leavingWater",
+        "measure_temperature.returningWater",
+        "measure_temperature.deltaT",
+        "measure_temperature.target",
+        "measure_temperature.lwSetPoint",
+        "measure_water",
+        "measure_power",
+        "meter_power.day",
+        "meter_power.month",
+        "meter_power.year"
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature.outdoor": {
+          "title": {
+            "en": "Outdoor temperature",
+            "nl": "Buitentemperatuur"
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.leavingWater": {
+          "title": {
+            "en": "Leaving Water temperature",
+            "nl": ""
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.returningWater": {
+          "title": {
+            "en": "Returning water temperature",
+            "nl": ""
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.deltaT": {
+          "title": {
+            "en": "ΔT (flow–return)",
+            "nl": "ΔT (aanvoer–retour)"
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.target": {
+          "title": {
+            "en": "Target temperature",
+            "nl": ""
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.lwSetPoint": {
+          "title": {
+            "en": "Leaving water setpoint",
+            "nl": ""
+          },
+          "units": "°C",
+          "insights": true,
+          "uiComponent": null
+        },
+        "meter_power.day": {
+          "title": {
+            "en": "Energy Today"
+          }
+        },
+        "meter_power.month": {
+          "title": {
+            "en": "Energy this Month"
+          }
+        },
+        "meter_power.year": {
+          "title": {
+            "en": "Energy this Year"
+          }
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [],
+      "images": {
+        "small": "/drivers/heatpump/assets/images/small.png",
+        "large": "/drivers/heatpump/assets/images/large.png",
+        "xlarge": "/drivers/heatpump/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_triggers",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_triggers"
+          }
+        },
+        {
+          "id": "add_triggers",
+          "template": "add_devices"
+        }
+      ],
+      "id": "heatpump"
+    }
+  ],
+  "capabilities": {
+    "operation_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Operation Mode"
+      },
+      "desc": {
+        "en": ""
+      },
+      "values": [
+        {
+          "id": "heating",
+          "title": {
+            "en": "Heating"
+          }
+        },
+        {
+          "id": "fanonly",
+          "title": {
+            "en": "Fan Only"
+          }
+        }
+      ],
+      "color": "#9033FC",
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "powerful_dhwtank": {
+      "type": "enum",
+      "title": {
+        "en": "Powerful mode"
+      },
+      "values": [
+        {
+          "id": "on",
+          "title": {
+            "en": "On"
+          }
+        },
+        {
+          "id": "off",
+          "title": {
+            "en": "Off"
+          }
+        }
+      ],
+      "color": "#9033FC",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitle": {
+        "en": "Powerful mode"
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false
+    },
+    "space_heating": {
+      "type": "enum",
+      "title": {
+        "en": "Space Heating"
+      },
+      "values": [
+        {
+          "id": "on",
+          "title": {
+            "en": "On"
+          }
+        },
+        {
+          "id": "off",
+          "title": {
+            "en": "Off"
+          }
+        }
+      ],
+      "color": "#9033FC",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitle": {
+        "en": "Space Heating"
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false
+    },
+    "thermostat_on_off": {
+      "type": "enum",
+      "title": {
+        "en": "Thermostat"
+      },
+      "values": [
+        {
+          "id": "on",
+          "title": {
+            "en": "On"
+          }
+        },
+        {
+          "id": "off",
+          "title": {
+            "en": "Off"
+          }
+        }
+      ],
+      "color": "#9033FC",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitle": {
+        "en": "Thermostat"
+      },
+      "uiComponent": "sensor",
+      "uiQuickAction": false
+    }
+  }
+}

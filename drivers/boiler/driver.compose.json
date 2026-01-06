@@ -1,0 +1,51 @@
+{
+  "name": {
+    "en": "Daikin Altherma Boiler"
+  },
+  "class": "boiler",
+  "capabilities": [
+    "measure_temperature.dhwtank",
+    "measure_temperature.target_dhwtank",
+    "powerful_dhwtank"
+  ],
+  "capabilitiesOptions": {
+    "measure_temperature.dhwtank": {
+      "title": {
+        "en": "DHW tank temperature",
+        "nl": "Buitentemperatuur"
+      },
+      "units": "°C",
+      "insights": true      
+    },
+    "measure_temperature.target_dhwtank": {
+      "title": {
+        "en": "DHW tank target temperature",
+        "nl": "Buitentemperatuur"
+      },
+      "units": "°C",
+      "insights": true
+    }
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "list_triggers",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_triggers"
+      }
+    },
+    {
+      "id": "add_triggers",
+      "template": "add_devices"
+    }
+  ]
+}
