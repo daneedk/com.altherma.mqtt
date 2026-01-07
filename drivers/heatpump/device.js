@@ -95,7 +95,7 @@ module.exports = class Heatpump extends Homey.Device {
 
 
   async _processMqttData(data) {
-    this.log('Heatpump device received:',data);
+    //this.log('Heatpump device received:',data);
     try {
       await this.setCapabilityValue('operation_mode', data.operationMode);
       await this.setCapabilityValue('thermostat_on_off', data.thermostatOn);
