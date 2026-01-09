@@ -2,13 +2,14 @@
 
 Get all information from your Daikin Altherma.
 
-The information is obtained over MQTT from an ESPAltherma device (see: https://github.com/daneedk/ESPAltherma which is a fork of: https://github.com/raomin/ESPAltherma)
+The information is obtained over MQTT from an ESPAltherma device 
+(see: https://github.com/daneedk/ESPAltherma which is a fork of: https://github.com/raomin/ESPAltherma)
 
 ```Important, everything is read only, it is and will not be possible to control your heat pump with this app!```
 
 This app will expose 2 devices, a Heat Pump and a Domestic Home Water (DHW) device.
 
-### Heat pump capabiltities
+### Heat Pump capabiltities
 * Operation Mode Heating/Fan Only
 * Thermostat On/Off
 * Space Heating On/Off
@@ -23,7 +24,7 @@ This app will expose 2 devices, a Heat Pump and a Domestic Home Water (DHW) devi
 * Energy this Month
 * Energy this Year
 
-### DHW
+### DHW capabiltities
 * DHW tank temperature
 * DHW tank target temperature
 * Powerful mode On/Off
@@ -32,7 +33,7 @@ This app will expose 2 devices, a Heat Pump and a Domestic Home Water (DHW) devi
 * Energy this Month
 * Energy this Year
 
-The folowing information is needed from ESPAltherma, make sure to uncomment the corresponding line in the definition file for you particular device model
+The folowing information is needed from ESPAltherma, make sure to uncomment the corresponding lines in the definition file for you particular device model
 
 ````
 'Operation Mode': 'Heating',
