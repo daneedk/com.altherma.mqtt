@@ -1,6 +1,8 @@
 'use strict';
 
 const Homey = require('homey');
+const { estimatePowerWFromInvPrimary, integrateKwh } = require('../../lib/power');
+
 
 module.exports = class Heatpump extends Homey.Device {
   _deltaTBuffer = [];
@@ -29,6 +31,9 @@ module.exports = class Heatpump extends Homey.Device {
       await this.addCapability('meter_power.year');
     }
 
+    this._prevTs = null;
+    this._prevPowerW = 0;
+    this._energyKwh = 0;
   }
 
   /**
@@ -93,13 +98,12 @@ module.exports = class Heatpump extends Homey.Device {
     }
   }
 
-
   async _processMqttData(data) {
     //this.log('Heatpump device received:',data);
     try {
       await this.setCapabilityValue('operation_mode', data.operationMode);
-      await this.setCapabilityValue('thermostat_on_off', data.thermostatOn);
-      await this.setCapabilityValue('space_heating', data.spaceHeatingOn);
+      await this.setCapabilityValue('thermostat_on_off',data.thermostatOn ? 'on' : 'off');
+      await this.setCapabilityValue('space_heating',data.spaceHeatingOn ? 'on' : 'off');
       await this.setCapabilityValue('measure_temperature.outdoor', data.outdoorAirTemp);
       await this.setCapabilityValue('measure_temperature.leavingWater', data.leavingWaterTemp);
       await this.setCapabilityValue('measure_temperature.returningWater', data.inletWaterTemp);
@@ -122,13 +126,32 @@ module.exports = class Heatpump extends Homey.Device {
       await this.setCapabilityValue('measure_temperature.lwSetPoint', data.lwSetpointMain);      
       await this.setCapabilityValue('measure_temperature.target', data.rtSetpoint);
       await this.setCapabilityValue('measure_water', data.flowLpm);
-      await this.setCapabilityValue('measure_power', data.measurePower);
 
-      await this.checkResets();
+      // Code for Smart Meter, when it's installed:
+      /*
+      await this.setCapabilityValue('measure_power', data.measurePower);
       const deltaKWh = data.pulseDelta / data.pulsePerKWh;
+      */
+      // Code for estimated power and energy usage bast of of INV Primary Current
+      const isSpaceHeating = data.spaceHeatingOn === true && data.flowLpm > 0 && data.powerfulDhwOn === false;
+
+      let powerW = 0;
+      let deltaKWh = 0;
+      if (isSpaceHeating) {
+        ({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent));
+        this.log('Space Heating seems active', powerW,'Watt,', deltaKWh,'ΔkWh')
+      } else {
+        // still advance timestamp to avoid time gaps
+        this._updatePowerAndEnergy(0);
+        this.log('Space Heating seems inactive')
+      }
+      await this.setCapabilityValue('measure_power', Math.round(powerW));
+      // Common code
+      await this.checkResets();
       await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
       await this.setCapabilityValue('meter_power.month', (this.getCapabilityValue('meter_power.month') || 0) + deltaKWh);
       await this.setCapabilityValue('meter_power.year', (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh);
+     
 
     } catch (error) {
       const wrappedError = new Error('device.js _processMqttData error',{ cause: error });
@@ -137,6 +160,27 @@ module.exports = class Heatpump extends Homey.Device {
       throw wrappedError;
     } 
     
+  }
+
+  // helper
+  _updatePowerAndEnergy(invPrimaryCurrent) {
+    const now = Date.now();
+
+    if (this._prevTs == null) {
+      this._prevTs = now;
+      this._prevPowerW = 0;
+      return { powerW: 0, deltaKWh: 0 };
+    }
+
+    const dtSeconds = (now - this._prevTs) / 1000;
+
+    const powerW = estimatePowerWFromInvPrimary(invPrimaryCurrent);
+    const deltaKWh = integrateKwh(this._prevPowerW, powerW, dtSeconds);
+
+    this._prevPowerW = powerW;
+    this._prevTs = now;
+
+    return { powerW, deltaKWh };
   }
 
   // helper

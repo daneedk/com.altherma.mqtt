@@ -11,7 +11,7 @@
     "en": "Daikin Altherma"
   },
   "description": {
-    "en": "Get all information from your Daikin Altherma"
+    "en": "Get all information from your Daikin Altherma Heat Pump"
   },
   "category": [
     "climate"
@@ -19,8 +19,7 @@
   "permissions": [],
   "images": {
     "small": "/assets/images/small.png",
-    "large": "/assets/images/large.png",
-    "xlarge": "/assets/images/xlarge.png"
+    "large": "/assets/images/large.png"
   },
   "author": {
     "name": "Danee de Kruyff",
@@ -35,7 +34,11 @@
       "capabilities": [
         "measure_temperature.dhwtank",
         "measure_temperature.target_dhwtank",
-        "powerful_dhwtank"
+        "powerful_dhwtank",
+        "measure_power",
+        "meter_power.day",
+        "meter_power.month",
+        "meter_power.year"
       ],
       "capabilitiesOptions": {
         "measure_temperature.dhwtank": {

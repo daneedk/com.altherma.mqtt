@@ -6,7 +6,11 @@
   "capabilities": [
     "measure_temperature.dhwtank",
     "measure_temperature.target_dhwtank",
-    "powerful_dhwtank"
+    "powerful_dhwtank",
+    "measure_power",
+    "meter_power.day",
+    "meter_power.month",
+    "meter_power.year"    
   ],
   "capabilitiesOptions": {
     "measure_temperature.dhwtank": {

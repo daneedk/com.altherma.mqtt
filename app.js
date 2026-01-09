@@ -99,9 +99,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
         opModeRaw === 'HEATING'  ? 'heating'  :
         null,
 
-      thermostatOn: onOff(raw['Thermostat ON/OFF']),
-      spaceHeatingOn: onOff(raw['Space heating Operation ON/OFF']),
-      powerfulDhwOn: onOff(raw['Powerful DHW Operation. ON/OFF']),
+      thermostatOn: raw['Thermostat ON/OFF'] === 'ON',
+      spaceHeatingOn: raw['Space heating Operation ON/OFF'] === 'ON',
+      powerfulDhwOn: raw['Powerful DHW Operation. ON/OFF'] === 'ON',
 
       // errors
       errorType: raw['Error type'],
@@ -109,6 +109,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
       // temperatures (°C)
       outdoorAirTemp: raw['R1T-Outdoor air temp.'],
+      invPrimaryCurrent: raw['INV primary current (A)'],
       leavingWaterTemp: raw['Leaving water temp. after BUH (R2T)'],
       inletWaterTemp: raw['Inlet water temp.(R4T)'],
       dhwTankTemp: raw['DHW tank temp. (R5T)'],

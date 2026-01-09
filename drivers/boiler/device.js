@@ -1,6 +1,8 @@
 'use strict';
 
 const Homey = require('homey');
+const { estimatePowerWFromInvPrimary, integrateKwh } = require('../../lib/power');
+
 
 module.exports = class Boiler extends Homey.Device {
 
@@ -12,6 +14,28 @@ module.exports = class Boiler extends Homey.Device {
 
     this._onMqttData = this._processMqttData.bind(this);
     this.homey.app.on('sendMqttData', this._onMqttData);
+
+    this._resetInterval = this.homey.setInterval(
+      () => this.checkResets().catch(this.error),
+      30 * 60 * 1000
+    );    
+
+    if (this.hasCapability('measure_power') === false) {
+      await this.addCapability('measure_power');
+    }
+    if (this.hasCapability('meter_power.day') === false) {
+      await this.addCapability('meter_power.day');
+    }
+    if (this.hasCapability('meter_power.month') === false) {
+      await this.addCapability('meter_power.month');
+    }
+    if (this.hasCapability('meter_power.year') === false) {
+      await this.addCapability('meter_power.year');
+    }
+
+    this._prevTs = null;
+    this._prevPowerW = 0;
+    this._energyKwh = 0;
   }
 
   /**
@@ -53,12 +77,55 @@ module.exports = class Boiler extends Homey.Device {
     this.log('Boiler has been deleted');
   }
 
+  async checkResets() {
+    const now = new Date();
+
+    const day = now.toISOString().slice(0, 10);
+    const month = now.toISOString().slice(0, 7);
+    const year = String(now.getFullYear());
+
+    if (this.getStoreValue('lastDailyReset') !== day) {
+      await this.setCapabilityValue('meter_power.day', 0);
+      await this.setStoreValue('lastDailyReset', day);
+    }
+
+    if (this.getStoreValue('lastMonthlyReset') !== month) {
+      await this.setCapabilityValue('meter_power.month', 0);
+      await this.setStoreValue('lastMonthlyReset', month);
+    }
+
+    if (this.getStoreValue('lastYearlyReset') !== year) {
+      await this.setCapabilityValue('meter_power.year', 0);
+      await this.setStoreValue('lastYearlyReset', year);
+    }
+  }  
+
   async _processMqttData(data) {
     //this.log('Boiler device received:',data);
     try {
       await this.setCapabilityValue('measure_temperature.dhwtank', data.dhwTankTemp);
       await this.setCapabilityValue('measure_temperature.target_dhwtank', data.dhwSetpoint);
-      await this.setCapabilityValue('powerful_dhwtank', data.powerfulDhwOn);
+      await this.setCapabilityValue('powerful_dhwtank', data.powerfulDhwOn ? 'on' : 'off');
+
+      // Code for estimated power and energy usage bast of of INV Primary Current
+      const isDhwHeating = data.flowLpm > 0 && data.spaceHeatingOn === false;
+      let powerW = 0;
+      let deltaKWh = 0;
+      if (isDhwHeating) {
+        ({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent));
+        this.log('Boiler Heating seems active', powerW,'Watt,', deltaKWh,'ΔkWh')
+      } else {
+        // advance timestamp to avoid gaps
+        this._updatePowerAndEnergy(0);
+        this.log('Boiler Heating seems inactive')
+      }
+
+      await this.setCapabilityValue('measure_power', Math.round(powerW));
+
+      await this.checkResets();
+      await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
+      await this.setCapabilityValue('meter_power.month', (this.getCapabilityValue('meter_power.month') || 0) + deltaKWh);
+      await this.setCapabilityValue('meter_power.year', (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh);
 
     } catch (error) {
       const wrappedError = new Error('device.js _processMqttData error',{ cause: error });
@@ -67,6 +134,27 @@ module.exports = class Boiler extends Homey.Device {
       throw wrappedError;
     } 
     
+  }
+
+  // helper
+  _updatePowerAndEnergy(invPrimaryCurrent) {
+    const now = Date.now();
+
+    if (this._prevTs == null) {
+      this._prevTs = now;
+      this._prevPowerW = 0;
+      return { powerW: 0, deltaKWh: 0 };
+    }
+
+    const dtSeconds = (now - this._prevTs) / 1000;
+
+    const powerW = estimatePowerWFromInvPrimary(invPrimaryCurrent);
+    const deltaKWh = integrateKwh(this._prevPowerW, powerW, dtSeconds);
+
+    this._prevPowerW = powerW;
+    this._prevTs = now;
+
+    return { powerW, deltaKWh };
   }
 
   // helper
