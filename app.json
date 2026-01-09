@@ -56,6 +56,21 @@
           },
           "units": "°C",
           "insights": true
+        },
+        "meter_power.day": {
+          "title": {
+            "en": "Energy Today"
+          }
+        },
+        "meter_power.month": {
+          "title": {
+            "en": "Energy this Month"
+          }
+        },
+        "meter_power.year": {
+          "title": {
+            "en": "Energy this Year"
+          }
         }
       },
       "platforms": [
