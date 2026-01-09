@@ -6,7 +6,7 @@ The information is obtained over MQTT from an ESPAltherma device (see: https://g
 
 ```Important, everything is read only, it is and will not be possible to control your heat pump with this app!```
 
-This app will expose 2 device type, a heat pump and a Domestic Home Water (DHW) device.
+This app will expose 2 devices, a Heat Pump and a Domestic Home Water (DHW) device.
 
 ### Heat pump capabiltities
 * Operation Mode Heating/Fan Only
