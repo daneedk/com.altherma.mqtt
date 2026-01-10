@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const { estimatePowerWFromInvPrimary, integrateKwh } = require('../../lib/power');
+const {estimatePowerWFromInvPrimary,estimatePowerWFromInvPrimaryWithFallback, integrateKwh, } = require('../../lib/power');
 
 
 module.exports = class Heatpump extends Homey.Device {
@@ -20,6 +20,10 @@ module.exports = class Heatpump extends Homey.Device {
       () => this.checkResets().catch(this.error),
       30 * 60 * 1000
     );
+
+if (this.hasCapability('measure_power.guess') === false) {
+  await this.addCapability('measure_power.guess');
+}
 
     if (this.hasCapability('meter_power.day') === false) {
       await this.addCapability('meter_power.day');
@@ -78,9 +82,13 @@ module.exports = class Heatpump extends Homey.Device {
   async checkResets() {
     const now = new Date();
 
-    const day = now.toISOString().slice(0, 10);
-    const month = now.toISOString().slice(0, 7);
-    const year = String(now.getFullYear());
+    const yyyy = String(now.getFullYear());
+    const mm = String(now.getMonth() + 1).padStart(2, '0'); // local month (1-12)
+    const dd = String(now.getDate()).padStart(2, '0');      // local day
+
+    const day = `${yyyy}-${mm}-${dd}`;
+    const month = `${yyyy}-${mm}`;
+    const year = yyyy;
 
     if (this.getStoreValue('lastDailyReset') !== day) {
       await this.setCapabilityValue('meter_power.day', 0);
@@ -136,16 +144,23 @@ module.exports = class Heatpump extends Homey.Device {
       const isSpaceHeating = data.spaceHeatingOn === true && data.flowLpm > 0 && data.powerfulDhwOn === false;
 
       let powerW = 0;
+let powerG = 0; //power Guess, to compare power with a set voltage of 230V against a real voltage      
       let deltaKWh = 0;
       if (isSpaceHeating) {
-        ({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent));
-        this.log('Space Heating seems active', powerW,'Watt,', deltaKWh,'ΔkWh')
+        //({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
+        ({ powerW, powerG, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
+        this.log('Space Heating seems active', powerW,'Watt,', powerG,'Watt,', deltaKWh,'ΔkWh')
       } else {
         // still advance timestamp to avoid time gaps
-        this._updatePowerAndEnergy(0);
-        this.log('Space Heating seems inactive')
+        ({ powerW, powerG, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
+        this.log('Space Heating seems inactive, still power?', powerW,'Watt,', powerG,'Watt,', deltaKWh,'ΔkWh')
+        //this.log('Space Heating seems inactive')
+        powerW = 0;
+        powerG = 0;
+        deltaKWh = 0;
       }
       await this.setCapabilityValue('measure_power', Math.round(powerW));
+await this.setCapabilityValue('measure_power.guess', Math.round(powerG));
       // Common code
       await this.checkResets();
       await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
@@ -163,7 +178,7 @@ module.exports = class Heatpump extends Homey.Device {
   }
 
   // helper
-  _updatePowerAndEnergy(invPrimaryCurrent) {
+  _updatePowerAndEnergy(invPrimaryCurrent, voltageL1, voltageL2, voltageL3) {
     const now = Date.now();
 
     if (this._prevTs == null) {
@@ -174,13 +189,22 @@ module.exports = class Heatpump extends Homey.Device {
 
     const dtSeconds = (now - this._prevTs) / 1000;
 
-    const powerW = estimatePowerWFromInvPrimary(invPrimaryCurrent);
+    const powerW = estimatePowerWFromInvPrimaryWithFallback(
+      invPrimaryCurrent,
+      voltageL1,
+      voltageL2,
+      voltageL3
+    );
+
+const powerG = estimatePowerWFromInvPrimary(invPrimaryCurrent);
+
     const deltaKWh = integrateKwh(this._prevPowerW, powerW, dtSeconds);
 
     this._prevPowerW = powerW;
     this._prevTs = now;
 
-    return { powerW, deltaKWh };
+    //return { powerW, deltaKWh };
+return { powerW, powerG, deltaKWh };
   }
 
   // helper

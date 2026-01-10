@@ -17,6 +17,15 @@
     "username": "Username",
     "password": "Password",
     "connect": "Connect",
+    "power": {
+      "header": "Power calculation",
+      "useexternalvoltage": "Use external voltage",
+      "mqtttopics": "MQTT Topics for phase voltages",
+      "voltage1": "Voltage phase 1",
+      "voltage2": "Voltage phase 2",
+      "voltage3": "Voltage phase 3",
+      "save": "Save"
+    },
     "enabledebug": "Turn on debug logging",
     "debuginfo": "Open the browser console to view the debug log"
   }

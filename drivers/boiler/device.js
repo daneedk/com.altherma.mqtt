@@ -1,8 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const { estimatePowerWFromInvPrimary, integrateKwh } = require('../../lib/power');
-
+const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh } = require('../../lib/power');
 
 module.exports = class Boiler extends Homey.Device {
 
@@ -20,6 +19,7 @@ module.exports = class Boiler extends Homey.Device {
       30 * 60 * 1000
     );    
 
+    /*
     if (this.hasCapability('measure_power') === false) {
       await this.addCapability('measure_power');
     }
@@ -32,6 +32,7 @@ module.exports = class Boiler extends Homey.Device {
     if (this.hasCapability('meter_power.year') === false) {
       await this.addCapability('meter_power.year');
     }
+    */
 
     this._prevTs = null;
     this._prevPowerW = 0;
@@ -80,9 +81,13 @@ module.exports = class Boiler extends Homey.Device {
   async checkResets() {
     const now = new Date();
 
-    const day = now.toISOString().slice(0, 10);
-    const month = now.toISOString().slice(0, 7);
-    const year = String(now.getFullYear());
+    const yyyy = String(now.getFullYear());
+    const mm = String(now.getMonth() + 1).padStart(2, '0'); // local month (1-12)
+    const dd = String(now.getDate()).padStart(2, '0');      // local day
+
+    const day = `${yyyy}-${mm}-${dd}`;
+    const month = `${yyyy}-${mm}`;
+    const year = yyyy;
 
     if (this.getStoreValue('lastDailyReset') !== day) {
       await this.setCapabilityValue('meter_power.day', 0);
@@ -112,7 +117,7 @@ module.exports = class Boiler extends Homey.Device {
       let powerW = 0;
       let deltaKWh = 0;
       if (isDhwHeating) {
-        ({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent));
+        ({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
         this.log('Boiler Heating seems active', powerW,'Watt,', deltaKWh,'ΔkWh')
       } else {
         // advance timestamp to avoid gaps
@@ -137,7 +142,7 @@ module.exports = class Boiler extends Homey.Device {
   }
 
   // helper
-  _updatePowerAndEnergy(invPrimaryCurrent) {
+  _updatePowerAndEnergy(invPrimaryCurrent, voltageL1, voltageL2, voltageL3) {
     const now = Date.now();
 
     if (this._prevTs == null) {
@@ -148,7 +153,13 @@ module.exports = class Boiler extends Homey.Device {
 
     const dtSeconds = (now - this._prevTs) / 1000;
 
-    const powerW = estimatePowerWFromInvPrimary(invPrimaryCurrent);
+    const powerW = estimatePowerWFromInvPrimaryWithFallback(
+      invPrimaryCurrent,
+      voltageL1,
+      voltageL2,
+      voltageL3
+    );
+
     const deltaKWh = integrateKwh(this._prevPowerW, powerW, dtSeconds);
 
     this._prevPowerW = powerW;

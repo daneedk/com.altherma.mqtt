@@ -83,6 +83,11 @@
       "title": {
         "en": "Energy this Year"
       }      
+    },
+    "measure_power.guess": {
+      "title": {
+        "en": "Power (at 230V)"
+      }      
     }
   },
   "platforms": [

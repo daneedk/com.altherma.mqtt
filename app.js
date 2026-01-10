@@ -17,6 +17,10 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
     this.currentPowerW = null;
 
+    this._voltageL1 = 230;
+    this._voltageL2 = 230;
+    this._voltageL3 = 230;
+
     this.isDebugEnabled = !!(await this.homey.settings.get('isDebugEnabled'));
 
     // On first run, inform user to go to the apps settings to configure the app.
@@ -27,6 +31,23 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       });
       this.homey.settings.set('mqttStatus', 'notauthenticated');
       this.homey.settings.set('setup_notified', true);
+    }
+
+    this.powerTopics = this.homey.settings.get('powerTopics');
+    if (!this.powerTopics) {
+      this.powerTopics = {
+        voltage1: 'espaltherma/grid/voltage1',
+        voltage2: 'espaltherma/grid/voltage2',
+        voltage3: 'espaltherma/grid/voltage3',
+      };
+      this.homey.settings.set('powerTopics',this.powerTopics);
+    }
+
+    let isExternalVoltageEnabled = this.homey.settings.get('isExternalVoltageEnabled'); 
+    if (!isExternalVoltageEnabled) {
+      this.isExternalVoltageEnabled = false;
+    } else {
+      this.isExternalVoltageEnabled = true;
     }
 
 // todo Comment next line before publishing:    
@@ -45,7 +66,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
   }
 
   _onSetSettings(name) {
-    if (name== 'mqtt') {
+    if (name == 'mqtt') {
       this.log('MQTT settings changed, reconnecting…');
       this.mqtt.reconnect().catch(this.error);
     }
@@ -60,10 +81,37 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
         logLine = "app.js || _onSetSettings || --------- Debug logging is enabled from settings ------------------";
         this.writeLog(logLine);
       }
+    } 
+    else if (name === 'isExternalVoltageEnabled') {
+      this.isExternalVoltageEnabled = this.homey.settings.get(name);
+      let logLine = "Using external voltage is: " + this.isExternalVoltageEnabled;
+      this.writeLog(logLine);
+    }
+    else if (name === 'powerTopics') {
+      this.powerTopics = this.homey.settings.get(name);
     }
   }
 
   async _handleMqttMessage(topic, msg) {
+    if (this.isExternalVoltageEnabled === true) {
+
+      const v = Number(msg);
+
+      if (v >= 207 && v <= 253) {
+        if (topic === this.powerTopics.voltage1) this._voltageL1 = v;
+        if (topic === this.powerTopics.voltage2) this._voltageL2 = v;
+        if (topic === this.powerTopics.voltage3) this._voltageL3 = v;
+      }
+
+      if (
+        topic === this.powerTopics.voltage1 ||
+        topic === this.powerTopics.voltage2 ||
+        topic === this.powerTopics.voltage3
+      ) {
+        return;
+      }
+    }
+
     if (topic === 'LWT' && msg !== 'Online') {
       this.log('LWT:', msg);
       this.writeLog('LWT:', msg);
@@ -76,6 +124,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     if (!raw || typeof raw !== 'object') return;
 
     const normalized = this._normalizeAttr(raw);
+    normalized.voltageL1 = this._voltageL1;
+    normalized.voltageL2 = this._voltageL2;
+    normalized.voltageL3 = this._voltageL3;
     this.emit('sendMqttData', normalized);
   }
 

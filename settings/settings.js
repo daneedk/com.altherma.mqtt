@@ -1,4 +1,5 @@
 var mqtt = {};
+var powerTopics = {};
 
 function onHomeyReady(Homey) {
     Homey.ready();
@@ -41,6 +42,14 @@ function onHomeyReady(Homey) {
         onSetDebug(Homey);
     });
 
+    document.getElementById('use-external-voltage').addEventListener('click', function(elem) {
+        onExternalVoltage(Homey);
+    });
+
+    document.getElementById('save').addEventListener('click', function(elem) {
+        savePowerTopics();
+    });
+
     Homey.get('mqtt', function(err, mqtt) {
         if ( err ) {
             Homey.alert( err );
@@ -55,6 +64,29 @@ function onHomeyReady(Homey) {
             }
         }
 
+    });
+
+    Homey.get('powerTopics', function(err, powerTopics) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (powerTopics != (null || undefined)) {
+                document.getElementById('topic-voltage1').value = powerTopics.voltage1
+                document.getElementById('topic-voltage2').value = powerTopics.voltage2
+                document.getElementById('topic-voltage3').value = powerTopics.voltage3
+            }
+        }
+    });
+
+    Homey.get('isExternalVoltageEnabled', function(err, isExternalVoltageEnabled) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (isExternalVoltageEnabled != (null || undefined)) {
+                document.getElementById('use-external-voltage').checked = isExternalVoltageEnabled
+                onExternalVoltage(Homey);
+            }
+        }
     });
 
 }
@@ -126,6 +158,16 @@ function onSetDebug(Homey) {
     }
 }
 
+function onExternalVoltage(Homey) {
+    const isExternalVoltageEnabled = document.getElementById('use-external-voltage').checked
+    Homey.set('isExternalVoltageEnabled', isExternalVoltageEnabled);
+    if (isExternalVoltageEnabled) {
+        document.getElementById('setting-external-voltage').style.display = 'block';
+    } else {
+        document.getElementById('setting-external-voltage').style.display = 'none';
+    }
+}
+
 function saveSettings() {
     console.log('SaveSettings() called')
     mqtt.host = document.getElementById('host')?.value || '';
@@ -134,4 +176,11 @@ function saveSettings() {
     mqtt.user = document.getElementById('username')?.value || '';
     mqtt.pass = document.getElementById('password')?.value || '';
     Homey.set('mqtt', mqtt);
+}
+
+function savePowerTopics() {
+    powerTopics.voltage1 = document.getElementById('topic-voltage1')?.value || '';
+    powerTopics.voltage2 = document.getElementById('topic-voltage2')?.value || '';
+    powerTopics.voltage3 = document.getElementById('topic-voltage3')?.value || '';
+    Homey.set('powerTopics', powerTopics);
 }

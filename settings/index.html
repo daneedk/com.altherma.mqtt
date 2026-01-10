@@ -8,7 +8,7 @@
     <body>
         <div style="height: 28px;"></div>
         <div id="login-credentials-logo" class="logo">
-        <img src="../assets/images/small.png" alt="Logo">
+            <img src="../assets/images/small.png" alt="Logo">
         </div>
     
         <br />
@@ -24,7 +24,6 @@
         <div class="settings-itemgroup">
             <div class="settings-item">
                 <fieldset>
-                    
                     <p id="status"></p>
                 </fieldset>
             </div>
@@ -36,7 +35,7 @@
                     <span data-i18n="settings.host">-MQTT broker address-</span>
                 </div>
                 <div class="settings-item-input">
-                    <input class="hy-nostyle" id="host" type="text" value=""">
+                    <input class="hy-nostyle" id="host" type="text" value="">
                 </div>
             </div>
 
@@ -45,7 +44,7 @@
                     <span data-i18n="settings.port">-MQTT broker port-</span>
                 </div>
                 <div class="settings-item-input">
-                    <input class="hy-nostyle" id="port" type="text" value="1883"">
+                    <input class="hy-nostyle" id="port" type="text" value="1883">
                 </div>
             </div>
 
@@ -81,6 +80,56 @@
         </div>
 
         <button id="connect" class="homey-button-primary-full" data-i18n="settings.connect">-Connect-</button>
+
+        <div class="settings-spacer"></div>
+        <div data-i18n="settings.power.header" class="text-header">-POWER CALCULATION-</div>
+        <div id="setting-power" class="settings-itemgroup">
+            <div class="settings-item">
+                <div class="settings-item-text">
+                    <span data-i18n="settings.power.useexternalvoltage">-Use external voltage from MQTT-</span>
+                </div>
+                <div class="settings-item-last">
+                    <label class="form-switch">
+                        <input id="use-external-voltage" type="checkbox">
+                        <i></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="setting-external-voltage"  style="display: none;">
+            <div class="settings-spacer"></div>
+            <div data-i18n="settings.power.mqtttopics" class="text-header">-MQTT Topics-</div>        
+            <div class="settings-itemgroup">
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <span data-i18n="settings.power.voltage1">-mqtt path voltage1-</span>
+                    </div>
+                    <div class="settings-item-input">
+                        <input class="hy-nostyle" id="topic-voltage1" type="text" value="">
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <span data-i18n="settings.power.voltage2">-mqtt path voltage2-</span>
+                    </div>
+                    <div class="settings-item-input">
+                        <input class="hy-nostyle" id="topic-voltage2" type="text" value="">
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <span data-i18n="settings.power.voltage3">-mqtt path voltage3-</span>
+                    </div>
+                    <div class="settings-item-input">
+                        <input class="hy-nostyle" id="topic-voltage3" type="text" value="">
+                    </div>
+                </div>
+            </div>
+
+            <button id="save" class="homey-button-primary-full" data-i18n="settings.power.save">-Save-</button>
+        </div>
+
 
         <div class="settings-spacer"></div>
             <div id="setting-enabledebug" class="settings-itemgroup" style="display: none;">
