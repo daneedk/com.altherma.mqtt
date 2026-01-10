@@ -141,32 +141,47 @@ if (this.hasCapability('measure_power.guess') === false) {
       const deltaKWh = data.pulseDelta / data.pulsePerKWh;
       */
       // Code for estimated power and energy usage bast of of INV Primary Current
-      const isSpaceHeating = data.spaceHeatingOn === true && data.flowLpm > 0 && data.powerfulDhwOn === false;
+      const isSpaceHeating = data.spaceHeatingOn === true && data.powerfulDhwOn === false && data.invPrimaryCurrent > 0;;
 
       let powerW = 0;
 let powerG = 0; //power Guess, to compare power with a set voltage of 230V against a real voltage      
       let deltaKWh = 0;
+      let first = false;
       if (isSpaceHeating) {
         //({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
-        ({ powerW, powerG, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
-        this.log('Space Heating seems active', powerW,'Watt,', powerG,'Watt,', deltaKWh,'ΔkWh')
+        //this.log('Space Heating seems active', powerW,'Watt', deltaKWh,'ΔkWh')
+({ powerW, powerG, deltaKWh, first } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
+this.log('Space Heating active', Math.round(powerW), 'Watt,', Math.round(powerG), 'Watt,', deltaKWh, 'ΔkWh')
       } else {
         // still advance timestamp to avoid time gaps
-        ({ powerW, powerG, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
-        this.log('Space Heating seems inactive, still power?', powerW,'Watt,', powerG,'Watt,', deltaKWh,'ΔkWh')
-        //this.log('Space Heating seems inactive')
-        powerW = 0;
-        powerG = 0;
-        deltaKWh = 0;
+        this._updatePowerAndEnergy(0);
+        this.log('Space Heating is inactive')
       }
-      await this.setCapabilityValue('measure_power', Math.round(powerW));
+
+      this.log('Data received', {
+        Mode: data.operationMode,
+        Heating: data.spaceHeatingOn,
+        Thermostat: data.thermostatOn,
+        I: data.invPrimaryCurrent,
+        V1: data.voltageL1,
+        V2: data.voltageL2,
+        V3: data.voltageL3,
+        dhwTemp: data.dhwTankTemp,
+        dhwSet: data.dhwSetpoint,
+        flow: data.flowLpm,
+        powerW,
+        deltaKWh,
+      });
+
+      if (!first) {
+        await this.setCapabilityValue('measure_power', Math.round(powerW));
 await this.setCapabilityValue('measure_power.guess', Math.round(powerG));
+      }
       // Common code
       await this.checkResets();
       await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
       await this.setCapabilityValue('meter_power.month', (this.getCapabilityValue('meter_power.month') || 0) + deltaKWh);
       await this.setCapabilityValue('meter_power.year', (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh);
-     
 
     } catch (error) {
       const wrappedError = new Error('device.js _processMqttData error',{ cause: error });
@@ -184,7 +199,7 @@ await this.setCapabilityValue('measure_power.guess', Math.round(powerG));
     if (this._prevTs == null) {
       this._prevTs = now;
       this._prevPowerW = 0;
-      return { powerW: 0, deltaKWh: 0 };
+      return { powerW: 0, deltaKWh: 0, first: true };
     }
 
     const dtSeconds = (now - this._prevTs) / 1000;
@@ -204,7 +219,7 @@ const powerG = estimatePowerWFromInvPrimary(invPrimaryCurrent);
     this._prevTs = now;
 
     //return { powerW, deltaKWh };
-return { powerW, powerG, deltaKWh };
+return { powerW, powerG, deltaKWh, first: false };
   }
 
   // helper
@@ -227,6 +242,5 @@ return { powerW, powerG, deltaKWh };
 
     return Math.round(avg * 10) / 10; // 1 decimal
   }
-
 
 };

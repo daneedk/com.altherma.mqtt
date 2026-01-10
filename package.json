@@ -4,6 +4,7 @@
   "main": "app.js",
   "scripts": {},
   "dependencies": {
-    "async-mqtt": "^2.6.3"
+    "async-mqtt": "^2.6.3",
+    "homey-log-to-file": "github:robertklep/homey-log-to-file"
   }
 }

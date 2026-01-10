@@ -2,13 +2,13 @@
 
 const Homey = require('homey');
 
-module.exports = class Boiler extends Homey.Driver {
+module.exports = class Waterheater extends Homey.Driver {
 
   /**
    * onInit is called when the driver is initialized.
    */
   async onInit() {
-    this.log('Boiler has been initialized');
+    this.log('Water heater has been initialized');
   }
 
   /**
@@ -20,9 +20,9 @@ module.exports = class Boiler extends Homey.Driver {
     return (
       [
         {
-          name: 'Daikin Altherma Boiler',
+          name: 'Daikin Altherma Water Heater',
           data: {
-            id: 'Boiler'
+            id: 'waterheater'
           }
         }
       ]   

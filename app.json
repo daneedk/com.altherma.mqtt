@@ -28,77 +28,6 @@
   "drivers": [
     {
       "name": {
-        "en": "Daikin Altherma Boiler"
-      },
-      "class": "boiler",
-      "capabilities": [
-        "measure_temperature.dhwtank",
-        "measure_temperature.target_dhwtank",
-        "powerful_dhwtank",
-        "measure_power",
-        "meter_power.day",
-        "meter_power.month",
-        "meter_power.year"
-      ],
-      "capabilitiesOptions": {
-        "measure_temperature.dhwtank": {
-          "title": {
-            "en": "DHW tank temperature",
-            "nl": "Buitentemperatuur"
-          },
-          "units": "°C",
-          "insights": true
-        },
-        "measure_temperature.target_dhwtank": {
-          "title": {
-            "en": "DHW tank target temperature",
-            "nl": "Buitentemperatuur"
-          },
-          "units": "°C",
-          "insights": true
-        },
-        "meter_power.day": {
-          "title": {
-            "en": "Energy Today"
-          }
-        },
-        "meter_power.month": {
-          "title": {
-            "en": "Energy this Month"
-          }
-        },
-        "meter_power.year": {
-          "title": {
-            "en": "Energy this Year"
-          }
-        }
-      },
-      "platforms": [
-        "local"
-      ],
-      "connectivity": [],
-      "images": {
-        "small": "/drivers/boiler/assets/images/small.png",
-        "large": "/drivers/boiler/assets/images/large.png",
-        "xlarge": "/drivers/boiler/assets/images/xlarge.png"
-      },
-      "pair": [
-        {
-          "id": "list_triggers",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_triggers"
-          }
-        },
-        {
-          "id": "add_triggers",
-          "template": "add_devices"
-        }
-      ],
-      "id": "boiler"
-    },
-    {
-      "name": {
         "en": "Daikin Altherma Heatpump"
       },
       "class": "heatpump",
@@ -212,6 +141,77 @@
         }
       ],
       "id": "heatpump"
+    },
+    {
+      "name": {
+        "en": "Daikin Altherma Water Heater"
+      },
+      "class": "waterheater",
+      "capabilities": [
+        "measure_temperature.dhwtank",
+        "measure_temperature.target_dhwtank",
+        "powerful_dhwtank",
+        "measure_power",
+        "meter_power.day",
+        "meter_power.month",
+        "meter_power.year"
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature.dhwtank": {
+          "title": {
+            "en": "DHW tank temperature",
+            "nl": "Buitentemperatuur"
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.target_dhwtank": {
+          "title": {
+            "en": "DHW tank target temperature",
+            "nl": "Buitentemperatuur"
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "meter_power.day": {
+          "title": {
+            "en": "Energy Today"
+          }
+        },
+        "meter_power.month": {
+          "title": {
+            "en": "Energy this Month"
+          }
+        },
+        "meter_power.year": {
+          "title": {
+            "en": "Energy this Year"
+          }
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [],
+      "images": {
+        "small": "/drivers/waterheater/assets/images/small.png",
+        "large": "/drivers/waterheater/assets/images/large.png",
+        "xlarge": "/drivers/waterheater/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_triggers",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_triggers"
+          }
+        },
+        {
+          "id": "add_triggers",
+          "template": "add_devices"
+        }
+      ],
+      "id": "waterheater"
     }
   ],
   "capabilities": {

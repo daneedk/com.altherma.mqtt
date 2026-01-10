@@ -3,13 +3,13 @@
 const Homey = require('homey');
 const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh } = require('../../lib/power');
 
-module.exports = class Boiler extends Homey.Device {
+module.exports = class Waterheater extends Homey.Device {
 
   /**
    * onInit is called when the device is initialized.
    */
   async onInit() {
-    this.log('Boiler has been initialized');
+    this.log('Water heater has been initialized');
 
     this._onMqttData = this._processMqttData.bind(this);
     this.homey.app.on('sendMqttData', this._onMqttData);
@@ -43,7 +43,7 @@ module.exports = class Boiler extends Homey.Device {
    * onAdded is called when the user adds the device, called just after pairing.
    */
   async onAdded() {
-    this.log('Boiler has been added');
+    this.log('Water heater has been added');
   }
 
   /**
@@ -55,7 +55,7 @@ module.exports = class Boiler extends Homey.Device {
    * @returns {Promise<string|void>} return a custom message that will be displayed
    */
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    this.log('Boiler settings where changed');
+    this.log('Water heater settings where changed');
   }
 
   /**
@@ -64,7 +64,7 @@ module.exports = class Boiler extends Homey.Device {
    * @param {string} name The new name
    */
   async onRenamed(name) {
-    this.log('Boiler was renamed');
+    this.log('Water heater was renamed');
   }
 
   /**
@@ -75,7 +75,7 @@ module.exports = class Boiler extends Homey.Device {
       this.homey.app.off('sendMqttData', this._onMqttData);
     }
 
-    this.log('Boiler has been deleted');
+    this.log('Water heater has been deleted');
   }
 
   async checkResets() {
@@ -106,26 +106,30 @@ module.exports = class Boiler extends Homey.Device {
   }  
 
   async _processMqttData(data) {
-    //this.log('Boiler device received:',data);
+    //this.log('Water heater device received:',data);
     try {
       await this.setCapabilityValue('measure_temperature.dhwtank', data.dhwTankTemp);
       await this.setCapabilityValue('measure_temperature.target_dhwtank', data.dhwSetpoint);
       await this.setCapabilityValue('powerful_dhwtank', data.powerfulDhwOn ? 'on' : 'off');
 
       // Code for estimated power and energy usage bast of of INV Primary Current
-      const isDhwHeating = data.flowLpm > 0 && data.spaceHeatingOn === false;
+      // const isDhwHeating = data.flowLpm > 0 && data.spaceHeatingOn === false;
+      const isDhwHeating = data.spaceHeatingOn === false && data.invPrimaryCurrent > 0;
+
       let powerW = 0;
       let deltaKWh = 0;
+      let first = false;
       if (isDhwHeating) {
-        ({ powerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
-        this.log('Boiler Heating seems active', powerW,'Watt,', deltaKWh,'ΔkWh')
+        ({ powerW, deltaKWh, first  } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
+        this.log('Water Heater heating seems active', powerW,'Watt,', deltaKWh,'ΔkWh');
       } else {
         // advance timestamp to avoid gaps
         this._updatePowerAndEnergy(0);
-        this.log('Boiler Heating seems inactive')
+        this.log('Water Heater heating seems inactive')
       }
-
-      await this.setCapabilityValue('measure_power', Math.round(powerW));
+      if (!first) {
+        await this.setCapabilityValue('measure_power', Math.round(powerW));
+      }
 
       await this.checkResets();
       await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
@@ -148,7 +152,7 @@ module.exports = class Boiler extends Homey.Device {
     if (this._prevTs == null) {
       this._prevTs = now;
       this._prevPowerW = 0;
-      return { powerW: 0, deltaKWh: 0 };
+      return { powerW: 0, deltaKWh: 0, first: true };
     }
 
     const dtSeconds = (now - this._prevTs) / 1000;
@@ -165,7 +169,7 @@ module.exports = class Boiler extends Homey.Device {
     this._prevPowerW = powerW;
     this._prevTs = now;
 
-    return { powerW, deltaKWh };
+    return { powerW, deltaKWh, first: false };
   }
 
   // helper

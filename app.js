@@ -3,12 +3,20 @@
 const Homey = require('homey');
 const { MqttManager } = require('./lib/mqtt');
 
+// !!!! remove next lines before publishing !!!!
+const LogToFile = require('homey-log-to-file'); // https://github.com/robertklep/homey-log-to-file
+
 module.exports = class AlthermaMQTTApp extends Homey.App {
 
   /**
    * onInit is called when the app is initialized.
    */
   async onInit() {
+
+  // !!!! remove next lines before publishing !!!!    
+    await LogToFile();
+    // log at: http://192.168.1.39:8008
+
     this.log('AlthermaMQTTApp initializing');
     this.mqtt = new MqttManager({
       app: this,
@@ -122,6 +130,10 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
     const raw = this._parseJson(msg);
     if (!raw || typeof raw !== 'object') return;
+
+    if ( raw['Operation Mode'] != 'Fan Only' && raw['Operation Mode'] != 'Heating' ) {
+      this.log('Operation Mode:',raw['Operation Mode'])
+    }
 
     const normalized = this._normalizeAttr(raw);
     normalized.voltageL1 = this._voltageL1;

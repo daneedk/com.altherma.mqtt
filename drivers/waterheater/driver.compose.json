@@ -1,8 +1,8 @@
 {
   "name": {
-    "en": "Daikin Altherma Boiler"
+    "en": "Daikin Altherma Water Heater"
   },
-  "class": "boiler",
+  "class": "waterheater",
   "capabilities": [
     "measure_temperature.dhwtank",
     "measure_temperature.target_dhwtank",
