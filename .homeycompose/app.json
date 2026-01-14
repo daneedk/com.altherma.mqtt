@@ -6,9 +6,11 @@
   "platforms": [
     "local"
   ],
+  "brandColor": "#00A0E4",
   "name": {
     "en": "Daikin Altherma"
   },
+  "source": "https://github.com/daneedk/com.altherma.mqtt",
   "description": {
     "en": "Get all information from your Daikin Altherma Heat Pump"
   },

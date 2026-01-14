@@ -1,0 +1,35 @@
+{
+  "type": "number",
+  "title": {
+    "en": "COP"
+  },
+  "min": 0,
+  "max": 10,
+  "step": 0.1,
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "insightsTitle": {
+    "en": "Coefficient of Performance"
+  },
+  "conditions": [
+    {
+      "id": "is_above",
+      "title": {
+        "en": "COP is above"
+      },
+      "hint": {
+        "en": "Coefficient of Performance (COP) values are typically between 2 and 5 during heating."
+      }
+    },
+    {
+      "id": "is_below",
+      "title": {
+        "en": "COP is below"
+      },
+      "hint": {
+        "en": "A low Coefficient of Performance (COP) may occur during startup or defrost."
+      }
+    }
+  ]
+}

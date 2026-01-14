@@ -14,9 +14,21 @@
       }
     },
     {
+      "id": "heatingdhw",
+      "title": {
+        "en": "Heating + DHW"
+      }
+    },
+    {
       "id": "fanonly",
       "title": {
         "en": "Fan Only"
+      }
+    },
+    {
+      "id": "dhw",
+      "title": {
+        "en": "DHW"
       }
     }
   ],
@@ -27,29 +39,15 @@
   "$flow": {
     "triggers": [
       {
-        "id": "onoff_true",
-        "highlight": true,
-        "title": {
-          "en": "Thermostat turned on"
-        }
-      },
-      {
-        "id": "onoff_false",
-        "highlight": true,
-        "title": {
-          "en": "Thermostat turned off"
-        }
+        "id": "mode_changed",
+        "title": { "en": "Operation mode changed" }
       }
     ],
     "conditions": [
       {
-        "id": "on",
-        "title": {
-          "en": "Thermostat is turned !{{on|off}}"
-        }
+        "id": "is",
+        "title": { "en": "Operation mode is !{{heating|heatingdhw|fanonly}}" }
       }
-    ],
-    "actions": [
     ]
   }
 }

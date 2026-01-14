@@ -5,6 +5,7 @@ const { MqttManager } = require('./lib/mqtt');
 
 // !!!! remove next lines before publishing !!!!
 const LogToFile = require('homey-log-to-file'); // https://github.com/robertklep/homey-log-to-file
+let prevWarning
 
 module.exports = class AlthermaMQTTApp extends Homey.App {
 
@@ -13,7 +14,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
    */
   async onInit() {
 
-  // !!!! remove next lines before publishing !!!!    
+  // !!!! remove next lines before publishing !!!!
     await LogToFile();
     // log at: http://192.168.1.39:8008
 
@@ -41,6 +42,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.homey.settings.set('setup_notified', true);
     }
 
+    // get Actual voltages when configured in the app settings
     this.powerTopics = this.homey.settings.get('powerTopics');
     if (!this.powerTopics) {
       this.powerTopics = {
@@ -64,13 +66,61 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     // Act when settings change
     this.homey.settings.on('set', (name) => this._onSetSettings(name));
 
+    // set the mqtt connection, is in lib/mqtt.js
     await this.mqtt.connect();
 
+    // flowcards
+    this._triggerAppError = this.homey.flow.getTriggerCard('app_error_occurred');
+    this._triggerAppError.registerRunListener();
+
+    this._triggerAppWarning = this.homey.flow.getTriggerCard('app_warning_occurred');
+    this._triggerAppWarning.registerRunListener();
+
+    // catch all errors and send them to the log and flowcard
+    const original = console.error;
+
+    console.error = (...args) => {
+        let errorText;
+
+        errorText = args.map(arg => {
+            if (arg instanceof Error) {
+                return arg.stack || arg.toString();
+            }
+            return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
+        }).join(' ');
+
+        this.homey.app.writeLog(errorText);
+        const tokens = { error: errorText };
+        this._triggerAppError.trigger(tokens);
+
+        original(...args);
+    };
+
+    // MQTT watchdog to inform user when no MQTT messages are received for ~ 3-5 minutes
+    this._lastMqttMessageAt = Date.now();
+
+    this._mqttWatchdog = setInterval(() => {
+      const gapMs = Date.now() - this._lastMqttMessageAt;
+
+      if (gapMs >= 3 * 60 * 1000) {
+        const mins = Math.floor(gapMs / 60000);
+        this.sendWarning("No MQTT data received for", `${mins} minutes`);
+      } else {
+        this.clearWarning();
+      }
+    }, 2 * 60 * 1000);
+
+    // finished onInit()
     let logLine = "===============================================================================================";
     this.writeLog(logLine);
     logLine = "app.js || onInit || --------- " + `${Homey.manifest.id} ${Homey.manifest.version} started ---------`;
     this.writeLog(logLine);
     this.log('AlthermaMQTTApp has been initialized');
+  }
+
+  async onUninit() {
+    // remove the MQTT watchdog
+    if (this._mqttWatchdog) clearInterval(this._mqttWatchdog);
   }
 
   _onSetSettings(name) {
@@ -101,6 +151,8 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
   }
 
   async _handleMqttMessage(topic, msg) {
+    this._lastMqttMessageAt = Date.now();
+
     if (this.isExternalVoltageEnabled === true) {
 
       const v = Number(msg);
@@ -154,6 +206,15 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
     const onOff = v => (v === 'ON' ? 'on' : 'off');
     const opModeRaw = (raw['Operation Mode'] || '').toString().trim().toUpperCase();
+    const IUopModeRaw = (raw['I/U operation mode'] || '').toString().trim().toUpperCase();
+
+    // send warning is a low battery is detected (at least for M5StickC)
+    const v = parseFloat(raw?.M5BatV);
+    if (Number.isFinite(v) && v < 5) {
+      this.sendWarning("Voltage low warning", raw.M5BatV); // or v
+    } else {
+      this.clearWarning();
+    }
 
     return {
       // operation / status
@@ -162,7 +223,14 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
         opModeRaw === 'HEATING'  ? 'heating'  :
         null,
 
+      IUoperationMode:
+        IUopModeRaw === 'DHW'? 'dhw':
+        IUopModeRaw === 'HEATING'? 'heating':
+        IUopModeRaw === 'HEATING + DHW'? 'heatingdhw':
+        null,
+
       thermostatOn: raw['Thermostat ON/OFF'] === 'ON',
+      defrostOperation:  raw['Defrost Operation'] === 'ON',
       spaceHeatingOn: raw['Space heating Operation ON/OFF'] === 'ON',
       powerfulDhwOn: raw['Powerful DHW Operation. ON/OFF'] === 'ON',
 
@@ -172,11 +240,14 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
       // temperatures (°C)
       outdoorAirTemp: raw['R1T-Outdoor air temp.'],
-      invPrimaryCurrent: raw['INV primary current (A)'],
+      leavingWaterTempBeforeBUH: raw['Leaving water temp. before BUH (R1T)'],
       leavingWaterTemp: raw['Leaving water temp. after BUH (R2T)'],
       inletWaterTemp: raw['Inlet water temp.(R4T)'],
       dhwTankTemp: raw['DHW tank temp. (R5T)'],
 
+      // power related information
+      invPrimaryCurrent: raw['INV primary current (A)'],
+      
       // room temperatures (°C)
       mainRtHeating:
         raw['Main RT Heating'] === 'OFF'
@@ -190,9 +261,12 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       // room setpoint (°C)
       rtSetpoint: Number(raw['RT setpoint']),
 
+      // 3 way valve DHW heating or Space heating
+      threeWayValveDhw: raw['3way valve(On:DHW_Off:Space)'] === 'ON',
+
       // backup heater
-      buhStep1On: onOff(raw['BUH Step1']),
-      buhStep2On: onOff(raw['BUH Step2']),
+      buhStep1On: raw['BUH Step1'] === 'ON',
+      buhStep2On: raw['BUH Step2'] === 'ON',
 
       // flow
       flowLpm: raw['Flow sensor (l/min)'],
@@ -204,10 +278,27 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       cop: raw.BE_COP,
 
       // system / diagnostics
-      batteryVoltage: raw.M5BatV,
+      batteryVoltage: raw?.M5BatV,
       wifiRssi: raw.WifiRSSI,
       freeMem: raw.FreeMem,
     };
+  }
+
+
+  sendWarning(text, value) {
+    if (text === this.prevWarning) return;
+
+    const warningText = value == null || value === ""
+      ? text
+      : `${text} | ${value}`;
+
+    const tokens = { warning: warningText };
+    this._triggerAppWarning.trigger(tokens);
+    this.prevWarning = text;
+  }
+
+  clearWarning() {
+    this.prevWarning = null;
   }
 
   // Called from device.js

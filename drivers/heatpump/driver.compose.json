@@ -17,7 +17,8 @@
     "measure_power",
     "meter_power.day",
     "meter_power.month",
-    "meter_power.year"
+    "meter_power.year",
+    "measure_cop"
   ],
   "capabilitiesOptions": {
     "measure_temperature.outdoor": {

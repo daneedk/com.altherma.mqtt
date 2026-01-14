@@ -79,31 +79,28 @@ module.exports = class Waterheater extends Homey.Device {
   }
 
   async checkResets() {
-    const now = new Date();
+      const now = new Date();
 
-    const yyyy = String(now.getFullYear());
-    const mm = String(now.getMonth() + 1).padStart(2, '0'); // local month (1-12)
-    const dd = String(now.getDate()).padStart(2, '0');      // local day
+      const tz = this.homey.clock.getTimezone();
+      const day = now.toLocaleDateString('en-CA', { timeZone: tz });
+      const month = day.slice(0, 7);
+      const year = day.slice(0, 4);
 
-    const day = `${yyyy}-${mm}-${dd}`;
-    const month = `${yyyy}-${mm}`;
-    const year = yyyy;
+      if (this.getStoreValue('lastDailyReset') !== day) {
+        await this.setCapabilityValue('meter_power.day', 0);
+        await this.setStoreValue('lastDailyReset', day);
+      }
 
-    if (this.getStoreValue('lastDailyReset') !== day) {
-      await this.setCapabilityValue('meter_power.day', 0);
-      await this.setStoreValue('lastDailyReset', day);
-    }
+      if (this.getStoreValue('lastMonthlyReset') !== month) {
+        await this.setCapabilityValue('meter_power.month', 0);
+        await this.setStoreValue('lastMonthlyReset', month);
+      }
 
-    if (this.getStoreValue('lastMonthlyReset') !== month) {
-      await this.setCapabilityValue('meter_power.month', 0);
-      await this.setStoreValue('lastMonthlyReset', month);
-    }
-
-    if (this.getStoreValue('lastYearlyReset') !== year) {
-      await this.setCapabilityValue('meter_power.year', 0);
-      await this.setStoreValue('lastYearlyReset', year);
-    }
-  }  
+      if (this.getStoreValue('lastYearlyReset') !== year) {
+        await this.setCapabilityValue('meter_power.year', 0);
+        await this.setStoreValue('lastYearlyReset', year);
+      }
+    } 
 
   async _processMqttData(data) {
     //this.log('Water heater device received:',data);
@@ -114,7 +111,8 @@ module.exports = class Waterheater extends Homey.Device {
 
       // Code for estimated power and energy usage bast of of INV Primary Current
       // const isDhwHeating = data.flowLpm > 0 && data.spaceHeatingOn === false;
-      const isDhwHeating = data.spaceHeatingOn === false && data.invPrimaryCurrent > 0;
+      // const isDhwHeating = data.spaceHeatingOn === false && data.invPrimaryCurrent > 0;
+      const isDhwHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === true;
 
       let powerW = 0;
       let deltaKWh = 0;

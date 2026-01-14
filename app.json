@@ -7,9 +7,11 @@
   "platforms": [
     "local"
   ],
+  "brandColor": "#00A0E4",
   "name": {
     "en": "Daikin Altherma"
   },
+  "source": "https://github.com/daneedk/com.altherma.mqtt",
   "description": {
     "en": "Get all information from your Daikin Altherma Heat Pump"
   },
@@ -24,6 +26,62 @@
   "author": {
     "name": "Danee de Kruyff",
     "email": "daneedekruyff@outlook.com"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "app_error_occurred",
+        "title": {
+          "en": "An error occurred in the app",
+          "da": "Der opstod en fejl i appen",
+          "de": "In der App ist ein Fehler aufgetreten",
+          "es": "Se produjo un error en la aplicación",
+          "fr": "Une erreur s'est produite dans l'application",
+          "it": "Si è verificato un errore nell'app",
+          "ko": "앱에서 오류가 발생했습니다",
+          "nl": "Er is een fout opgetreden in de app",
+          "no": "Det oppstod en feil i appen",
+          "pl": "Wystąpił błąd w aplikacji",
+          "sv": "Ett fel uppstod i appen"
+        },
+        "tokens": [
+          {
+            "title": {
+              "en": "Error",
+              "da": "Fejl",
+              "de": "Fehler",
+              "es": "Error",
+              "fr": "Erreur",
+              "it": "Errore",
+              "ko": "오류",
+              "nl": "Fout",
+              "no": "Feil",
+              "pl": "Błąd",
+              "sv": "Fel"
+            },
+            "name": "error",
+            "type": "string",
+            "example": "An App error occured: ..."
+          }
+        ]
+      },
+      {
+        "id": "app_warning_occurred",
+        "title": {
+          "en": "An warning occurred in the app"
+        },
+        "tokens": [
+          {
+            "title": {
+              "en": "Warning"
+            },
+            "name": "warning",
+            "type": "string",
+            "example": "No MQTT data received"
+          }
+        ]
+      }
+    ]
   },
   "drivers": [
     {
@@ -45,7 +103,8 @@
         "measure_power",
         "meter_power.day",
         "meter_power.month",
-        "meter_power.year"
+        "meter_power.year",
+        "measure_cop"
       ],
       "capabilitiesOptions": {
         "measure_temperature.outdoor": {
@@ -215,6 +274,41 @@
     }
   ],
   "capabilities": {
+    "measure_cop": {
+      "type": "number",
+      "title": {
+        "en": "COP"
+      },
+      "min": 0,
+      "max": 10,
+      "step": 0.1,
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitle": {
+        "en": "Coefficient of Performance"
+      },
+      "conditions": [
+        {
+          "id": "is_above",
+          "title": {
+            "en": "COP is above"
+          },
+          "hint": {
+            "en": "Coefficient of Performance (COP) values are typically between 2 and 5 during heating."
+          }
+        },
+        {
+          "id": "is_below",
+          "title": {
+            "en": "COP is below"
+          },
+          "hint": {
+            "en": "A low Coefficient of Performance (COP) may occur during startup or defrost."
+          }
+        }
+      ]
+    },
     "operation_mode": {
       "type": "enum",
       "title": {
@@ -231,9 +325,21 @@
           }
         },
         {
+          "id": "heatingdhw",
+          "title": {
+            "en": "Heating + DHW"
+          }
+        },
+        {
           "id": "fanonly",
           "title": {
             "en": "Fan Only"
+          }
+        },
+        {
+          "id": "dhw",
+          "title": {
+            "en": "DHW"
           }
         }
       ],

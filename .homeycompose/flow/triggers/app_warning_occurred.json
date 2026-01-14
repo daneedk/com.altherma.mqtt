@@ -1,0 +1,16 @@
+{
+  "id": "app_warning_occurred",
+  "title": {
+    "en": "An warning occurred in the app"
+  },
+  "tokens": [
+    {
+      "title": {
+        "en": "Warning"
+      },
+      "name": "warning",
+      "type": "string",
+      "example": "No MQTT data received"
+    }
+  ]
+}
