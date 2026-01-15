@@ -1,6 +1,6 @@
 {
   "id": "com.altherma.mqtt",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "compatibility": ">=12.10.0",
   "sdk": 3,
   "platforms": [
@@ -10,7 +10,12 @@
   "name": {
     "en": "Daikin Altherma"
   },
+  "bugs": {
+    "url": "https://community.homey.app/t/149281"
+  },
+  "homeyCommunityTopicId": 149281,
   "source": "https://github.com/daneedk/com.altherma.mqtt",
+  "support": "https://community.homey.app/t/149281",
   "description": {
     "en": "Get all information from your Daikin Altherma Heat Pump"
   },
