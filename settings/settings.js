@@ -10,7 +10,7 @@ function onHomeyReady(Homey) {
 
     writeAuthenticationState();
 
-    Homey.on('com.ring.status', function (data) { //find what to listen to.
+    Homey.on('com.altherma.status', function (data) { //find what to listen to.
         writeAuthenticationState();
     });
 
@@ -136,10 +136,16 @@ async function writeAuthenticationState() {
     await Homey.get('mqttStatus')
         .then(async (result) => {
             console.log('mqttStatus',result);
-            if (result == "authenticated") {
+            if (result == 'authenticated') {
                 this.htmlString = Homey.__("settings.auth.authenticated")
                 document.getElementById('status').innerHTML = this.htmlString;
-             } else {
+            } else if (result == 'disconnected') {
+                this.htmlString = Homey.__("settings.auth.disconnected")
+                document.getElementById('status').innerHTML = this.htmlString;
+            } else if (result == 'reconnecting') {
+                this.htmlString = Homey.__("settings.auth.reconnecting")
+                document.getElementById('status').innerHTML = this.htmlString;
+            } else {
                 this.htmlString = Homey.__("settings.auth.notauthenticated")
                 document.getElementById('status').innerHTML = this.htmlString;
             }

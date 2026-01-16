@@ -8,6 +8,8 @@
     "auth": {
       "header": "MQTT broker Authentication State",
       "authenticated": "The Daikin Altherma App for Homey is successfully authenticated at your MQTT broker.",
+      "disconnected": "The Daikin Altherma App for Homey is disconnected from your MQTT broker. Please check the MQTT Server and the information and click Connect.",
+      "reconnecting": "The Daikin Altherma App for Homey is reconnecting to your MQTT broker. Please enter the MQTT Server and the information and click Connect.",
       "notauthenticated": "The Daikin Altherma App for Homey is not authenticated at your MQTT broker. Please enter the information and click Connect."
 
     },

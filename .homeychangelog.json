@@ -4,5 +4,8 @@
   },
   "0.0.2": {
     "en": "Added Community Topic to app page"
+  },
+  "0.0.3": {
+    "en": "Improved setting up the MQTT broker connection"
   }
 }

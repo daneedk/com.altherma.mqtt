@@ -66,9 +66,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     // Act when settings change
     this.homey.settings.on('set', (name) => this._onSetSettings(name));
 
-    // set the mqtt connection, is in lib/mqtt.js
-    await this.mqtt.connect();
-
     // flowcards
     this._triggerAppError = this.homey.flow.getTriggerCard('app_error_occurred');
     this._triggerAppError.registerRunListener();
@@ -95,6 +92,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
         original(...args);
     };
+
+    // set the mqtt connection, is in lib/mqtt.js
+    await this.mqtt.connect();
 
     // MQTT watchdog to inform user when no MQTT messages are received for ~ 3-5 minutes
     this._lastMqttMessageAt = Date.now();
