@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const {estimatePowerWFromInvPrimary,estimatePowerWFromInvPrimaryWithFallback, integrateKwh, } = require('../../lib/power');
+const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh, } = require('../../lib/power');
 
 // TODO: calibrate to actual installation, or add them to settings
 const BUH_STEP1_W = 2000; // default assumption
@@ -14,7 +14,7 @@ module.exports = class Heatpump extends Homey.Device {
    * onInit is called when the device is initialized.
    */
   async onInit() {
-    this.log('Heatpump has been initialized');
+    this.log('Heat Pump has been initialized');
 
     this._onMqttData = this._processMqttData.bind(this);
     this.homey.app.on('sendMqttData', this._onMqttData);
@@ -24,8 +24,8 @@ module.exports = class Heatpump extends Homey.Device {
       30 * 60 * 1000
     );
 
-if (this.hasCapability('measure_power.guess') === false) {
-  await this.addCapability('measure_power.guess');
+if (this.hasCapability('measure_power.guess') === true) {
+  await this.removeCapability('measure_power.guess');
 }
 
     this._prevTs = null;
@@ -137,62 +137,115 @@ if (this.hasCapability('measure_power.guess') === false) {
       const deltaKWh = data.pulseDelta / data.pulsePerKWh;
       */
       // Code for estimated power and energy usage bast of of INV Primary Current
-      //const isSpaceHeating = data.spaceHeatingOn === true && data.powerfulDhwOn === false && data.invPrimaryCurrent > 0;;
       const isSpaceHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === false;
 
-      let electricalPowerW = 0;
-let powerG = 0; //power Guess, to compare power with a set voltage of 230V against a real voltage      
-      let deltaKWh = 0;
-      let first = false;
-      if (isSpaceHeating) {
-        //({ electricalPowerW, deltaKWh } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
-        //this.log('Space Heating seems active', Math.round(electricalPowerW),'Watt', deltaKWh,'ΔkWh')
-({ electricalPowerW, powerG, deltaKWh, first } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
-this.log('Space Heating active', Math.round(electricalPowerW), 'Watt,', Math.round(powerG), 'Watt,', deltaKWh, 'ΔkWh')
-      } else {
-        // still advance timestamp to avoid time gaps
-        this._updatePowerAndEnergy(0);
-        this.log('Space Heating is inactive')
-      }
+      const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
 
       let buhPowerW = 0;
       if (data.buhStep1On) buhPowerW += BUH_STEP1_W;
       if (data.buhStep2On) buhPowerW += BUH_STEP2_W;
+
       const totalElectricalPowerW = electricalPowerW + buhPowerW;
+
+      const { deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW);
+
+      if (isSpaceHeating) {
+        //this.log('Space Heating seems active', Math.round(totalElectricalPowerW), 'Watt', deltaKWh, 'ΔkWh');
+      } else {
+        //this.log('Space Heating is inactive');
+      }
 
       // new code for Thermal Power and COP
       const { thermalPowerKW, cop } = this._calculateThermalPowerAndCop(data, electricalPowerW);
 
+      /*
       this.log('Data received', {
         OperationMode: data.operationMode,
         IUoperationMode: data.IUoperationMode,
         SpaceHeating: data.spaceHeatingOn,
         Thermostat: data.thermostatOn,
-        DHWHeating: data.threeWayValveDhw,
-        I: data.invPrimaryCurrent,
-        V1: data.voltageL1,
-        V2: data.voltageL2,
-        V3: data.voltageL3,
+        threeWayValveDhw: data.threeWayValveDhw,
+        Defrost: data.defrostOperation,
+        buhStep1On: data.buhStep1On,
+        buhStep2On: data.buhStep2On,
+        dhwSet: data.dhwSetpoint,        
         dhwTemp: data.dhwTankTemp,
-        dhwSet: data.dhwSetpoint,
-        flow: data.flowLpm,
+        lwSetpointMain: data.lwSetpointMain,
+        rtSetpoint: data.rtSetpoint,
+        outdoorAirTemp: data.outdoorAirTemp,        
         LeavingWaterTemp: data.leavingWaterTempBeforeBUH,
         InletWaterTemp: data.inletWaterTemp,
+        flow: data.flowLpm,
+        invPrimaryCurrent: data.invPrimaryCurrent,
+        //V1: data.voltageL1,
+        //V2: data.voltageL2,
+        //V3: data.voltageL3,        
         electricalPowerW,
         totalElectricalPowerW,
         thermalPowerKW,
         COP: cop,
-        Defrost: data.defrostOperation,
-        buhStep1On: data.buhStep1On,
-        buhStep2On: data.buhStep2On,
         deltaKWh
       });
+      */
+
+      console.log(new Date().toISOString(),
+        data.operationMode + ',',
+        data.IUoperationMode + ',',
+        data.spaceHeatingOn + ',',
+        data.thermostatOn + ',',
+        data.threeWayValveDhw + ',',
+        data.defrostOperation + ',',
+        data.buhStep1On + ',',
+        data.buhStep2On + ',',
+        data.dhwSetpoint + ',',   
+        data.dhwTankTemp + ',',
+        data.lwSetpointMain + ',',
+        data.rtSetpoint + ',',
+        data.outdoorAirTemp + ',',      
+        data.leavingWaterTempBeforeBUH + ',',
+        data.inletWaterTemp + ',',
+        data.flowLpm + ',',
+        data.invPrimaryCurrent + ',',
+        electricalPowerW + ',',
+        totalElectricalPowerW + ',',
+        thermalPowerKW + ',',
+        cop + ',',
+        deltaKWh
+      );
 
       if (!first) {
         //await this.setCapabilityValue('measure_power', Math.round(electricalPowerW));
         await this.setCapabilityValue('measure_power', Math.round(totalElectricalPowerW));
         await this.setCapabilityValue('measure_cop', Math.round(cop * 10) / 10);
-await this.setCapabilityValue('measure_power.guess', Math.round(powerG));
+      } else {
+
+
+      console.log(new Date().toISOString(),
+        'OperationMode,',
+        'IUoperationMode,',
+        'SpaceHeating,',
+        'Thermostat,',
+        'threeWayValveDhw,',
+        'Defrost,',
+        'buhStep1On,',
+        'buhStep2On,',
+        'dhwSet,',        
+        'dhwTemp,',
+        'lwSetpointMain,',
+        'rtSetpoint,',
+        'outdoorAirTemp,',        
+        'LeavingWaterTemp,',
+        'InletWaterTemp,',
+        'flow,',
+        'invPrimaryCurrent,',
+        'electricalPowerW,',
+        'totalElectricalPowerW,',
+        'thermalPowerKW,',
+        'COP,',
+        'deltaKWh'
+      );
+
+
       }
       // Common code
       await this.checkResets();
@@ -210,33 +263,22 @@ await this.setCapabilityValue('measure_power.guess', Math.round(powerG));
   }
 
   // helper
-  _updatePowerAndEnergy(invPrimaryCurrent, voltageL1, voltageL2, voltageL3) {
+  _updatePowerAndEnergy(totalPowerW) {
     const now = Date.now();
 
     if (this._prevTs == null) {
       this._prevTs = now;
-      this._prevPowerW = 0;
-      return { electricalPowerW: 0, deltaKWh: 0, first: true };
+      this._prevPowerW = totalPowerW;
+      return { deltaKWh: 0, first: true };
     }
 
     const dtSeconds = (now - this._prevTs) / 1000;
+    const deltaKWh = integrateKwh(this._prevPowerW, totalPowerW, dtSeconds);
 
-    const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(
-      invPrimaryCurrent,
-      voltageL1,
-      voltageL2,
-      voltageL3
-    );
-
-const powerG = estimatePowerWFromInvPrimary(invPrimaryCurrent);
-
-    const deltaKWh = integrateKwh(this._prevPowerW, electricalPowerW, dtSeconds);
-
-    this._prevPowerW = electricalPowerW;
+    this._prevPowerW = totalPowerW;
     this._prevTs = now;
 
-    //return { electricalPowerW, deltaKWh };
-return { electricalPowerW, powerG, deltaKWh, first: false };
+    return { deltaKWh, first: false };
   }
 
   // helper
@@ -268,10 +310,10 @@ return { electricalPowerW, powerG, deltaKWh, first: false };
   _getSmoothedDeltaT(rawDeltaT) {
     const MAX_SAMPLES = 5; // ~2.3 minutes @ 28s
 
-    // filter / clamp invalid values
     if (typeof rawDeltaT !== 'number') return null;
 
-    const clampedDeltaT = Math.max(0, rawDeltaT);
+    // allow negative deltaT, but clamp extreme nonsense
+    const clampedDeltaT = Math.max(-30, Math.min(30, rawDeltaT));
 
     this._deltaTBuffer.push(clampedDeltaT);
     if (this._deltaTBuffer.length > MAX_SAMPLES) {

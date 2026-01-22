@@ -18,7 +18,18 @@
   "source": "https://github.com/daneedk/com.altherma.mqtt",
   "support": "https://community.homey.app/t/149281",
   "description": {
-    "en": "Get all information from your Daikin Altherma Heat Pump"
+    "en": "Get all information from your Daikin Altherma Heat Pump",
+    "da": "Få al information fra din Daikin Altherma-varmepumpe",
+    "de": "Erhalte alle Informationen von deiner Daikin Altherma-Wärmepumpe",
+    "es": "Obtén toda la información de tu bomba de calor Daikin Altherma",
+    "fi": "Hanki kaikki tiedot Daikin Altherma -lämpöpumpustasi",
+    "fr": "Obtenez toutes les informations de votre pompe à chaleur Daikin Altherma",
+    "it": "Ottieni tutte le informazioni dalla tua pompa di calore Daikin Altherma",
+    "ko": "Daikin Altherma 히트펌프의 모든 정보를 확인하세요",
+    "nl": "Krijg alle informatie uit je Daikin Altherma-warmtepomp",
+    "no": "Få all informasjon fra din Daikin Altherma-varmepumpe",
+    "pl": "Uzyskaj wszystkie informacje z Twojej pompy ciepła Daikin Altherma",
+    "sv": "Få all information från din Daikin Altherma-värmepump"
   },
   "category": [
     "climate"
@@ -91,7 +102,18 @@
   "drivers": [
     {
       "name": {
-        "en": "Daikin Altherma Heatpump"
+        "en": "Daikin Altherma Heat Pump",
+        "da": "Daikin Altherma-varmepumpe",
+        "de": "Daikin Altherma-Wärmepumpe",
+        "es": "Bomba de calor Daikin Altherma",
+        "fi": "Daikin Altherma -lämpöpumppu",
+        "fr": "Pompe à chaleur Daikin Altherma",
+        "it": "Pompa di calore Daikin Altherma",
+        "ko": "Daikin Altherma 히트펌프",
+        "nl": "Daikin Altherma-warmtepomp",
+        "no": "Daikin Altherma-varmepumpe",
+        "pl": "Pompa ciepła Daikin Altherma",
+        "sv": "Daikin Altherma-värmepump"
       },
       "class": "heatpump",
       "capabilities": [
@@ -115,7 +137,17 @@
         "measure_temperature.outdoor": {
           "title": {
             "en": "Outdoor temperature",
-            "nl": "Buitentemperatuur"
+            "da": "Udendørstemperatur",
+            "de": "Außentemperatur",
+            "es": "Temperatura exterior",
+            "fi": "Ulkolämpötila",
+            "fr": "Température extérieure",
+            "it": "Temperatura esterna",
+            "ko": "실외 온도",
+            "nl": "Buitentemperatuur",
+            "no": "Utetemperatur",
+            "pl": "Temperatura zewnętrzna",
+            "sv": "Utomhustemperatur"
           },
           "units": "°C",
           "insights": true
@@ -123,7 +155,17 @@
         "measure_temperature.leavingWater": {
           "title": {
             "en": "Leaving Water temperature",
-            "nl": ""
+            "da": "Fremløbstemperatur",
+            "de": "Vorlauftemperatur",
+            "es": "Temperatura de impulsión",
+            "fi": "Lähtöveden lämpötila",
+            "fr": "Température de départ",
+            "it": "Temperatura di mandata",
+            "ko": "출수 온도",
+            "nl": "Aanvoertemperatuur",
+            "no": "Turtemperatur",
+            "pl": "Temperatura zasilania",
+            "sv": "Framledningstemperatur"
           },
           "units": "°C",
           "insights": true
@@ -131,7 +173,17 @@
         "measure_temperature.returningWater": {
           "title": {
             "en": "Returning water temperature",
-            "nl": ""
+            "da": "Returtemperatur",
+            "de": "Rücklauftemperatur",
+            "es": "Temperatura de retorno",
+            "fi": "Paluuveden lämpötila",
+            "fr": "Température de retour",
+            "it": "Temperatura di ritorno",
+            "ko": "환수 온도",
+            "nl": "Retourtemperatuur",
+            "no": "Returtemperatur",
+            "pl": "Temperatura powrotu",
+            "sv": "Returledningstemperatur"
           },
           "units": "°C",
           "insights": true
@@ -139,7 +191,17 @@
         "measure_temperature.deltaT": {
           "title": {
             "en": "ΔT (flow–return)",
-            "nl": "ΔT (aanvoer–retour)"
+            "da": "ΔT (fremløb–retur)",
+            "de": "ΔT (Vorlauf–Rücklauf)",
+            "es": "ΔT (impulsión–retorno)",
+            "fi": "ΔT (meno–paluu)",
+            "fr": "ΔT (départ–retour)",
+            "it": "ΔT (mandata–ritorno)",
+            "ko": "ΔT (출수–환수)",
+            "nl": "ΔT (aanvoer–retour)",
+            "no": "ΔT (tur–retur)",
+            "pl": "ΔT (zasilanie–powrót)",
+            "sv": "ΔT (framledning–retur)"
           },
           "units": "°C",
           "insights": true
@@ -147,7 +209,17 @@
         "measure_temperature.target": {
           "title": {
             "en": "Target temperature",
-            "nl": ""
+            "da": "Måltemperatur",
+            "de": "Zieltemperatur",
+            "es": "Temperatura objetivo",
+            "fi": "Tavoitelämpötila",
+            "fr": "Température cible",
+            "it": "Temperatura obiettivo",
+            "ko": "목표 온도",
+            "nl": "Doeltemperatuur",
+            "no": "Måltemperatur",
+            "pl": "Temperatura docelowa",
+            "sv": "Måltemperatur"
           },
           "units": "°C",
           "insights": true
@@ -155,7 +227,17 @@
         "measure_temperature.lwSetPoint": {
           "title": {
             "en": "Leaving water setpoint",
-            "nl": ""
+            "da": "Setpunkt for fremløb",
+            "de": "Vorlauf-Sollwert",
+            "es": "Consigna de impulsión",
+            "fi": "Lähtöveden asetusarvo",
+            "fr": "Consigne de départ",
+            "it": "Setpoint di mandata",
+            "ko": "출수 설정값",
+            "nl": "Aanvoer-setpoint",
+            "no": "Tur-settpunkt",
+            "pl": "Wartość zadana zasilania",
+            "sv": "Börvärde framledning"
           },
           "units": "°C",
           "insights": true,
@@ -163,22 +245,50 @@
         },
         "meter_power.day": {
           "title": {
-            "en": "Energy Today"
+            "en": "Energy Today",
+            "da": "Energi i dag",
+            "de": "Energie heute",
+            "es": "Energía hoy",
+            "fi": "Energia tänään",
+            "fr": "Énergie aujourd’hui",
+            "it": "Energia oggi",
+            "ko": "오늘 에너지",
+            "nl": "Energie vandaag",
+            "no": "Energi i dag",
+            "pl": "Energia dzisiaj",
+            "sv": "Energi idag"
           }
         },
         "meter_power.month": {
           "title": {
-            "en": "Energy this Month"
+            "en": "Energy this Month",
+            "da": "Energi denne måned",
+            "de": "Energie diesen Monat",
+            "es": "Energía este mes",
+            "fi": "Energia tässä kuussa",
+            "fr": "Énergie ce mois-ci",
+            "it": "Energia questo mese",
+            "ko": "이번 달 에너지",
+            "nl": "Energie deze maand",
+            "no": "Energi denne måneden",
+            "pl": "Energia w tym miesiącu",
+            "sv": "Energi denna månad"
           }
         },
         "meter_power.year": {
           "title": {
-            "en": "Energy this Year"
-          }
-        },
-        "measure_power.guess": {
-          "title": {
-            "en": "Power (at 230V)"
+            "en": "Energy this Year",
+            "da": "Energi i år",
+            "de": "Energie dieses Jahr",
+            "es": "Energía este año",
+            "fi": "Energia tänä vuonna",
+            "fr": "Énergie cette année",
+            "it": "Energia quest’anno",
+            "ko": "올해 에너지",
+            "nl": "Energie dit jaar",
+            "no": "Energi i år",
+            "pl": "Energia w tym roku",
+            "sv": "Energi i år"
           }
         }
       },
@@ -208,7 +318,18 @@
     },
     {
       "name": {
-        "en": "Daikin Altherma Water Heater"
+        "en": "Daikin Altherma Water Heater",
+        "da": "Daikin Altherma-vandvarmer",
+        "de": "Daikin Altherma-Warmwasserbereiter",
+        "es": "Calentador de agua Daikin Altherma",
+        "fi": "Daikin Altherma -vedenlämmitin",
+        "fr": "Chauffe-eau Daikin Altherma",
+        "it": "Scaldacqua Daikin Altherma",
+        "ko": "Daikin Altherma 온수기",
+        "nl": "Daikin Altherma-waterverwarmer",
+        "no": "Daikin Altherma-vannvarmer",
+        "pl": "Podgrzewacz wody Daikin Altherma",
+        "sv": "Daikin Altherma-varmvattenberedare"
       },
       "class": "waterheater",
       "capabilities": [
@@ -224,7 +345,17 @@
         "measure_temperature.dhwtank": {
           "title": {
             "en": "DHW tank temperature",
-            "nl": "Buitentemperatuur"
+            "da": "Varmtvandsbeholderens temperatur",
+            "de": "Warmwasserspeicher-Temperatur",
+            "es": "Temperatura del depósito de ACS",
+            "fi": "Käyttövesisäiliön lämpötila",
+            "fr": "Température du ballon ECS",
+            "it": "Temperatura del serbatoio ACS",
+            "ko": "급탕 탱크 온도",
+            "nl": "Temperatuur van het tapwatervat",
+            "no": "Temperatur i varmtvannstank",
+            "pl": "Temperatura zasobnika CWU",
+            "sv": "Temperatur i varmvattenberedaren"
           },
           "units": "°C",
           "insights": true
@@ -232,24 +363,67 @@
         "measure_temperature.target_dhwtank": {
           "title": {
             "en": "DHW tank target temperature",
-            "nl": "Buitentemperatuur"
+            "da": "Måltemperatur for varmtvandsbeholder",
+            "de": "Warmwasserspeicher-Zieltemperatur",
+            "es": "Temperatura objetivo del depósito de ACS",
+            "fi": "Käyttövesisäiliön tavoitelämpötila",
+            "fr": "Température cible du ballon ECS",
+            "it": "Temperatura obiettivo del serbatoio ACS",
+            "ko": "급탕 탱크 목표 온도",
+            "nl": "Doeltemperatuur van het tapwatervat",
+            "no": "Måltemperatur for varmtvannstank",
+            "pl": "Temperatura docelowa zasobnika CWU",
+            "sv": "Måltemperatur i varmvattenberedaren"
           },
           "units": "°C",
           "insights": true
         },
         "meter_power.day": {
           "title": {
-            "en": "Energy Today"
+            "en": "Energy Today",
+            "da": "Energi i dag",
+            "de": "Energie heute",
+            "es": "Energía hoy",
+            "fi": "Energia tänään",
+            "fr": "Énergie aujourd’hui",
+            "it": "Energia oggi",
+            "ko": "오늘 에너지",
+            "nl": "Energie vandaag",
+            "no": "Energi i dag",
+            "pl": "Energia dzisiaj",
+            "sv": "Energi idag"
           }
         },
         "meter_power.month": {
           "title": {
-            "en": "Energy this Month"
+            "en": "Energy this Month",
+            "da": "Energi denne måned",
+            "de": "Energie diesen Monat",
+            "es": "Energía este mes",
+            "fi": "Energia tässä kuussa",
+            "fr": "Énergie ce mois-ci",
+            "it": "Energia questo mese",
+            "ko": "이번 달 에너지",
+            "nl": "Energie deze maand",
+            "no": "Energi denne måneden",
+            "pl": "Energia w tym miesiącu",
+            "sv": "Energi denna månad"
           }
         },
         "meter_power.year": {
           "title": {
-            "en": "Energy this Year"
+            "en": "Energy this Year",
+            "da": "Energi i år",
+            "de": "Energie dieses Jahr",
+            "es": "Energía este año",
+            "fi": "Energia tänä vuonna",
+            "fr": "Énergie cette année",
+            "it": "Energia quest’anno",
+            "ko": "올해 에너지",
+            "nl": "Energie dit jaar",
+            "no": "Energi i år",
+            "pl": "Energia w tym roku",
+            "sv": "Energi i år"
           }
         }
       },

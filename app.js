@@ -9,9 +9,6 @@ let prevWarning
 
 module.exports = class AlthermaMQTTApp extends Homey.App {
 
-  /**
-   * onInit is called when the app is initialized.
-   */
   async onInit() {
 
   // !!!! remove next lines before publishing !!!!
@@ -175,6 +172,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     if (topic === 'LWT' && msg !== 'Online') {
       this.log('LWT:', msg);
       this.writeLog('LWT:', msg);
+      this.sendWarning('ESPAltherma went offline');
+    } else if (topic === 'LWT') {
+      this.clearWarning();
     }
     if (topic !== 'espaltherma/ATTR') return;
 
@@ -191,6 +191,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     normalized.voltageL1 = this._voltageL1;
     normalized.voltageL2 = this._voltageL2;
     normalized.voltageL3 = this._voltageL3;
+    //normalized.receivedAt = this._lastMqttMessageAt; // or Date.now() here
     this.emit('sendMqttData', normalized);
   }
 

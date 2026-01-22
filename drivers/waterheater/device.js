@@ -3,6 +3,10 @@
 const Homey = require('homey');
 const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh } = require('../../lib/power');
 
+// TODO: calibrate to actual installation, or add them to settings
+const BUH_STEP1_W = 2000; // default assumption
+const BUH_STEP2_W = 2000; // default assumption
+
 module.exports = class Waterheater extends Homey.Device {
 
   /**
@@ -75,7 +79,7 @@ module.exports = class Waterheater extends Homey.Device {
       this.homey.app.off('sendMqttData', this._onMqttData);
     }
 
-    this.log('Water heater has been deleted');
+    this.log('Water Heater has been deleted');
   }
 
   async checkResets() {
@@ -114,20 +118,31 @@ module.exports = class Waterheater extends Homey.Device {
       // const isDhwHeating = data.spaceHeatingOn === false && data.invPrimaryCurrent > 0;
       const isDhwHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === true;
 
-      let powerW = 0;
-      let deltaKWh = 0;
-      let first = false;
+      // compressor electrical power
+      const electricalPowerW =
+        estimatePowerWFromInvPrimaryWithFallback( data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
+
+      // BUH power
+      let buhPowerW = 0;
+      if (data.buhStep1On) buhPowerW += BUH_STEP1_W;
+      if (data.buhStep2On) buhPowerW += BUH_STEP2_W;
+
+      // total electrical power (THIS must be integrated)
+      const totalElectricalPowerW = electricalPowerW + buhPowerW;
+
+      // always integrate (0 when inactive)
+      const { deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW);
+
       if (isDhwHeating) {
-        ({ powerW, deltaKWh, first  } = this._updatePowerAndEnergy(data.invPrimaryCurrent,data.voltageL1,data.voltageL2,data.voltageL3));
-        this.log('Water Heater heating seems active', powerW,'Watt,', deltaKWh,'ΔkWh');
+        //('Water Heater heating seems active', Math.round(totalElectricalPowerW), 'Watt,', deltaKWh, 'ΔkWh');
       } else {
-        // advance timestamp to avoid gaps
-        this._updatePowerAndEnergy(0);
-        this.log('Water Heater heating seems inactive')
+        //this.log('Water Heater heating seems inactive');
       }
+
       if (!first) {
-        await this.setCapabilityValue('measure_power', Math.round(powerW));
+        await this.setCapabilityValue('measure_power', Math.round(totalElectricalPowerW));
       }
+
 
       await this.checkResets();
       await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
@@ -144,52 +159,22 @@ module.exports = class Waterheater extends Homey.Device {
   }
 
   // helper
-  _updatePowerAndEnergy(invPrimaryCurrent, voltageL1, voltageL2, voltageL3) {
+  _updatePowerAndEnergy(totalPowerW) {
     const now = Date.now();
 
     if (this._prevTs == null) {
       this._prevTs = now;
-      this._prevPowerW = 0;
-      return { powerW: 0, deltaKWh: 0, first: true };
+      this._prevPowerW = totalPowerW;
+      return { deltaKWh: 0, first: true };
     }
 
     const dtSeconds = (now - this._prevTs) / 1000;
+    const deltaKWh = integrateKwh(this._prevPowerW, totalPowerW, dtSeconds);
 
-    const powerW = estimatePowerWFromInvPrimaryWithFallback(
-      invPrimaryCurrent,
-      voltageL1,
-      voltageL2,
-      voltageL3
-    );
-
-    const deltaKWh = integrateKwh(this._prevPowerW, powerW, dtSeconds);
-
-    this._prevPowerW = powerW;
+    this._prevPowerW = totalPowerW;
     this._prevTs = now;
 
-    return { powerW, deltaKWh, first: false };
+    return { deltaKWh, first: false };
   }
-
-  // helper
-  _getSmoothedDeltaT(rawDeltaT) {
-    const MAX_SAMPLES = 5; // ~2.3 minutes @ 28s
-
-    // filter / clamp invalid values
-    if (typeof rawDeltaT !== 'number') return null;
-
-    const clampedDeltaT = Math.max(0, rawDeltaT);
-
-    this._deltaTBuffer.push(clampedDeltaT);
-    if (this._deltaTBuffer.length > MAX_SAMPLES) {
-      this._deltaTBuffer.shift();
-    }
-
-    const avg =
-      this._deltaTBuffer.reduce((sum, v) => sum + v, 0) /
-      this._deltaTBuffer.length;
-
-    return Math.round(avg * 10) / 10; // 1 decimal
-  }
-
 
 };

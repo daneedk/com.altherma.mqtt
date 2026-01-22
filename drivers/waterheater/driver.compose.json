@@ -1,6 +1,17 @@
 {
   "name": {
-    "en": "Daikin Altherma Water Heater"
+    "en": "Daikin Altherma Water Heater",
+    "da": "Daikin Altherma-vandvarmer",
+    "de": "Daikin Altherma-Warmwasserbereiter",
+    "es": "Calentador de agua Daikin Altherma",
+    "fi": "Daikin Altherma -vedenlämmitin",
+    "fr": "Chauffe-eau Daikin Altherma",
+    "it": "Scaldacqua Daikin Altherma",
+    "ko": "Daikin Altherma 온수기",
+    "nl": "Daikin Altherma-waterverwarmer",
+    "no": "Daikin Altherma-vannvarmer",
+    "pl": "Podgrzewacz wody Daikin Altherma",
+    "sv": "Daikin Altherma-varmvattenberedare"
   },
   "class": "waterheater",
   "capabilities": [
@@ -10,39 +21,92 @@
     "measure_power",
     "meter_power.day",
     "meter_power.month",
-    "meter_power.year"    
+    "meter_power.year"
   ],
   "capabilitiesOptions": {
     "measure_temperature.dhwtank": {
       "title": {
         "en": "DHW tank temperature",
-        "nl": "Buitentemperatuur"
+        "da": "Varmtvandsbeholderens temperatur",
+        "de": "Warmwasserspeicher-Temperatur",
+        "es": "Temperatura del depósito de ACS",
+        "fi": "Käyttövesisäiliön lämpötila",
+        "fr": "Température du ballon ECS",
+        "it": "Temperatura del serbatoio ACS",
+        "ko": "급탕 탱크 온도",
+        "nl": "Temperatuur van het tapwatervat",
+        "no": "Temperatur i varmtvannstank",
+        "pl": "Temperatura zasobnika CWU",
+        "sv": "Temperatur i varmvattenberedaren"
       },
       "units": "°C",
-      "insights": true      
+      "insights": true
     },
     "measure_temperature.target_dhwtank": {
       "title": {
         "en": "DHW tank target temperature",
-        "nl": "Buitentemperatuur"
+        "da": "Måltemperatur for varmtvandsbeholder",
+        "de": "Warmwasserspeicher-Zieltemperatur",
+        "es": "Temperatura objetivo del depósito de ACS",
+        "fi": "Käyttövesisäiliön tavoitelämpötila",
+        "fr": "Température cible du ballon ECS",
+        "it": "Temperatura obiettivo del serbatoio ACS",
+        "ko": "급탕 탱크 목표 온도",
+        "nl": "Doeltemperatuur van het tapwatervat",
+        "no": "Måltemperatur for varmtvannstank",
+        "pl": "Temperatura docelowa zasobnika CWU",
+        "sv": "Måltemperatur i varmvattenberedaren"
       },
       "units": "°C",
       "insights": true
     },
     "meter_power.day": {
       "title": {
-        "en": "Energy Today"
+        "en": "Energy Today",
+        "da": "Energi i dag",
+        "de": "Energie heute",
+        "es": "Energía hoy",
+        "fi": "Energia tänään",
+        "fr": "Énergie aujourd’hui",
+        "it": "Energia oggi",
+        "ko": "오늘 에너지",
+        "nl": "Energie vandaag",
+        "no": "Energi i dag",
+        "pl": "Energia dzisiaj",
+        "sv": "Energi idag"
       }
     },
     "meter_power.month": {
       "title": {
-        "en": "Energy this Month"
-      }      
+        "en": "Energy this Month",
+        "da": "Energi denne måned",
+        "de": "Energie diesen Monat",
+        "es": "Energía este mes",
+        "fi": "Energia tässä kuussa",
+        "fr": "Énergie ce mois-ci",
+        "it": "Energia questo mese",
+        "ko": "이번 달 에너지",
+        "nl": "Energie deze maand",
+        "no": "Energi denne måneden",
+        "pl": "Energia w tym miesiącu",
+        "sv": "Energi denna månad"
+      }
     },
     "meter_power.year": {
       "title": {
-        "en": "Energy this Year"
-      }      
+        "en": "Energy this Year",
+        "da": "Energi i år",
+        "de": "Energie dieses Jahr",
+        "es": "Energía este año",
+        "fi": "Energia tänä vuonna",
+        "fr": "Énergie cette année",
+        "it": "Energia quest’anno",
+        "ko": "올해 에너지",
+        "nl": "Energie dit jaar",
+        "no": "Energi i år",
+        "pl": "Energia w tym roku",
+        "sv": "Energi i år"
+      }
     }
   },
   "platforms": [

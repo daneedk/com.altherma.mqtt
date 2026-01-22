@@ -17,7 +17,18 @@
   "source": "https://github.com/daneedk/com.altherma.mqtt",
   "support": "https://community.homey.app/t/149281",
   "description": {
-    "en": "Get all information from your Daikin Altherma Heat Pump"
+    "en": "Get all information from your Daikin Altherma Heat Pump",
+    "da": "Få al information fra din Daikin Altherma-varmepumpe",
+    "de": "Erhalte alle Informationen von deiner Daikin Altherma-Wärmepumpe",
+    "es": "Obtén toda la información de tu bomba de calor Daikin Altherma",
+    "fi": "Hanki kaikki tiedot Daikin Altherma -lämpöpumpustasi",
+    "fr": "Obtenez toutes les informations de votre pompe à chaleur Daikin Altherma",
+    "it": "Ottieni tutte le informazioni dalla tua pompa di calore Daikin Altherma",
+    "ko": "Daikin Altherma 히트펌프의 모든 정보를 확인하세요",
+    "nl": "Krijg alle informatie uit je Daikin Altherma-warmtepomp",
+    "no": "Få all informasjon fra din Daikin Altherma-varmepumpe",
+    "pl": "Uzyskaj wszystkie informacje z Twojej pompy ciepła Daikin Altherma",
+    "sv": "Få all information från din Daikin Altherma-värmepump"
   },
   "category": [
     "climate"
