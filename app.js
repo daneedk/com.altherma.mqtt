@@ -120,6 +120,14 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     if (this._mqttWatchdog) clearInterval(this._mqttWatchdog);
   }
 
+  getBuhStep1W() {
+    return Number(this.homey.settings.get('buhStep1W') ?? 3000);
+  }
+
+  getBuhStep2W() {
+    return Number(this.homey.settings.get('buhStep2W') ?? 6000);
+  }
+
   _onSetSettings(name) {
     if (name == 'mqtt') {
       this.log('MQTT settings changed, reconnecting…');
@@ -191,7 +199,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     normalized.voltageL1 = this._voltageL1;
     normalized.voltageL2 = this._voltageL2;
     normalized.voltageL3 = this._voltageL3;
-    //normalized.receivedAt = this._lastMqttMessageAt; // or Date.now() here
+    
+    normalized.receivedAt = this._lastMqttMessageAt; // or Date.now() here
+    
     this.emit('sendMqttData', normalized);
   }
 
