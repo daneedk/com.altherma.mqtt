@@ -1,12 +1,34 @@
 {
   "id": "app_warning_occurred",
   "title": {
-    "en": "A warning occurred in the app"
+    "en": "A warning occurred in the app",
+    "da": "Der opstod en advarsel i appen",
+    "de": "In der App ist eine Warnung aufgetreten",
+    "es": "Se ha producido una advertencia en la app",
+    "fr": "Un avertissement s'est produit dans l'app",
+    "it": "Si è verificato un avviso nell'app",
+    "ko": "앱에서 경고가 발생했습니다",
+    "nl": "Er is een waarschuwing opgetreden in de app",
+    "no": "Det oppstod en advarsel i appen",
+    "pl": "W aplikacji wystąpiło ostrzeżenie",
+    "pt": "Ocorreu um aviso na app",
+    "sv": "En varning inträffade i appen"
   },
   "tokens": [
     {
       "title": {
-        "en": "Warning"
+        "en": "Warning",
+        "da": "Advarsel",
+        "de": "Warnung",
+        "es": "Advertencia",
+        "fr": "Avertissement",
+        "it": "Avviso",
+        "ko": "경고",
+        "nl": "Waarschuwing",
+        "no": "Advarsel",
+        "pl": "Ostrzeżenie",
+        "pt": "Aviso",
+        "sv": "Varning"
       },
       "name": "warning",
       "type": "string",

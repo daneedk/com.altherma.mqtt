@@ -131,119 +131,64 @@ if (this.hasCapability('measure_power.guess') === true) {
       // Code for estimated power and energy usage bast of of INV Primary Current
       const isSpaceHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === false;
 
-      let electricalPowerW = 0;
-      let buhPowerW = 0;
-      let totalElectricalPowerW = 0;
-      let thermalPowerKW = 0;
-      let cop = 0;
-      let deltaKWh = 0;
-      let first = false;
+      //if (isSpaceHeating) {
+        const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
+
+        let buhPowerW = 0;
+        if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
+        if (data.buhStep2On) buhPowerW += this.homey.app.getBuhStep2W();
+
+        const totalElectricalPowerW = electricalPowerW + buhPowerW;
+        const { deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW, data.receivedAt);
+        const { thermalPowerKW, cop } = this._calculateThermalPowerAndCop(data, electricalPowerW);
+
+        //this.log('Space Heating seems active', Math.round(totalElectricalPowerW), 'Watt', deltaKWh, 'ΔkWh');
+      //} else {
+      //  ({ deltaKWh, first } = this._updatePowerAndEnergy(0, data.receivedAt));
+        //this.log('Space Heating is inactive');
+      //}
+
+      if (first) {
+        console.log('Timestamp,OperationMode,IUoperationMode,Thermostat,threeWayValveDhw,Defrost,buhStep1On,buhStep2On,dhwSet,dhwTemp,lwSetpointMain,rtSetpoint,outdoorAirTemp,LeavingWaterTemp,InletWaterTemp,flow,invPrimaryCurrent,electricalPowerW,totalElectricalPowerW,thermalPowerKW,COP,deltaKWh');        
+      }
 
       if (isSpaceHeating) {
-        electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
+        if (!first) {
+          await this.setCapabilityValue('measure_power', Math.round(totalElectricalPowerW));
+          await this.setCapabilityValue('measure_cop', Math.round(cop * 10) / 10);
+        }
 
-      if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
-      if (data.buhStep2On) buhPowerW += this.homey.app.getBuhStep2W();
-
-        totalElectricalPowerW = electricalPowerW + buhPowerW;
-
-        ({ deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW, data.receivedAt));
-
-        ({ thermalPowerKW, cop } = this._calculateThermalPowerAndCop(data, electricalPowerW));
-        //this.log('Space Heating seems active', Math.round(totalElectricalPowerW), 'Watt', deltaKWh, 'ΔkWh');
+        await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
+        await this.setCapabilityValue('meter_power.month', (this.getCapabilityValue('meter_power.month') || 0) + deltaKWh);
+        await this.setCapabilityValue('meter_power.year', (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh);
       } else {
-        ({ deltaKWh, first } = this._updatePowerAndEnergy(0, data.receivedAt));
-        //this.log('Space Heating is inactive');
+        if (this.getCapabilityValue('measure_power') !== 0) await this.setCapabilityValue('measure_power', 0);
+        if (this.getCapabilityValue('measure_cop') !== 0) await this.setCapabilityValue('measure_cop', 0);
       }
 
-      /*
-      this.log('Data received', {
-        OperationMode: data.operationMode,
-        IUoperationMode: data.IUoperationMode,
-        SpaceHeating: data.spaceHeatingOn,
-        Thermostat: data.thermostatOn,
-        threeWayValveDhw: data.threeWayValveDhw,
-        Defrost: data.defrostOperation,
-        buhStep1On: data.buhStep1On,
-        buhStep2On: data.buhStep2On,
-        dhwSet: data.dhwSetpoint,        
-        dhwTemp: data.dhwTankTemp,
-        lwSetpointMain: data.lwSetpointMain,
-        rtSetpoint: data.rtSetpoint,
-        outdoorAirTemp: data.outdoorAirTemp,        
-        LeavingWaterTemp: data.leavingWaterTempBeforeBUH,
-        InletWaterTemp: data.inletWaterTemp,
-        flow: data.flowLpm,
-        invPrimaryCurrent: data.invPrimaryCurrent,
-        //V1: data.voltageL1,
-        //V2: data.voltageL2,
-        //V3: data.voltageL3,        
-        electricalPowerW,
-        totalElectricalPowerW,
-        thermalPowerKW,
-        COP: cop,
-        deltaKWh
-      });
-      */
-
-      if (!first) {
-        //await this.setCapabilityValue('measure_power', Math.round(electricalPowerW));
-        await this.setCapabilityValue('measure_power', Math.round(totalElectricalPowerW));
-        await this.setCapabilityValue('measure_cop', Math.round(cop * 10) / 10);
-      } else {
-        console.log(new Date().toISOString()+',',
-          'OperationMode,',
-          'IUoperationMode,',
-          'Thermostat,',
-          'threeWayValveDhw,',
-          'Defrost,',
-          'buhStep1On,',
-          'buhStep2On,',
-          'dhwSet,',        
-          'dhwTemp,',
-          'lwSetpointMain,',
-          'rtSetpoint,',
-          'outdoorAirTemp,',        
-          'LeavingWaterTemp,',
-          'InletWaterTemp,',
-          'flow,',
-          'invPrimaryCurrent,',
-          'electricalPowerW,',
-          'totalElectricalPowerW,',
-          'thermalPowerKW,',
-          'COP,',
-          'deltaKWh'
-        );
-      }
-
-      console.log(new Date().toISOString()+',',
-        data.operationMode + ',',
-        data.IUoperationMode + ',',
-        data.thermostatOn + ',',
-        data.threeWayValveDhw + ',',
-        data.defrostOperation + ',',
-        data.buhStep1On + ',',
-        data.buhStep2On + ',',
-        data.dhwSetpoint + ',',   
-        data.dhwTankTemp + ',',
-        data.lwSetpointMain + ',',
-        data.rtSetpoint + ',',
-        data.outdoorAirTemp + ',',      
-        data.leavingWaterTempBeforeBUH + ',',
-        data.inletWaterTemp + ',',
-        data.flowLpm + ',',
-        data.invPrimaryCurrent + ',',
-        electricalPowerW + ',',
-        totalElectricalPowerW + ',',
-        thermalPowerKW + ',',
-        cop + ',',
+      console.log(new Date().toISOString()+','+
+        data.operationMode + ',' +
+        data.IUoperationMode + ',' +
+        data.thermostatOn + ',' +
+        data.threeWayValveDhw + ',' +
+        data.defrostOperation + ',' +
+        data.buhStep1On + ',' +
+        data.buhStep2On + ',' +
+        data.dhwSetpoint + ',' +   
+        data.dhwTankTemp + ',' +
+        data.lwSetpointMain + ',' +
+        data.rtSetpoint + ',' +
+        data.outdoorAirTemp + ',' +
+        data.leavingWaterTempBeforeBUH + ',' +
+        data.inletWaterTemp + ',' +
+        data.flowLpm + ',' +
+        data.invPrimaryCurrent + ',' +
+        electricalPowerW + ',' +
+        totalElectricalPowerW + ',' +
+        thermalPowerKW + ',' +
+        cop + ',' +
         deltaKWh
       );
-
-      // Common code
-      await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
-      await this.setCapabilityValue('meter_power.month', (this.getCapabilityValue('meter_power.month') || 0) + deltaKWh);
-      await this.setCapabilityValue('meter_power.year', (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh);
 
     } catch (error) {
       const wrappedError = new Error('device.js _processMqttData error',{ cause: error });
@@ -279,26 +224,6 @@ if (this.hasCapability('measure_power.guess') === true) {
 
     return { deltaKWh, first: false };
   }
-
-  /*
-  _updatePowerAndEnergy(totalPowerW) {
-    const now = Date.now();
-
-    if (this._prevTs == null) {
-      this._prevTs = now;
-      this._prevPowerW = totalPowerW;
-      return { deltaKWh: 0, first: true };
-    }
-
-    const dtSeconds = (now - this._prevTs) / 1000;
-    const deltaKWh = integrateKwh(this._prevPowerW, totalPowerW, dtSeconds);
-
-    this._prevPowerW = totalPowerW;
-    this._prevTs = now;
-
-    return { deltaKWh, first: false };
-  }
-  */
 
   // helper
   _calculateThermalPowerAndCop(data, electricalPowerW) {
@@ -348,87 +273,6 @@ if (this.hasCapability('measure_power.guess') === true) {
     return { thermalPowerKW, cop };
   }
 
-
-  /*
-  _calculateThermalPowerAndCop(data, electricalPowerW) {
-    let thermalPowerKW = 0;
-    let cop = 0;
-
-    const flowLpm = Number(data.flowLpm);
-    const lwtBefore = Number(data.leavingWaterTempBeforeBUH);
-    const inlet = Number(data.inletWaterTemp);
-    const elecW = Number(electricalPowerW);
-
-    // hysteresis thresholds
-    const DT_ON  = 0.40; // start calculating above this
-    const DT_OFF = 0.20; // stop calculating below this
-
-    const inputsOk =
-      Number.isFinite(elecW) && elecW > 50 &&
-      Number.isFinite(flowLpm) && flowLpm > 0 &&
-      Number.isFinite(lwtBefore) &&
-      Number.isFinite(inlet);
-
-    if (inputsOk) {
-      const flowM3h = flowLpm * 0.06;
-      const deltaT = lwtBefore - inlet;
-
-      // update validity using hysteresis
-      if (!this._thermalValid && deltaT >= DT_ON) this._thermalValid = true;
-      if ( this._thermalValid && deltaT <= DT_OFF) this._thermalValid = false;
-
-      if (this._thermalValid && Number.isFinite(deltaT) && deltaT > 0) {
-        thermalPowerKW = 1.16 * flowM3h * deltaT;
-        cop = thermalPowerKW / (elecW / 1000);
-
-        // store last good values
-        this._lastThermalPowerKW = thermalPowerKW;
-        this._lastCop = cop;
-      } else {
-        // HOLD last values instead of dropping to zero
-        thermalPowerKW = this._lastThermalPowerKW;
-        cop = this._lastCop;
-      }
-    } else {
-      // if inputs are bad, you can choose: zero or hold
-      thermalPowerKW = this._lastThermalPowerKW;
-      cop = this._lastCop;
-    }
-
-    return { thermalPowerKW, cop };
-  }
-  */
-
-  /*
-  _calculateThermalPowerAndCop(data, electricalPowerW) {
-    let thermalPowerKW = 0;
-    let cop = 0;
-
-    const flowLpm = Number(data.flowLpm);
-    const lwtBefore = Number(data.leavingWaterTempBeforeBUH);
-    const inlet = Number(data.inletWaterTemp);
-    const elecW = Number(electricalPowerW);
-
-    if (
-      Number.isFinite(elecW) && elecW > 50 &&              // avoid nonsense COP at tiny power
-      Number.isFinite(flowLpm) && flowLpm > 0 &&
-      Number.isFinite(lwtBefore) &&
-      Number.isFinite(inlet)
-    ) {
-      const flowM3h = flowLpm * 0.06;
-      const deltaT = lwtBefore - inlet;
-
-      if (Number.isFinite(deltaT) && deltaT > 0.3) {
-        thermalPowerKW = 1.16 * flowM3h * deltaT;
-        cop = thermalPowerKW / (elecW / 1000);
-      }
-    }
-
-    return { thermalPowerKW, cop };
-  }
-  */
-
-
   // helper
   _getSmoothedDeltaT(rawDeltaT) {
     const MAX_SAMPLES = 5; // ~2.3 minutes @ 28s
@@ -451,3 +295,35 @@ if (this.hasCapability('measure_power.guess') === true) {
   }
 
 };
+
+
+// Old loging code:
+      /*
+      this.log('Data received', {
+        OperationMode: data.operationMode,
+        IUoperationMode: data.IUoperationMode,
+        SpaceHeating: data.spaceHeatingOn,
+        Thermostat: data.thermostatOn,
+        threeWayValveDhw: data.threeWayValveDhw,
+        Defrost: data.defrostOperation,
+        buhStep1On: data.buhStep1On,
+        buhStep2On: data.buhStep2On,
+        dhwSet: data.dhwSetpoint,        
+        dhwTemp: data.dhwTankTemp,
+        lwSetpointMain: data.lwSetpointMain,
+        rtSetpoint: data.rtSetpoint,
+        outdoorAirTemp: data.outdoorAirTemp,        
+        LeavingWaterTemp: data.leavingWaterTempBeforeBUH,
+        InletWaterTemp: data.inletWaterTemp,
+        flow: data.flowLpm,
+        invPrimaryCurrent: data.invPrimaryCurrent,
+        V1: data.voltageL1,
+        V2: data.voltageL2,
+        V3: data.voltageL3,        
+        electricalPowerW,
+        totalElectricalPowerW,
+        thermalPowerKW,
+        COP: cop,
+        deltaKWh
+      });
+      */

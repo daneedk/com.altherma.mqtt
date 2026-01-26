@@ -3,7 +3,7 @@
 const Homey = require('homey');
 const { MqttManager } = require('./lib/mqtt');
 
-// !!!! remove next lines before publishing !!!!
+// !!!! remove next line before publishing !!!!
 const LogToFile = require('homey-log-to-file'); // https://github.com/robertklep/homey-log-to-file
 let prevWarning
 
@@ -57,7 +57,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.isExternalVoltageEnabled = true;
     }
 
-// todo Comment next line before publishing:    
+// !!!! Comment next line before publishing !!!!
 // this.homey.settings.set('setup_notified', false);
 
     // Act when settings change
@@ -196,11 +196,11 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     }
 
     const normalized = this._normalizeAttr(raw);
+    // add data to normalized information
     normalized.voltageL1 = this._voltageL1;
     normalized.voltageL2 = this._voltageL2;
     normalized.voltageL3 = this._voltageL3;
-    
-    normalized.receivedAt = this._lastMqttMessageAt; // or Date.now() here
+    normalized.receivedAt = this._lastMqttMessageAt;
     
     this.emit('sendMqttData', normalized);
   }
