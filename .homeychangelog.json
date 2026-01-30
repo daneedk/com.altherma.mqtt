@@ -7,5 +7,18 @@
   },
   "0.0.3": {
     "en": "Improved setting up the MQTT broker connection"
+  },
+  "0.0.4": {
+    "en": "• Added translations • Replaced capability icons • Improved Power usage and Energy Consumption calculations • Improved logging • Various minor improvements",
+    "da": "• Tilføjet oversættelser • Udskiftet capability-ikoner • Forbedret beregninger for effektforbrug og energiforbrug • Forbedret logning • Diverse mindre forbedringer",
+    "de": "• Übersetzungen hinzugefügt • Capability-Symbole ersetzt • Berechnungen für Leistungsnutzung und Energieverbrauch verbessert • Protokollierung verbessert • Verschiedene kleinere Verbesserungen",
+    "es": "• Se añadieron traducciones • Se reemplazaron los iconos de capacidades • Se mejoraron los cálculos de uso de potencia y consumo de energía • Se mejoró el registro • Varias mejoras menores",
+    "fr": "• Traductions ajoutées • Icônes de capacités remplacées • Calculs d’utilisation de la puissance et de consommation d’énergie améliorés • Journalisation améliorée • Diverses améliorations mineures",
+    "it": "• Traduzioni aggiunte • Icone delle funzionalità sostituite • Calcoli di utilizzo della potenza e del consumo energetico migliorati • Logging migliorato • Varie migliorie minori",
+    "ko": "• 번역 추가 • 기능 아이콘 교체 • 전력 사용량 및 에너지 소비량 계산 개선 • 로깅 개선 • 기타 소소한 개선",
+    "nl": "• Vertalingen toegevoegd • Capability-iconen vervangen • Berekeningen voor stroomverbruik en energieverbruik verbeterd • Logging verbeterd • Diverse kleine verbeteringen",
+    "no": "• Oversettelser lagt til • Capability-ikoner erstattet • Beregninger for effektbruk og energiforbruk forbedret • Logging forbedret • Diverse mindre forbedringer",
+    "pl": "• Dodano tłumaczenia • Zastąpiono ikony możliwości • Ulepszono obliczenia wykorzystania mocy i zużycia energii • Ulepszono logowanie • Różne drobne usprawnienia",
+    "sv": "• Översättningar tillagda • Kapabilitetsikoner ersatta • Beräkningar för effektanvändning och energiförbrukning förbättrade • Loggning förbättrad • Diverse mindre förbättringar"
   }
 }

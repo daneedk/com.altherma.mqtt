@@ -22,7 +22,7 @@
     {
       "id": "fanonly",
       "title": {
-        "en": "Fan Only"
+        "en": "Idle (no demand)"
       }
     },
     {
@@ -36,6 +36,7 @@
   "getable": true,
   "setable": false,
   "uiComponent": "sensor",
+  "icon": "drivers/heatpump/assets/operation_mode.svg",
   "$flow": {
     "triggers": [
       {

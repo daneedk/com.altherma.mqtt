@@ -28,6 +28,6 @@
       "save": "Save"
     },
     "enabledebug": "Turn on debug logging",
-    "debuginfo": "Open the browser console to view the debug log"
+    "debuginfo": "View the log in you browser at: http://[homey-ip-address]:8008"
   }
 }

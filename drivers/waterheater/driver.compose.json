@@ -16,7 +16,7 @@
   "class": "waterheater",
   "capabilities": [
     "measure_temperature.dhwtank",
-    "measure_temperature.target_dhwtank",
+    "target_temperature_dhw",
     "powerful_dhwtank",
     "measure_power",
     "meter_power.day",
@@ -26,36 +26,17 @@
   "capabilitiesOptions": {
     "measure_temperature.dhwtank": {
       "title": {
-        "en": "DHW tank temperature",
-        "da": "Varmtvandsbeholderens temperatur",
-        "de": "Warmwasserspeicher-Temperatur",
-        "es": "Temperatura del depósito de ACS",
-        "fi": "Käyttövesisäiliön lämpötila",
-        "fr": "Température du ballon ECS",
-        "it": "Temperatura del serbatoio ACS",
-        "ko": "급탕 탱크 온도",
-        "nl": "Temperatuur van het tapwatervat",
-        "no": "Temperatur i varmtvannstank",
-        "pl": "Temperatura zasobnika CWU",
-        "sv": "Temperatur i varmvattenberedaren"
-      },
-      "units": "°C",
-      "insights": true
-    },
-    "measure_temperature.target_dhwtank": {
-      "title": {
-        "en": "DHW tank target temperature",
-        "da": "Måltemperatur for varmtvandsbeholder",
-        "de": "Warmwasserspeicher-Zieltemperatur",
-        "es": "Temperatura objetivo del depósito de ACS",
-        "fi": "Käyttövesisäiliön tavoitelämpötila",
-        "fr": "Température cible du ballon ECS",
-        "it": "Temperatura obiettivo del serbatoio ACS",
-        "ko": "급탕 탱크 목표 온도",
-        "nl": "Doeltemperatuur van het tapwatervat",
-        "no": "Måltemperatur for varmtvannstank",
-        "pl": "Temperatura docelowa zasobnika CWU",
-        "sv": "Måltemperatur i varmvattenberedaren"
+        "en": "Temperature",
+        "da": "Temperatur",
+        "de": "Temperatur",
+        "es": "Temperatura",
+        "fr": "Température",
+        "it": "Temperatura",
+        "ko": "온도",
+        "nl": "Temperatuur",
+        "no": "Temperatur",        
+        "pl": "Temperatura",
+        "sv": "Temperatur"
       },
       "units": "°C",
       "insights": true

@@ -17,19 +17,19 @@
   "capabilities": [
     "operation_mode",
     "thermostat_on_off",
-    "space_heating",
     "measure_temperature.outdoor",
+    "target_temperature_own",
     "measure_temperature.leavingWater",
     "measure_temperature.returningWater",
-    "measure_temperature.deltaT",
-    "measure_temperature.target",
-    "measure_temperature.lwSetPoint",
+    "delta_temperature",
     "measure_water",
     "measure_power",
+    "measure_cop",
     "meter_power.day",
     "meter_power.month",
     "meter_power.year",
-    "measure_cop"
+    "space_heating",
+    "measure_temperature.lwSetPoint"
   ],
   "capabilitiesOptions": {
     "measure_temperature.outdoor": {
@@ -82,42 +82,6 @@
         "no": "Returtemperatur",
         "pl": "Temperatura powrotu",
         "sv": "Returledningstemperatur"
-      },
-      "units": "°C",
-      "insights": true
-    },
-    "measure_temperature.deltaT": {
-      "title": {
-        "en": "ΔT (flow–return)",
-        "da": "ΔT (fremløb–retur)",
-        "de": "ΔT (Vorlauf–Rücklauf)",
-        "es": "ΔT (impulsión–retorno)",
-        "fi": "ΔT (meno–paluu)",
-        "fr": "ΔT (départ–retour)",
-        "it": "ΔT (mandata–ritorno)",
-        "ko": "ΔT (출수–환수)",
-        "nl": "ΔT (aanvoer–retour)",
-        "no": "ΔT (tur–retur)",
-        "pl": "ΔT (zasilanie–powrót)",
-        "sv": "ΔT (framledning–retur)"
-      },
-      "units": "°C",
-      "insights": true
-    },
-    "measure_temperature.target": {
-      "title": {
-        "en": "Target temperature",
-        "da": "Måltemperatur",
-        "de": "Zieltemperatur",
-        "es": "Temperatura objetivo",
-        "fi": "Tavoitelämpötila",
-        "fr": "Température cible",
-        "it": "Temperatura obiettivo",
-        "ko": "목표 온도",
-        "nl": "Doeltemperatuur",
-        "no": "Måltemperatur",
-        "pl": "Temperatura docelowa",
-        "sv": "Måltemperatur"
       },
       "units": "°C",
       "insights": true

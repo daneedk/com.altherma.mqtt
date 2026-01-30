@@ -3,6 +3,8 @@
 const Homey = require('homey');
 const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh, } = require('../../lib/power');
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 module.exports = class Heatpump extends Homey.Device {
   _deltaTBuffer = [];
   _thermalValid = false;
@@ -20,13 +22,81 @@ module.exports = class Heatpump extends Homey.Device {
       30 * 60 * 1000
     );
 
-if (this.hasCapability('measure_power.guess') === true) {
-  await this.removeCapability('measure_power.guess');
-}
-
     this._prevTs = null;
     this._prevPowerW = 0;
     this._energyKwh = 0;
+
+    // temporary code for getting the correct capabilities
+    if (!this.hasCapability('target_temperature_own')) {
+      await this.addCapability('target_temperature_own');
+    }
+    if (this.hasCapability('measure_temperature.target')) {
+      await this.removeCapability('measure_temperature.target');
+    }
+    if (!this.hasCapability('delta_temperature')) {
+      await this.addCapability('delta_temperature');
+    }
+    if (this.hasCapability('measure_temperature.deltaT')) {
+      await this.removeCapability('measure_temperature.deltaT');
+    }
+    
+    // Reorder the capabilties once
+    const reorderHPCapabilities = this.homey.settings.get('reorderHPCapabilities');
+    if (!reorderHPCapabilities) {
+      /*
+        this.log ('- reordering capabilites Heat Pump');
+        await this.removeCapability("operation_mode");
+        await this.removeCapability("thermostat_on_off");
+        await this.removeCapability("space_heating");
+        await this.removeCapability("measure_temperature.outdoor");
+        await this.removeCapability("measure_temperature.leavingWater");
+        await this.removeCapability("measure_temperature.returningWater");
+        await this.removeCapability("delta_temperature");
+        await this.removeCapability("target_temperature_own");
+        await this.removeCapability("measure_temperature.lwSetPoint");
+        await this.removeCapability("measure_water");
+        await this.removeCapability("measure_power");
+        await this.removeCapability("meter_power.day");
+        await this.removeCapability("meter_power.month");
+        await this.removeCapability("meter_power.year");
+        await this.removeCapability("measure_cop");
+
+
+        delay(500)
+        await this.addCapability("operation_mode");
+        delay(500)
+        await this.addCapability("thermostat_on_off");
+        delay(500)
+        await this.addCapability("measure_temperature.outdoor");
+        delay(500)
+        await this.addCapability("target_temperature_own");
+        delay(500)
+        await this.addCapability("measure_temperature.leavingWater");
+        delay(500)
+        await this.addCapability("measure_temperature.returningWater");
+        delay(500)
+        await this.addCapability("delta_temperature");
+        delay(500)
+        await this.addCapability("measure_water");
+        delay(500)
+        await this.addCapability("measure_power");
+        delay(500)
+        await this.addCapability("measure_cop");
+        delay(500)
+        await this.addCapability("meter_power.day");
+        delay(500)
+        await this.addCapability("meter_power.month");
+        delay(500)
+        await this.addCapability("meter_power.year");
+        delay(500)
+        await this.addCapability("space_heating");
+        delay(500)
+        await this.addCapability("measure_temperature.lwSetPoint");
+
+        this.homey.settings.set('reorderHPCapabilities', true);
+        this.log ('- reordering done');
+      */
+    }
   }
 
   async onAdded() {
@@ -112,13 +182,13 @@ if (this.hasCapability('measure_power.guess') === true) {
         const rawDeltaT = leaving - returning;
         const smoothedDeltaT = this._getSmoothedDeltaT(rawDeltaT);
         if (smoothedDeltaT !== null) {
-          await this.setCapabilityValue('measure_temperature.deltaT', smoothedDeltaT);
+          await this.setCapabilityValue('delta_temperature', smoothedDeltaT);
         }
 
       }
 
       await this.setCapabilityValue('measure_temperature.lwSetPoint', data.lwSetpointMain);      
-      await this.setCapabilityValue('measure_temperature.target', data.rtSetpoint);
+      await this.setCapabilityValue('target_temperature_own', data.rtSetpoint);
       await this.setCapabilityValue('measure_water', data.flowLpm);
 
       await this.checkResets();
@@ -131,28 +201,23 @@ if (this.hasCapability('measure_power.guess') === true) {
       // Code for estimated power and energy usage bast of of INV Primary Current
       const isSpaceHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === false;
 
-      //if (isSpaceHeating) {
-        const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
+      const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
 
-        let buhPowerW = 0;
-        if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
-        if (data.buhStep2On) buhPowerW += this.homey.app.getBuhStep2W();
+      let buhPowerW = 0;
+      if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
+      if (data.buhStep2On) buhPowerW += this.homey.app.getBuhStep2W();
 
-        const totalElectricalPowerW = electricalPowerW + buhPowerW;
-        const { deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW, data.receivedAt);
-        const { thermalPowerKW, cop } = this._calculateThermalPowerAndCop(data, electricalPowerW);
-
-        //this.log('Space Heating seems active', Math.round(totalElectricalPowerW), 'Watt', deltaKWh, 'ΔkWh');
-      //} else {
-      //  ({ deltaKWh, first } = this._updatePowerAndEnergy(0, data.receivedAt));
-        //this.log('Space Heating is inactive');
-      //}
+      const totalElectricalPowerW = electricalPowerW + buhPowerW;
+      const { deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW, data.receivedAt);
+      const { thermalPowerKW, cop } = this._calculateThermalPowerAndCop(data, electricalPowerW);
 
       if (first) {
-        console.log('Timestamp,OperationMode,IUoperationMode,Thermostat,threeWayValveDhw,Defrost,buhStep1On,buhStep2On,dhwSet,dhwTemp,lwSetpointMain,rtSetpoint,outdoorAirTemp,LeavingWaterTemp,InletWaterTemp,flow,invPrimaryCurrent,electricalPowerW,totalElectricalPowerW,thermalPowerKW,COP,deltaKWh');        
+        console.log('timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]');
+        //console.log('Timestamp,threeWayValveDhw,Defrost,buhStep1On,buhStep2On,flowLpm,invFrequencyRps,electricalPowerW,TotalElectricalPowerW');
       }
 
       if (isSpaceHeating) {
+        //this.log('Space Heating seems active', Math.round(totalElectricalPowerW), 'Watt', deltaKWh, 'ΔkWh');
         if (!first) {
           await this.setCapabilityValue('measure_power', Math.round(totalElectricalPowerW));
           await this.setCapabilityValue('measure_cop', Math.round(cop * 10) / 10);
@@ -166,29 +231,10 @@ if (this.hasCapability('measure_power.guess') === true) {
         if (this.getCapabilityValue('measure_cop') !== 0) await this.setCapabilityValue('measure_cop', 0);
       }
 
-      console.log(new Date().toISOString()+','+
-        data.operationMode + ',' +
-        data.IUoperationMode + ',' +
-        data.thermostatOn + ',' +
-        data.threeWayValveDhw + ',' +
-        data.defrostOperation + ',' +
-        data.buhStep1On + ',' +
-        data.buhStep2On + ',' +
-        data.dhwSetpoint + ',' +   
-        data.dhwTankTemp + ',' +
-        data.lwSetpointMain + ',' +
-        data.rtSetpoint + ',' +
-        data.outdoorAirTemp + ',' +
-        data.leavingWaterTempBeforeBUH + ',' +
-        data.inletWaterTemp + ',' +
-        data.flowLpm + ',' +
-        data.invPrimaryCurrent + ',' +
-        electricalPowerW + ',' +
-        totalElectricalPowerW + ',' +
-        thermalPowerKW + ',' +
-        cop + ',' +
-        deltaKWh
-      );
+      let logLine = new Date().toISOString()+','+ data.operationMode + ',' + data.IUoperationMode + ',' + data.thermostatOn + ',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.dhwSetpoint + ',' + data.dhwTankTemp + ',' + data.lwSetpointMain + ',' + data.rtSetpoint + ',' + data.outdoorAirTemp + ',' + data.leavingWaterTempBeforeBUH + ',' + data.inletWaterTemp + ',' + data.flowLpm + ',' + data.invPrimaryCurrent + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW) + ',' + Math.round(thermalPowerKW*1000) + ',' +  Math.round(cop * 10) / 10 + ',' + Math.round((deltaKWh*1000) * 10) / 10
+      //let logLine = new Date().toISOString()+',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.flowLpm + ',' + data.invFrequencyRps + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW);
+      
+      console.log(logLine);
 
     } catch (error) {
       const wrappedError = new Error('device.js _processMqttData error',{ cause: error });

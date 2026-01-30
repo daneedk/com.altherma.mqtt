@@ -26,6 +26,7 @@
   },
   "uiComponent": "sensor",
   "uiQuickAction": false,
+  "icon": "drivers/heatpump/assets/thermostat.svg",
   "$flow": {
     "triggers": [
       {

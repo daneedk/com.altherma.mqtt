@@ -1,0 +1,92 @@
+{
+  "type": "number",
+  "title": {
+    "en": "ΔT (flow–return)",
+    "da": "ΔT (fremløb–retur)",
+    "de": "ΔT (Vorlauf–Rücklauf)",
+    "es": "ΔT (impulsión–retorno)",
+    "fi": "ΔT (meno–paluu)",
+    "fr": "ΔT (départ–retour)",
+    "it": "ΔT (mandata–ritorno)",
+    "ko": "ΔT (출수–환수)",
+    "nl": "ΔT (aanvoer–retour)",
+    "no": "ΔT (tur–retur)",
+    "pl": "ΔT (zasilanie–powrót)",
+    "sv": "ΔT (framledning–retur)"
+  },
+  "units": {
+    "en": "°C",
+    "ko": "°C",
+    "no": "°C",
+    "da": "°C",
+    "de": "°C",
+    "es": "°C",
+    "fr": "°C",
+    "it": "°C",
+    "nl": "°C",
+    "pl": "°C",
+    "sv": "°C"
+  },
+  "insights": true,
+  "desc": {
+    "en": "Temperature difference in degrees Celsius (°C)",
+    "nl": "Temperatuurverschil in graden Celsius (°C)",
+    "de": "Temperaturdifferenz in Grad Celsius (°C)",
+    "fr": "Différence de température en degrés Celsius (°C)",
+    "it": "Differenza di temperatura in gradi Celsius (°C)",
+    "sv": "Temperaturskillnad i grader Celsius (°C)",
+    "no": "Temperaturforskjell i grader Celsius (°C)",
+    "es": "Diferencia de temperatura en grados Celsius (°C)",
+    "da": "Temperaturforskel i grader Celsius (°C)",
+    "pl": "Różnica temperatury w stopniach Celsjusza (°C)",
+    "ko": "섭씨(°C) 온도 차이"
+  },
+  "decimals": 1,
+  "chartType": "spline",
+  "color": "#FA6400",
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "drivers/heatpump/assets/delta_temperature.svg",
+  "$flow": {
+    "triggers": [
+      {
+        "id": "measure_temperature_changed",
+        "highlight": true,
+        "title": {
+          "en": "The temperature difference changes",
+          "nl": "Het temperatuurverschil verandert",
+          "de": "Die Temperaturdifferenz hat sich geändert",
+          "fr": "La différence de température a changé",
+          "it": "La differenza di temperatura è cambiata",
+          "sv": "Temperaturskillnaden ändrades",
+          "no": "Temperaturforskjellen endres",
+          "es": "La diferencia de temperatura ha cambiado",
+          "da": "Temperaturforskellen har ændret sig",
+          "pl": "Zmiana różnicy temperatury",
+          "ko": "온도 차이가 변경되면"
+        },
+        "tokens": [
+          {
+            "name": "measure_temperature",
+            "title": {
+              "en": "Temperature",
+              "nl": "Temperatuur",
+              "de": "Temperatur",
+              "fr": "Température",
+              "it": "Temperatura",
+              "sv": "Temperatur",
+              "no": "Temperatur",
+              "es": "Temperatura",
+              "da": "Temperatur",
+              "pl": "Temperatura",
+              "ko": "온도"
+            },
+            "type": "number",
+            "example": 23.5
+          }
+        ]
+      }
+    ]
+  }
+}

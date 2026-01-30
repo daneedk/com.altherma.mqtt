@@ -3,6 +3,8 @@
 const Homey = require('homey');
 const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh } = require('../../lib/power');
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 module.exports = class Waterheater extends Homey.Device {
 
   async onInit() {
@@ -19,7 +21,48 @@ module.exports = class Waterheater extends Homey.Device {
     this._prevTs = null;
     this._prevPowerW = 0;
     this._energyKwh = 0;
+
+    // temporary code for getting the correct capabilities
+    if (!this.hasCapability('target_temperature_dhw')) {
+      await this.addCapability('target_temperature_dhw');
+    }
+    if (this.hasCapability('measure_temperature.target_dhwtank')) {
+      await this.removeCapability('measure_temperature.target_dhwtank');
+    }
+
+    // Reorder the capabilties once
+    const reorderDHWCapabilities = this.homey.settings.get('reorderDHWCapabilities');
+    if (!reorderDHWCapabilities) {
+      this.log ('- reordering capabilites Water Heater');
+      await this.removeCapability("measure_temperature.dhwtank");
+      await this.removeCapability("target_temperature_dhw");
+      await this.removeCapability("powerful_dhwtank");
+      await this.removeCapability("measure_power");
+      await this.removeCapability("meter_power.day");
+      await this.removeCapability("meter_power.month");
+      await this.removeCapability("meter_power.year");
+
+      delay(500)
+      await this.addCapability("measure_temperature.dhwtank");
+      delay(500)
+      await this.addCapability("target_temperature_dhw");
+      delay(500)
+      await this.addCapability("powerful_dhwtank");
+      delay(500)
+      await this.addCapability("measure_power");
+      delay(500)
+      await this.addCapability("meter_power.day");
+      delay(500)
+      await this.addCapability("meter_power.month");
+      delay(500)
+      await this.addCapability("meter_power.year");
+
+      this.homey.settings.set('reorderDHWCapabilities', true);
+      this.log ('- reordering done');
+    }
   }
+
+
 
   async onAdded() {
     this.log('Water heater has been added');
@@ -82,7 +125,7 @@ module.exports = class Waterheater extends Homey.Device {
     //this.log('Water heater device received:',data);
     try {
       await this.setCapabilityValue('measure_temperature.dhwtank', data.dhwTankTemp);
-      await this.setCapabilityValue('measure_temperature.target_dhwtank', data.dhwSetpoint);
+      await this.setCapabilityValue('target_temperature_dhw', data.dhwSetpoint);
       await this.setCapabilityValue('powerful_dhwtank', data.powerfulDhwOn ? 'on' : 'off');
 
       await this.checkResets();
@@ -104,7 +147,8 @@ module.exports = class Waterheater extends Homey.Device {
         totalElectricalPowerW = electricalPowerW + buhPowerW;
 
         ({ deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW, data.receivedAt));
-
+        
+        //this.log('DHW heating seems active', Math.round(totalElectricalPowerW), 'Watt', deltaKWh, 'ΔkWh');
       } else {
         ({ deltaKWh, first } = this._updatePowerAndEnergy(0, data.receivedAt));
 
@@ -138,7 +182,7 @@ module.exports = class Waterheater extends Homey.Device {
     //this.log('Water heater device received:',data);
     try {
       await this.setCapabilityValue('measure_temperature.dhwtank', data.dhwTankTemp);
-      await this.setCapabilityValue('measure_temperature.target_dhwtank', data.dhwSetpoint);
+      await this.setCapabilityValue('target_temperature_dhw', data.dhwSetpoint);
       await this.setCapabilityValue('powerful_dhwtank', data.powerfulDhwOn ? 'on' : 'off');
 
       await this.checkResets();

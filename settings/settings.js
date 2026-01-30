@@ -22,17 +22,12 @@ function onHomeyReady(Homey) {
             document.getElementById('settings-enable-debug').checked = data;
 
             if (data) {
-                configureDebug()
+                document.getElementById('setting-debuginfo').style.display = 'block';
             }
         }
     });
 
-    // make the slider to enable debug logging only available in a computer browser
-    let regexp = /android|iphone|ipad/i;
-    let isMobileDevice = regexp.test(navigator.userAgent);
-    if (!isMobileDevice) {
-        document.getElementById('setting-enabledebug').style.display = 'block';
-    }
+    document.getElementById('setting-enabledebug').style.display = 'block';
 
     document.getElementById('connect').addEventListener('click', function(elem) {
         saveSettings();
@@ -156,10 +151,9 @@ function onSetDebug(Homey) {
     const isDebugEnabled = document.getElementById('settings-enable-debug').checked
     Homey.set('isDebugEnabled', isDebugEnabled);
     if (isDebugEnabled) {
-        configureDebug()
+        //configureDebug()
         document.getElementById('setting-debuginfo').style.display = 'block';        
     } else {
-        console.clear();
         document.getElementById('setting-debuginfo').style.display = 'none';
     }
 }

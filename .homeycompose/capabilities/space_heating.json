@@ -24,8 +24,9 @@
   "insightsTitle": {
     "en": "Space Heating"
   },
-  "uiComponent": "sensor",
+  "uiComponent": null,
   "uiQuickAction": false,
+  "icon": "drivers/heatpump/assets/space_heating.svg",
   "$flow": {
     "triggers": [
       {

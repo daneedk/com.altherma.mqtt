@@ -2,18 +2,24 @@
 
 const Homey = require('homey');
 const { MqttManager } = require('./lib/mqtt');
-
-// !!!! remove next line before publishing !!!!
-const LogToFile = require('homey-log-to-file'); // https://github.com/robertklep/homey-log-to-file
+const LogToFile = require('./lib/log-to-file'); // https://github.com/robertklep/homey-log-to-file
 let prevWarning
 
 module.exports = class AlthermaMQTTApp extends Homey.App {
 
   async onInit() {
 
-  // !!!! remove next lines before publishing !!!!
-    await LogToFile();
-    // log at: http://192.168.1.39:8008
+
+    //temporary
+    this.homey.settings.unset('mqttLog');
+
+    
+    this.logger = null;
+    this.isDebugEnabled = !!(await this.homey.settings.get('isDebugEnabled'));
+    if (this.isDebugEnabled) {
+      if (!this.logger) this.logger = await LogToFile('/userdata/std.log', 8008, 'a'); 
+      this.logger.startAutoTrim();
+    }
 
     this.log('AlthermaMQTTApp initializing');
     this.mqtt = new MqttManager({
@@ -26,8 +32,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     this._voltageL1 = 230;
     this._voltageL2 = 230;
     this._voltageL3 = 230;
-
-    this.isDebugEnabled = !!(await this.homey.settings.get('isDebugEnabled'));
 
     // On first run, inform user to go to the apps settings to configure the app.
     const warned = this.homey.settings.get('setup_notified');
@@ -57,9 +61,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.isExternalVoltageEnabled = true;
     }
 
-// !!!! Comment next line before publishing !!!!
-// this.homey.settings.set('setup_notified', false);
-
     // Act when settings change
     this.homey.settings.on('set', (name) => this._onSetSettings(name));
 
@@ -83,7 +84,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
             return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
         }).join(' ');
 
-        this.homey.app.writeLog(errorText);
         const tokens = { error: errorText };
         this._triggerAppError.trigger(tokens);
 
@@ -108,10 +108,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     }, 2 * 60 * 1000);
 
     // finished onInit()
-    let logLine = "===============================================================================================";
-    this.writeLog(logLine);
-    logLine = "app.js || onInit || --------- " + `${Homey.manifest.id} ${Homey.manifest.version} started ---------`;
-    this.writeLog(logLine);
     this.log('AlthermaMQTTApp has been initialized');
   }
 
@@ -128,7 +124,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     return Number(this.homey.settings.get('buhStep2W') ?? 6000);
   }
 
-  _onSetSettings(name) {
+  async _onSetSettings(name) {
     if (name == 'mqtt') {
       this.log('MQTT settings changed, reconnecting…');
       this.mqtt.reconnect().catch(this.error);
@@ -136,19 +132,19 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     else if (name === 'isDebugEnabled') {
       const isDebugEnabled = this.homey.settings.get(name)
       this.isDebugEnabled = isDebugEnabled;
-      if (!isDebugEnabled) {
-        //this.homey.settings.set('mqttLog', '' );
+      if (isDebugEnabled) {
+        if (!this.logger) this.logger = await LogToFile('/userdata/std.log', 8008, 'a');
+        console.log('timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]');
+        //console.log('Timestamp,threeWayValveDhw,Defrost,buhStep1On,buhStep2On,flowLpm,invFrequencyRps,electricalPowerW,TotalElectricalPowerW');
       } else {
-        let logLine = "===============================================================================================";
-        this.writeLog(logLine);
-        logLine = "app.js || _onSetSettings || --------- Debug logging is enabled from settings ------------------";
-        this.writeLog(logLine);
+        if (this.logger) {
+          await this.logger.stop();
+          this.logger = null;
+        }
       }
-    } 
+    }
     else if (name === 'isExternalVoltageEnabled') {
       this.isExternalVoltageEnabled = this.homey.settings.get(name);
-      let logLine = "Using external voltage is: " + this.isExternalVoltageEnabled;
-      this.writeLog(logLine);
     }
     else if (name === 'powerTopics') {
       this.powerTopics = this.homey.settings.get(name);
@@ -179,14 +175,11 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
     if (topic === 'LWT' && msg !== 'Online') {
       this.log('LWT:', msg);
-      this.writeLog('LWT:', msg);
       this.sendWarning('ESPAltherma went offline');
     } else if (topic === 'LWT') {
       this.clearWarning();
     }
     if (topic !== 'espaltherma/ATTR') return;
-
-    this.writeLog(msg);
 
     const raw = this._parseJson(msg);
     if (!raw || typeof raw !== 'object') return;
@@ -259,6 +252,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       // power related information
       invPrimaryCurrent: raw['INV primary current (A)'],
       
+      // Compressor revolutions per second (~HZ)
+      invFrequencyRps: raw['INV frequency (rps)'],
+      
       // room temperatures (°C)
       mainRtHeating:
         raw['Main RT Heating'] === 'OFF'
@@ -315,53 +311,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
   // Called from device.js
   getCurrentPower() {
     return this.currentPowerW;
-  }
-
-  // Write information to the mqttlog and cleanup 20% when history above 2000 lines
-  // - Called from multiple places
-  async writeLog(logLine) {
-      if (!this.isDebugEnabled) return;
-
-      let savedHistory = this.homey.settings.get('mqttLog');
-      if ( savedHistory != undefined ) {
-          // cleanup history
-          let lineCount = savedHistory.split(/\r\n|\r|\n/).length;
-          if ( lineCount > 200 ) {
-              let deleteItems = parseInt( lineCount * 0.2 );
-              let savedHistoryArray = savedHistory.split(/\r\n|\r|\n/);
-              let cleanUp = savedHistoryArray.splice(-1*deleteItems, deleteItems, "" );
-              savedHistory = savedHistoryArray.join('\n');
-          }
-          // end cleanup
-          logLine = this.getDateTime() + logLine + "\n" + savedHistory;
-      } else {
-          this.log("writeLog: savedHistory is undefined!")
-      }
-      this.homey.settings.set('mqttLog', logLine );
-
-      logLine = "";
-  }
-
-  // Returns a date timestring including milliseconds to be used in loglines
-  // - Called from writeLog()
-  getDateTime() {
-      let timezone = this.homey.clock.getTimezone()
-      let date = new Date(new Date().toLocaleString("en-US", {timeZone: timezone}));
-      let dateMsecs = new Date();
-
-      let hour = date.getHours();
-      hour = (hour < 10 ? "0" : "") + hour;
-      let min  = date.getMinutes();
-      min = (min < 10 ? "0" : "") + min;
-      let sec  = date.getSeconds();
-      sec = (sec < 10 ? "0" : "") + sec;
-      let msec = ("00" + dateMsecs.getMilliseconds()).slice(-3)
-      let year = date.getFullYear();
-      let month = date.getMonth() + 1;
-      month = (month < 10 ? "0" : "") + month;
-      let day  = date.getDate();
-      day = (day < 10 ? "0" : "") + day;
-      return day + "-" + month + "-" + year + "  ||  " + hour + ":" + min + ":" + sec + "." + msec + "  ||  ";
   }
 
 };

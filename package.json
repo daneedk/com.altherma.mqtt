@@ -5,6 +5,6 @@
   "scripts": {},
   "dependencies": {
     "async-mqtt": "^2.6.3",
-    "homey-log-to-file": "github:robertklep/homey-log-to-file"
+    "hook-std": "^4.0.0"
   }
 }

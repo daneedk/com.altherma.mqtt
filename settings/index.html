@@ -132,7 +132,7 @@
 
 
         <div class="settings-spacer"></div>
-            <div id="setting-enabledebug" class="settings-itemgroup" style="display: none;">
+            <div id="setting-enabledebug" class="settings-itemgroup">
                 <div class="settings-item">
                     <div class="settings-item-text">
                         <span data-i18n="settings.enabledebug">-Turn on debug logging-</span>
@@ -145,11 +145,12 @@
                         </label>
                     </div>
                 </div>
+                <div id="setting-debuginfo" class="settings-item" style="display: none;">
+                    <fieldset>
+                        <span data-i18n="settings.debuginfo">-Open the browser console to view the debug log-</span>
+                    </fieldset>
+                </div>
             </div>
-        </div>
-
-        <div id="setting-debuginfo" class="text-description" style="display: none;">
-            <span data-i18n="settings.debuginfo">-Open the browser console to view the debug log-</span>
         </div>
 
     </body>

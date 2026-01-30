@@ -9,6 +9,7 @@
   "getable": true,
   "setable": false,
   "insights": true,
+  "icon": "drivers/heatpump/assets/cop.svg",
   "insightsTitle": {
     "en": "Coefficient of Performance"
   },
