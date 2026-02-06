@@ -237,10 +237,8 @@ module.exports = class Heatpump extends Homey.Device {
       console.log(logLine);
 
     } catch (error) {
-      const wrappedError = new Error('device.js _processMqttData error',{ cause: error });
-
-      this.log(wrappedError);
-      throw wrappedError;
+      this.error('device.js _processMqttData error', error)
+      throw error;
     } 
     
   }
@@ -341,7 +339,6 @@ module.exports = class Heatpump extends Homey.Device {
   }
 
 };
-
 
 // Old loging code:
       /*

@@ -171,74 +171,10 @@ module.exports = class Waterheater extends Homey.Device {
         (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh
       );
     } catch (error) {
-      const wrappedError = new Error('device.js _processMqttData error', { cause: error });
-      this.log(wrappedError);
-      throw wrappedError;
+      this.error('device.js _processMqttData error', error)
+      throw error;
     }
   }
-
-  /*
-  async _processMqttData(data) {
-    //this.log('Water heater device received:',data);
-    try {
-      await this.setCapabilityValue('measure_temperature.dhwtank', data.dhwTankTemp);
-      await this.setCapabilityValue('target_temperature_dhw', data.dhwSetpoint);
-      await this.setCapabilityValue('powerful_dhwtank', data.powerfulDhwOn ? 'on' : 'off');
-
-      await this.checkResets();
-
-      // Code for estimated power and energy usage bast of of INV Primary Current
-      // const isDhwHeating = data.flowLpm > 0 && data.spaceHeatingOn === false;
-      // const isDhwHeating = data.spaceHeatingOn === false && data.invPrimaryCurrent > 0;
-      const isDhwHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === true;
-
-      if (!isDhwHeating) {
-        const { first } = this._updatePowerAndEnergy(0);
-        if (!first) {
-          await this.setCapabilityValue('measure_power', 0);
-        }
-        return;
-      }
-
-      // compressor electrical power
-      const electricalPowerW =
-        estimatePowerWFromInvPrimaryWithFallback( data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
-
-      // BUH power
-      let buhPowerW = 0;
-      if (data.buhStep1On) buhPowerW += BUH_STEP1_W;
-      if (data.buhStep2On) buhPowerW += BUH_STEP2_W;
-
-      // total electrical power (THIS must be integrated)
-      const totalElectricalPowerW = electricalPowerW + buhPowerW;
-
-      // always integrate (0 when inactive)
-      const { deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW);
-
-      if (isDhwHeating) {
-        //('Water Heater heating seems active', Math.round(totalElectricalPowerW), 'Watt,', deltaKWh, 'ΔkWh');
-      } else {
-        //this.log('Water Heater heating seems inactive');
-      }
-
-      if (!first) {
-        await this.setCapabilityValue('measure_power', Math.round(totalElectricalPowerW));
-      }
-
-
-      await this.setCapabilityValue('meter_power.day', (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh);
-      await this.setCapabilityValue('meter_power.month', (this.getCapabilityValue('meter_power.month') || 0) + deltaKWh);
-      await this.setCapabilityValue('meter_power.year', (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh);
-
-    } catch (error) {
-      const wrappedError = new Error('device.js _processMqttData error',{ cause: error });
-
-      this.log(wrappedError);
-      throw wrappedError;
-    } 
-    
-  }
-  */
 
   // helper
   _updatePowerAndEnergy(totalPowerW, ts) {

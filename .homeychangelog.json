@@ -20,5 +20,8 @@
     "no": "• Oversettelser lagt til • Capability-ikoner erstattet • Beregninger for effektbruk og energiforbruk forbedret • Logging forbedret • Diverse mindre forbedringer",
     "pl": "• Dodano tłumaczenia • Zastąpiono ikony możliwości • Ulepszono obliczenia wykorzystania mocy i zużycia energii • Ulepszono logowanie • Różne drobne usprawnienia",
     "sv": "• Översättningar tillagda • Kapabilitetsikoner ersatta • Beräkningar för effektanvändning och energiförbrukning förbättrade • Loggning förbättrad • Diverse mindre förbättringar"
-  }
+  },
+  "0.0.5": {
+    "en": "• Improved error logging"
+  }  
 }
