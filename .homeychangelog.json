@@ -22,6 +22,6 @@
     "sv": "• Översättningar tillagda • Kapabilitetsikoner ersatta • Beräkningar för effektanvändning och energiförbrukning förbättrade • Loggning förbättrad • Diverse mindre förbättringar"
   },
   "0.0.5": {
-    "en": "• Improved error logging"
+    "en": "• Improved error logging * added 1-phase power calculations (experimental)"
   }  
 }

@@ -18,6 +18,11 @@
     "username": "Username",
     "password": "Password",
     "connect": "Connect",
+    "phase": {
+      "header": "Phase configuration",
+      "use3phase": "3-phase system",
+      "description": "Enable for a 3-phase configuration, disable for a 1-phase configuration."
+    },
     "power": {
       "header": "Power calculation",
       "useexternalvoltage": "Use external voltage",

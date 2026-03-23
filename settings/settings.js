@@ -37,6 +37,10 @@ function onHomeyReady(Homey) {
         onSetDebug(Homey);
     });
 
+    document.getElementById('use-3phase').addEventListener('click', function(elem) {
+        on3phase(Homey);
+    });
+
     document.getElementById('use-external-voltage').addEventListener('click', function(elem) {
         onExternalVoltage(Homey);
     });
@@ -69,6 +73,17 @@ function onHomeyReady(Homey) {
                 document.getElementById('topic-voltage1').value = powerTopics.voltage1
                 document.getElementById('topic-voltage2').value = powerTopics.voltage2
                 document.getElementById('topic-voltage3').value = powerTopics.voltage3
+            }
+        }
+    });
+
+    Homey.get('is3phaseEnabled', function(err, is3phaseEnabled) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (is3phaseEnabled != (null || undefined)) {
+                document.getElementById('use-3phase').checked = is3phaseEnabled
+                on3phase(Homey);
             }
         }
     });
@@ -156,6 +171,11 @@ function onSetDebug(Homey) {
     } else {
         document.getElementById('setting-debuginfo').style.display = 'none';
     }
+}
+
+function on3phase(Homey) {
+    const is3phaseEnabled = document.getElementById('use-3phase').checked
+    Homey.set('is3phaseEnabled', is3phaseEnabled);
 }
 
 function onExternalVoltage(Homey) {

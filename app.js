@@ -13,7 +13,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     //temporary
     this.homey.settings.unset('mqttLog');
 
-    
     this.logger = null;
     this.isDebugEnabled = !!(await this.homey.settings.get('isDebugEnabled'));
     if (this.isDebugEnabled) {
@@ -52,6 +51,13 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
         voltage3: 'espaltherma/grid/voltage3',
       };
       this.homey.settings.set('powerTopics',this.powerTopics);
+    }
+
+    let is3phaseEnabled = this.homey.settings.get('is3phaseEnabled'); 
+
+    // Default to true if the setting doesn't exist (null/undefined)
+    if (is3phaseEnabled === null || is3phaseEnabled === undefined) {
+      is3phaseEnabled = true;
     }
 
     let isExternalVoltageEnabled = this.homey.settings.get('isExternalVoltageEnabled'); 
@@ -142,6 +148,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
           this.logger = null;
         }
       }
+    }
+    else if (name === 'is3phaseEnabled') {
+      this.is3phaseEnabled = this.homey.settings.get(name);
     }
     else if (name === 'isExternalVoltageEnabled') {
       this.isExternalVoltageEnabled = this.homey.settings.get(name);

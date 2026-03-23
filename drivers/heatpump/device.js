@@ -200,8 +200,7 @@ module.exports = class Heatpump extends Homey.Device {
       */
       // Code for estimated power and energy usage bast of of INV Primary Current
       const isSpaceHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === false;
-
-      const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3);
+      const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3,{eta: 0.90, is3phaseEnabled: this.is3phaseEnabled,});
 
       let buhPowerW = 0;
       if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
