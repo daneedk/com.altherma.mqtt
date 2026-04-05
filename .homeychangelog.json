@@ -26,5 +26,18 @@
   },
   "0.0.6": {
     "en": "• Improved 1-phase power calculations (experimental)"
-  }    
+  },
+  "0.0.7": {
+    "en": "• Added continuous power usage setting (experimental) • Added BUH1 and BUH2 usage settings",
+    "da": "• Tilføjet indstilling for kontinuerligt strømforbrug (eksperimentel) • Tilføjet brugsindstillinger for BUH1 og BUH2",
+    "de": "• Einstellung für kontinuierlichen Stromverbrauch hinzugefügt (experimentell) • Nutzungseinstellungen für BUH1 und BUH2 hinzugefügt",
+    "es": "• Se añadió la configuración de uso continuo de energía (experimental) • Se añadieron las configuraciones de uso de BUH1 y BUH2",
+    "fr": "• Ajout du paramètre de consommation électrique continue (expérimental) • Ajout des paramètres d’utilisation de BUH1 et BUH2",
+    "it": "• Aggiunta l'impostazione per il consumo energetico continuo (sperimentale) • Aggiunte le impostazioni di utilizzo per BUH1 e BUH2",
+    "ko": "• 연속 전력 사용 설정 추가(실험적 기능) • BUH1 및 BUH2 사용 설정 추가",
+    "nl": "• Instelling voor continu stroomverbruik toegevoegd (experimenteel) • Gebruiksinstellingen voor BUH1 en BUH2 toegevoegd",
+    "no": "• Lagt til innstilling for kontinuerlig strømforbruk (eksperimentell) • Lagt til bruksinnstillinger for BUH1 og BUH2",
+    "pl": "• Dodano ustawienie ciągłego zużycia energii (eksperymentalne) • Dodano ustawienia użycia BUH1 i BUH2",
+    "sv": "• Lade till inställning för kontinuerlig strömförbrukning (experimentell) • Lade till användningsinställningar för BUH1 och BUH2"
+  } 
 }

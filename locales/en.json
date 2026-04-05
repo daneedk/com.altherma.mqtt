@@ -24,6 +24,13 @@
       "description": "Enable for a 3-phase configuration, disable for a 1-phase configuration."
     },
     "power": {
+      "consumption": {
+        "header": "Power consumption",
+        "buh1": "Power consumption BUH1",
+        "buh2": "Power consumption BUH2",
+        "continuous": "Continuous baseline consumption",
+        "description": "Enter the values, in Watts, for Backup Heater 1 and 2, and the continuous baseline power consumption. (Power consumption of the system outside active heating.)"
+      },
       "header": "Power calculation",
       "useexternalvoltage": "Use external voltage",
       "mqtttopics": "MQTT Topics for phase voltages",

@@ -41,13 +41,37 @@ function onHomeyReady(Homey) {
         on3phase(Homey);
     });
 
+    document.getElementById('power-buh1').addEventListener('blur', function(elem) {
+        onBuh1(Homey);
+    });
+
+    document.getElementById('power-buh2').addEventListener('blur', function(elem) {
+        onBuh2(Homey);
+    });
+
+    document.getElementById('power-continuous').addEventListener('blur', function(elem) {
+        onPC(Homey);
+    });
+
+    document.getElementById('topic-voltage1').addEventListener('blur', function(elem) {
+        onVoltage1(Homey);
+    });
+
+    document.getElementById('topic-voltage2').addEventListener('blur', function(elem) {
+        onVoltage2(Homey);
+    });
+
+    document.getElementById('topic-voltage3').addEventListener('blur', function(elem) {
+        onVoltage3(Homey);
+    });
+
     document.getElementById('use-external-voltage').addEventListener('click', function(elem) {
         onExternalVoltage(Homey);
     });
 
-    document.getElementById('save').addEventListener('click', function(elem) {
-        savePowerTopics();
-    });
+    //document.getElementById('save').addEventListener('click', function(elem) {
+    //    savePowerTopics();
+    //});
 
     Homey.get('mqtt', function(err, mqtt) {
         if ( err ) {
@@ -84,6 +108,42 @@ function onHomeyReady(Homey) {
             if (is3phaseEnabled != (null || undefined)) {
                 document.getElementById('use-3phase').checked = is3phaseEnabled
                 on3phase(Homey);
+            }
+        }
+    });
+
+    Homey.get('buhStep1W', function(err, buhStep1W) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (buhStep1W != (null || undefined)) {
+                document.getElementById('power-buh1').value = buhStep1W
+            } else {
+                document.getElementById('power-buh1').value = 3000
+            }
+        }
+    });
+
+    Homey.get('buhStep2W', function(err, buhStep2W) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (buhStep2W != (null || undefined)) {
+                document.getElementById('power-buh2').value = buhStep2W
+            } else {
+                document.getElementById('power-buh2').value = 6000
+            }
+        }
+    });
+
+    Homey.get('continuousPowerW', function(err, continuousPowerW) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (continuousPowerW != (null || undefined)) {
+                document.getElementById('power-continuous').value = continuousPowerW
+            } else {
+                document.getElementById('power-continuous').value = 40
             }
         }
     });
@@ -176,6 +236,49 @@ function onSetDebug(Homey) {
 function on3phase(Homey) {
     const is3phaseEnabled = document.getElementById('use-3phase').checked
     Homey.set('is3phaseEnabled', is3phaseEnabled);
+    if (is3phaseEnabled) {
+        document.getElementById('settings-external-voltage-phase2').style.display = '';
+        document.getElementById('settings-external-voltage-phase3').style.display = '';
+    } else {
+        document.getElementById('settings-external-voltage-phase2').style.display = 'none';
+        document.getElementById('settings-external-voltage-phase3').style.display = 'none';
+    }
+}
+
+function onBuh1(Homey) {
+    const buh1 = document.getElementById('power-buh1').value
+    Homey.set('buhStep1W',buh1);
+}
+
+function onBuh2(Homey) {
+    const buh2 = document.getElementById('power-buh2').value
+    Homey.set('buhStep2W',buh2);
+}
+
+function onPC(Homey) {
+    const pc = document.getElementById('power-continuous').value
+    Homey.set('continuousPowerW',pc);
+}
+
+function onVoltage1(Homey) {
+    powerTopics.voltage1 = document.getElementById('topic-voltage1')?.value || '';
+    powerTopics.voltage2 = document.getElementById('topic-voltage2')?.value || '';
+    powerTopics.voltage3 = document.getElementById('topic-voltage3')?.value || '';
+    Homey.set('powerTopics', powerTopics);
+}
+
+function onVoltage2(Homey) {
+    powerTopics.voltage1 = document.getElementById('topic-voltage1')?.value || '';
+    powerTopics.voltage2 = document.getElementById('topic-voltage2')?.value || '';
+    powerTopics.voltage3 = document.getElementById('topic-voltage3')?.value || '';
+    Homey.set('powerTopics', powerTopics);
+}
+
+function onVoltage3(Homey) {
+    powerTopics.voltage1 = document.getElementById('topic-voltage1')?.value || '';
+    powerTopics.voltage2 = document.getElementById('topic-voltage2')?.value || '';
+    powerTopics.voltage3 = document.getElementById('topic-voltage3')?.value || '';
+    Homey.set('powerTopics', powerTopics);
 }
 
 function onExternalVoltage(Homey) {

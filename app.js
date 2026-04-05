@@ -122,6 +122,10 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     if (this._mqttWatchdog) clearInterval(this._mqttWatchdog);
   }
 
+  getContinuousPowerW() {
+    return Number(this.homey.settings.get('continuousPowerW') ?? 40);
+  }
+
   getBuhStep1W() {
     return Number(this.homey.settings.get('buhStep1W') ?? 3000);
   }

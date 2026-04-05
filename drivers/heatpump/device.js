@@ -202,11 +202,13 @@ module.exports = class Heatpump extends Homey.Device {
       const isSpaceHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === false;
       const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3,{eta: 0.90, is3phaseEnabled: this.is3phaseEnabled,});
 
+      const continuousPowerW = this.homey.app.getContinuousPowerW();
+
       let buhPowerW = 0;
       if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
       if (data.buhStep2On) buhPowerW += this.homey.app.getBuhStep2W();
 
-      const totalElectricalPowerW = electricalPowerW + buhPowerW;
+      const totalElectricalPowerW = electricalPowerW + continuousPowerW + buhPowerW;
       const { deltaKWh, first } = this._updatePowerAndEnergy(totalElectricalPowerW, data.receivedAt);
       const { thermalPowerKW, cop } = this._calculateThermalPowerAndCop(data, electricalPowerW);
 
