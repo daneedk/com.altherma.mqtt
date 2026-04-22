@@ -2,6 +2,9 @@
   "setup": {
     "notification": "Daikin Altherma is installed, please open the app settings to configure it."
   },
+  "warning": {
+    "missingLabels": "Missing ESPAltherma labels: {labels}"
+  },
   "settings": {
     "title": "Your Daikin Altherma in Homey with ESPAltherma",
     "intro": "To use your Daikin Altherma in Homey with ESPAltherema, Homey must be authenticated at your MQTT broker.",

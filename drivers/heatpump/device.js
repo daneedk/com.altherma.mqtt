@@ -200,10 +200,10 @@ module.exports = class Heatpump extends Homey.Device {
       */
       // Code for estimated power and energy usage bast of of INV Primary Current
       const isSpaceHeating = data.invPrimaryCurrent > 0 && data.threeWayValveDhw === false;
-      const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3,{eta: 0.90, is3phaseEnabled: this.is3phaseEnabled,});
+
+      const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3,{eta: 0.90, is3phaseEnabled: this.homey.app.is3phaseEnabled,});
 
       const continuousPowerW = this.homey.app.getContinuousPowerW();
-
       let buhPowerW = 0;
       if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
       if (data.buhStep2On) buhPowerW += this.homey.app.getBuhStep2W();
@@ -228,7 +228,7 @@ module.exports = class Heatpump extends Homey.Device {
         await this.setCapabilityValue('meter_power.month', (this.getCapabilityValue('meter_power.month') || 0) + deltaKWh);
         await this.setCapabilityValue('meter_power.year', (this.getCapabilityValue('meter_power.year') || 0) + deltaKWh);
       } else {
-        if (this.getCapabilityValue('measure_power') !== 0) await this.setCapabilityValue('measure_power', 0);
+        await this.setCapabilityValue('measure_power', Math.round(totalElectricalPowerW));
         if (this.getCapabilityValue('measure_cop') !== 0) await this.setCapabilityValue('measure_cop', 0);
       }
 

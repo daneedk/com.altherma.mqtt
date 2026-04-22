@@ -39,5 +39,18 @@
     "no": "• Lagt til innstilling for kontinuerlig strømforbruk (eksperimentell) • Lagt til bruksinnstillinger for BUH1 og BUH2",
     "pl": "• Dodano ustawienie ciągłego zużycia energii (eksperymentalne) • Dodano ustawienia użycia BUH1 i BUH2",
     "sv": "• Lade till inställning för kontinuerlig strömförbrukning (experimentell) • Lade till användningsinställningar för BUH1 och BUH2"
-  } 
+  },
+  "0.0.8": {
+    "en": "• Added detection for missing labels from ESPAltherma",
+    "da": "• Tilføjet registrering af manglende etiketter fra ESPAltherma",
+    "de": "• Erkennung fehlender Labels von ESPAltherma hinzugefügt",
+    "es": "• Se añadió la detección de etiquetas faltantes de ESPAltherma",
+    "fr": "• Ajout de la détection des étiquettes manquantes d'ESPAltherma",
+    "it": "• Aggiunto il rilevamento delle etichette mancanti da ESPAltherma",
+    "ko": "• ESPAltherma에서 누락된 레이블 감지 기능 추가",
+    "nl": "• Detectie van ontbrekende labels van ESPAltherma toegevoegd",
+    "no": "• Lagt til registrering av manglende etiketter fra ESPAltherma",
+    "pl": "• Dodano wykrywanie brakujących etykiet z ESPAltherma",
+    "sv": "• Lade till identifiering av saknade etiketter från ESPAltherma"
+  }
 }

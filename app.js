@@ -3,7 +3,25 @@
 const Homey = require('homey');
 const { MqttManager } = require('./lib/mqtt');
 const LogToFile = require('./lib/log-to-file'); // https://github.com/robertklep/homey-log-to-file
+const requiredLabels = [
+  'INV primary current (A)',
+  'DHW tank temp. (R5T)',
+  'DHW setpoint',
+  'Powerful DHW Operation. ON/OFF',
+  '3way valve(On:DHW_Off:Space)',
+  'BUH Step1',
+  'BUH Step2',
+  'Thermostat ON/OFF',
+  'Space heating Operation ON/OFF',
+  'R1T-Outdoor air temp.',
+  'Leaving water temp. after BUH (R2T)',
+  'Inlet water temp.(R4T)',
+  'LW setpoint (main)',
+  'RT setpoint',
+  'Flow sensor (l/min)',
+];
 let prevWarning
+
 
 module.exports = class AlthermaMQTTApp extends Homey.App {
 
@@ -53,11 +71,11 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.homey.settings.set('powerTopics',this.powerTopics);
     }
 
-    let is3phaseEnabled = this.homey.settings.get('is3phaseEnabled'); 
+    this.is3phaseEnabled = this.homey.settings.get('is3phaseEnabled'); 
 
     // Default to true if the setting doesn't exist (null/undefined)
-    if (is3phaseEnabled === null || is3phaseEnabled === undefined) {
-      is3phaseEnabled = true;
+    if (this.is3phaseEnabled === null || this.is3phaseEnabled === undefined) {
+      this.is3phaseEnabled = true;
     }
 
     let isExternalVoltageEnabled = this.homey.settings.get('isExternalVoltageEnabled'); 
@@ -220,6 +238,10 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
   }
 
   _normalizeAttr(raw) {
+    const missing = requiredLabels.filter(label => raw[label] === undefined);
+    if (missing.length > 0) {
+      this._warnMissingLabels(missing);
+    }
 
     const onOff = v => (v === 'ON' ? 'on' : 'off');
     const opModeRaw = (raw['Operation Mode'] || '').toString().trim().toUpperCase();
@@ -302,6 +324,18 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       wifiRssi: raw.WifiRSSI,
       freeMem: raw.FreeMem,
     };
+  }
+
+  _warnMissingLabels(missing) {
+    const now = Date.now();
+    const cooldownMs = 60 * 60 * 1000;
+
+    if (now - (this._lastMissingLabelWarn || 0) < cooldownMs) return;
+    this._lastMissingLabelWarn = now;
+
+    this.homey.notifications.createNotification({
+      excerpt: this.homey.__('warning.missingLabels', { labels: missing.join(', ') }),
+    });
   }
 
 
