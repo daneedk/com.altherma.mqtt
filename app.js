@@ -19,6 +19,9 @@ const requiredLabels = [
   'LW setpoint (main)',
   'RT setpoint',
   'Flow sensor (l/min)',
+  'Error Code',
+  'Error detailed code',
+  'Error type',
 ];
 let prevWarning
 
@@ -26,7 +29,6 @@ let prevWarning
 module.exports = class AlthermaMQTTApp extends Homey.App {
 
   async onInit() {
-
 
     //temporary
     this.homey.settings.unset('mqttLog');
@@ -274,8 +276,10 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       powerfulDhwOn: raw['Powerful DHW Operation. ON/OFF'] === 'ON',
 
       // errors
-      errorType: raw['Error type'],
-      errorCode: Number(raw['Error Code']?.trim()),
+      errorType: raw['Error type'] ?? null,
+      errorCode: raw['Error Code'] && raw['Error detailed code'] !== undefined
+        ? `${raw['Error Code'].trim()}-${String(raw['Error detailed code']).padStart(2, '0')}`
+        : null,
 
       // temperatures (°C)
       outdoorAirTemp: raw['R1T-Outdoor air temp.'],

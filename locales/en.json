@@ -5,6 +5,10 @@
   "warning": {
     "missingLabels": "Missing ESPAltherma labels: {labels}"
   },
+  "error": {
+    "log_prefix": "Error:",
+    "log_suffix": "Please consult your Daikin's control panel or your owners manual on what action to take."
+  },
   "settings": {
     "title": "Your Daikin Altherma in Homey with ESPAltherma",
     "intro": "To use your Daikin Altherma in Homey with ESPAltherema, Homey must be authenticated at your MQTT broker.",

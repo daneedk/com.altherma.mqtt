@@ -10,6 +10,7 @@ module.exports = class Heatpump extends Homey.Device {
   _thermalValid = false;
   _lastThermalPowerKW = 0;
   _lastCop = 0;
+  _lastErrorLogTime = 0;
 
   async onInit() {
     this.log('Heat Pump has been initialized');
@@ -159,7 +160,25 @@ module.exports = class Heatpump extends Homey.Device {
   async _processMqttData(data) {
     //this.log('Heatpump device received:',data);
     try {
-      
+
+      if (data.errorType === 'Error') {
+        const now = Date.now();
+        if (now - this._lastErrorLogTime >= 60 * 60 * 1000) {
+          // Log Error
+          this.log(this.homey.__('error.log_prefix'), data.errorCode, this.homey.__('error.log_suffix'));
+          // Create Timeline notification
+          await this.homey.notifications.createNotification({
+            excerpt: `${this.homey.__('error.log_prefix')} ${data.errorCode} ${this.homey.__('error.log_suffix')}`,
+          });
+          // trigger error flowcard
+          const tokens = { error: data.errorCode };
+          this.homey.app._triggerAppError.trigger(tokens);
+          this._lastErrorLogTime = now;
+        }
+      } else {
+        this._lastErrorLogTime = 0;
+      }
+
       let operationMode = data.IUoperationMode;
       if (data.invPrimaryCurrent === 0) {
         operationMode = 'fanonly';

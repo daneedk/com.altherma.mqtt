@@ -52,5 +52,18 @@
     "no": "• Lagt til registrering av manglende etiketter fra ESPAltherma",
     "pl": "• Dodano wykrywanie brakujących etykiet z ESPAltherma",
     "sv": "• Lade till identifiering av saknade etiketter från ESPAltherma"
+  },
+  "0.0.9": {
+    "en": "• Added notifications for errors from your Daikin",
+    "da": "• Tilføjet notifikationer for fejl fra din Daikin",
+    "de": "• Benachrichtigungen für Fehler von Ihrer Daikin hinzugefügt",
+    "es": "• Se añadieron notificaciones para errores de su Daikin",
+    "fr": "• Ajout de notifications pour les erreurs de votre Daikin",
+    "it": "• Aggiunte notifiche per gli errori dal tuo Daikin",
+    "ko": "• Daikin 오류에 대한 알림 추가",
+    "nl": "• Meldingen toegevoegd voor fouten van uw Daikin",
+    "no": "• Lagt til varsler for feil fra din Daikin",
+    "pl": "• Dodano powiadomienia o błędach z urządzenia Daikin",
+    "sv": "• Lade till aviseringar för fel från din Daikin"
   }
 }
