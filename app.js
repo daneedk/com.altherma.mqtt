@@ -217,6 +217,8 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     const raw = this._parseJson(msg);
     if (!raw || typeof raw !== 'object') return;
 
+//this.log(raw);    
+
     if ( raw['Operation Mode'] != 'Fan Only' && raw['Operation Mode'] != 'Heating' ) {
       this.log('Operation Mode:',raw['Operation Mode'])
     }

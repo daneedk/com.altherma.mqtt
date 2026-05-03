@@ -29,6 +29,12 @@ module.exports = class Waterheater extends Homey.Device {
     if (this.hasCapability('measure_temperature.target_dhwtank')) {
       await this.removeCapability('measure_temperature.target_dhwtank');
     }
+    if (!this.hasCapability('meter_power')) {
+      await this.addCapability('meter_power');
+    }
+    if (this.hasCapability('meter_power.day')) {
+      await this.removeCapability('meter_power.day');
+    }
 
     // Reorder the capabilties once
     const reorderDHWCapabilities = this.homey.settings.get('reorderDHWCapabilities');
@@ -38,7 +44,7 @@ module.exports = class Waterheater extends Homey.Device {
       await this.removeCapability("target_temperature_dhw");
       await this.removeCapability("powerful_dhwtank");
       await this.removeCapability("measure_power");
-      await this.removeCapability("meter_power.day");
+      await this.removeCapability("meter_power");
       await this.removeCapability("meter_power.month");
       await this.removeCapability("meter_power.year");
 
@@ -51,7 +57,7 @@ module.exports = class Waterheater extends Homey.Device {
       delay(500)
       await this.addCapability("measure_power");
       delay(500)
-      await this.addCapability("meter_power.day");
+      await this.addCapability("meter_power");
       delay(500)
       await this.addCapability("meter_power.month");
       delay(500)
@@ -105,10 +111,12 @@ module.exports = class Waterheater extends Homey.Device {
     const month = day.slice(0, 7);
     const year = day.slice(0, 4);
 
+    /*
     if (this.getStoreValue('lastDailyReset') !== day) {
-      await this.setCapabilityValue('meter_power.day', 0);
+      await this.setCapabilityValue('meter_power', 0);
       await this.setStoreValue('lastDailyReset', day);
     }
+    */
 
     if (this.getStoreValue('lastMonthlyReset') !== month) {
       await this.setCapabilityValue('meter_power.month', 0);
@@ -159,8 +167,8 @@ module.exports = class Waterheater extends Homey.Device {
       }
 
       await this.setCapabilityValue(
-        'meter_power.day',
-        (this.getCapabilityValue('meter_power.day') || 0) + deltaKWh
+        'meter_power',
+        (this.getCapabilityValue('meter_power') || 0) + deltaKWh
       );
       await this.setCapabilityValue(
         'meter_power.month',

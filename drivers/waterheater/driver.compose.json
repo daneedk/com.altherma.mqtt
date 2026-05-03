@@ -19,7 +19,7 @@
     "target_temperature_dhw",
     "powerful_dhwtank",
     "measure_power",
-    "meter_power.day",
+    "meter_power",
     "meter_power.month",
     "meter_power.year"
   ],
@@ -40,22 +40,6 @@
       },
       "units": "°C",
       "insights": true
-    },
-    "meter_power.day": {
-      "title": {
-        "en": "Energy Today",
-        "da": "Energi i dag",
-        "de": "Energie heute",
-        "es": "Energía hoy",
-        "fi": "Energia tänään",
-        "fr": "Énergie aujourd’hui",
-        "it": "Energia oggi",
-        "ko": "오늘 에너지",
-        "nl": "Energie vandaag",
-        "no": "Energi i dag",
-        "pl": "Energia dzisiaj",
-        "sv": "Energi idag"
-      }
     },
     "meter_power.month": {
       "title": {

@@ -65,5 +65,18 @@
     "no": "• Lagt til varsler for feil fra din Daikin",
     "pl": "• Dodano powiadomienia o błędach z urządzenia Daikin",
     "sv": "• Lade till aviseringar för fel från din Daikin"
+  },
+  "0.0.10": {
+    "en": "• Fixed Energy Consumption calculations when Heat Pump is in Emergency Operation Mode",
+    "da": "• Rettet beregninger af energiforbrug, når varmepumpen er i nødtilstand",
+    "de": "• Berechnungen des Energieverbrauchs korrigiert, wenn die Wärmepumpe im Notbetrieb ist",
+    "es": "• Corregidos los cálculos de consumo de energía cuando la bomba de calor está en modo de operación de emergencia",
+    "fr": "• Correction des calculs de consommation d'énergie lorsque la pompe à chaleur est en mode de fonctionnement d'urgence",
+    "it": "• Corretti i calcoli del consumo energetico quando la pompa di calore è in modalità di emergenza",
+    "ko": "• 열 펌프가 비상 운전 모드일 때 에너지 소비 계산 수정",
+    "nl": "• Energieverbruiksberekeningen gecorrigeerd wanneer de warmtepomp in noodbedrijf is",
+    "no": "• Rettet beregninger av energiforbruk når varmepumpen er i nødtilstand",
+    "pl": "• Poprawiono obliczenia zużycia energii, gdy pompa ciepła działa w trybie awaryjnym",
+    "sv": "• Korrigerade beräkningar av energiförbrukning när värmepumpen är i nödläge"
   }
 }
