@@ -1,6 +1,6 @@
 {
   "id": "com.altherma.mqtt",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "compatibility": ">=12.11.0",
   "sdk": 3,
   "platforms": [

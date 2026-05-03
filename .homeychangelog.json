@@ -78,5 +78,18 @@
     "no": "• Rettet beregninger av energiforbruk når varmepumpen er i nødtilstand",
     "pl": "• Poprawiono obliczenia zużycia energii, gdy pompa ciepła działa w trybie awaryjnym",
     "sv": "• Korrigerade beräkningar av energiförbrukning när värmepumpen är i nödläge"
+  },
+  "0.1.0": {
+    "en": "• Added missing translations",
+    "da": "• Tilføjede manglende oversættelser",
+    "de": "• Fehlende Übersetzungen hinzugefügt",
+    "es": "• Traducciones faltantes añadidas",
+    "fr": "• Traductions manquantes ajoutées",
+    "it": "• Aggiunte traduzioni mancanti",
+    "ko": "• 누락된 번역 추가",
+    "nl": "• Ontbrekende vertalingen toegevoegd",
+    "no": "• La til manglende oversettelser",
+    "pl": "• Dodano brakujące tłumaczenia",
+    "sv": "• Lade till saknade översättningar"
   }
 }
