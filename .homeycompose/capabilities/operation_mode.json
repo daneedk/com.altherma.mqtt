@@ -1,7 +1,17 @@
 {
   "type": "enum",
   "title": {
-    "en": "Operation Mode"
+    "en": "Operation Mode",
+    "da": "Driftstilstand",
+    "de": "Betriebsmodus",
+    "es": "Modo de operación",
+    "fr": "Mode de fonctionnement",
+    "it": "Modalità di funzionamento",
+    "ko": "작동 모드",
+    "nl": "Bedrijfsmodus",
+    "no": "Driftsmodus",
+    "pl": "Tryb pracy",
+    "sv": "Driftläge"
   },
   "desc": {
     "en": ""
@@ -10,25 +20,65 @@
     {
       "id": "heating",
       "title": {
-        "en": "Heating"
+        "en": "Heating",
+        "da": "Opvarmning",
+        "de": "Heizen",
+        "es": "Calefacción",
+        "fr": "Chauffage",
+        "it": "Riscaldamento",
+        "ko": "난방",
+        "nl": "Verwarming",
+        "no": "Oppvarming",
+        "pl": "Ogrzewanie",
+        "sv": "Uppvärmning"
       }
     },
     {
       "id": "heatingdhw",
       "title": {
-        "en": "Heating + DHW"
+        "en": "Heating + DHW",
+        "da": "Opvarmning + VVB",
+        "de": "Heizen + Warmwasser",
+        "es": "Calefacción + ACS",
+        "fr": "Chauffage + ECS",
+        "it": "Riscaldamento + ACS",
+        "ko": "난방 + 급탕",
+        "nl": "Verwarming + tapwater",
+        "no": "Oppvarming + VV",
+        "pl": "Ogrzewanie + CWU",
+        "sv": "Uppvärmning + VV"
       }
     },
     {
       "id": "fanonly",
       "title": {
-        "en": "Idle (no demand)"
+        "en": "Idle (no demand)",
+        "da": "Inaktiv (ingen efterspørgsel)",
+        "de": "Bereitschaft (kein Bedarf)",
+        "es": "Inactivo (sin demanda)",
+        "fr": "Inactif (sans demande)",
+        "it": "Inattivo (nessuna richiesta)",
+        "ko": "대기 중 (수요 없음)",
+        "nl": "Inactief (geen vraag)",
+        "no": "Inaktiv (ingen etterspørsel)",
+        "pl": "Bezczynny (brak zapotrzebowania)",
+        "sv": "Inaktiv (ingen efterfrågan)"
       }
     },
     {
       "id": "dhw",
       "title": {
-        "en": "DHW"
+        "en": "DHW",
+        "da": "VVB",
+        "de": "Warmwasser",
+        "es": "ACS",
+        "fr": "ECS",
+        "it": "ACS",
+        "ko": "급탕",
+        "nl": "Tapwater",
+        "no": "VV",
+        "pl": "CWU",
+        "sv": "VV"
       }
     }
   ],
@@ -41,13 +91,37 @@
     "triggers": [
       {
         "id": "mode_changed",
-        "title": { "en": "Operation mode changed" }
+        "title": {
+          "en": "Operation mode changed",
+          "da": "Driftstilstand ændret",
+          "de": "Betriebsmodus geändert",
+          "es": "Modo de operación cambiado",
+          "fr": "Mode de fonctionnement modifié",
+          "it": "Modalità di funzionamento cambiata",
+          "ko": "작동 모드가 변경됨",
+          "nl": "Bedrijfsmodus gewijzigd",
+          "no": "Driftsmodus endret",
+          "pl": "Tryb pracy zmieniony",
+          "sv": "Driftläge ändrat"
+        }
       }
     ],
     "conditions": [
       {
         "id": "is",
-        "title": { "en": "Operation mode is !{{heating|heatingdhw|fanonly}}" }
+        "title": {
+          "en": "Operation mode is !{{heating|heatingdhw|fanonly}}",
+          "da": "Driftstilstand er !{{heating|heatingdhw|fanonly}}",
+          "de": "Betriebsmodus ist !{{heating|heatingdhw|fanonly}}",
+          "es": "El modo de operación es !{{heating|heatingdhw|fanonly}}",
+          "fr": "Le mode de fonctionnement est !{{heating|heatingdhw|fanonly}}",
+          "it": "La modalità di funzionamento è !{{heating|heatingdhw|fanonly}}",
+          "ko": "작동 모드가 !{{heating|heatingdhw|fanonly}}이면",
+          "nl": "Bedrijfsmodus is !{{heating|heatingdhw|fanonly}}",
+          "no": "Driftsmodus er !{{heating|heatingdhw|fanonly}}",
+          "pl": "Tryb pracy to !{{heating|heatingdhw|fanonly}}",
+          "sv": "Driftläget är !{{heating|heatingdhw|fanonly}}"
+        }
       }
     ]
   }

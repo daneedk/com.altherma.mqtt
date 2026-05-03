@@ -1,5 +1,52 @@
 {
   "setup": {
-    "notification": "Daikin Altherma è installato. Apri le impostazioni dell’app per configurarlo."
+    "notification": "Daikin Altherma è installato. Apri le impostazioni dell'app per configurarlo."
+  },
+  "warning": {
+    "missingLabels": "Etichette ESPAltherma mancanti: {labels}"
+  },
+  "error": {
+    "log_prefix": "Errore:",
+    "log_suffix": "Consultare il pannello di controllo del Daikin o il manuale del proprietario per sapere quale azione intraprendere."
+  },
+  "settings": {
+    "title": "Il tuo Daikin Altherma in Homey con ESPAltherma",
+    "intro": "Per utilizzare il tuo Daikin Altherma in Homey con ESPAltherma, Homey deve essere autenticato presso il tuo broker MQTT.",
+    "auth": {
+      "header": "Stato di autenticazione del broker MQTT",
+      "authenticated": "L'app Daikin Altherma per Homey è autenticata con successo presso il tuo broker MQTT.",
+      "disconnected": "L'app Daikin Altherma per Homey è disconnessa dal tuo broker MQTT. Controlla il server MQTT e le informazioni e fai clic su Connetti.",
+      "reconnecting": "L'app Daikin Altherma per Homey si sta riconnettendo al tuo broker MQTT. Inserisci il server MQTT e le informazioni e fai clic su Connetti.",
+      "notauthenticated": "L'app Daikin Altherma per Homey non è autenticata presso il tuo broker MQTT. Inserisci le informazioni e fai clic su Connetti."
+    },
+    "host": "Indirizzo MQTT",
+    "port": "Porta MQTT",
+    "usetls": "Usa TLS",
+    "username": "Nome utente",
+    "password": "Password",
+    "connect": "Connetti",
+    "phase": {
+      "header": "Configurazione di fase",
+      "use3phase": "Sistema trifase",
+      "description": "Abilitare per una configurazione trifase, disabilitare per una configurazione monofase."
+    },
+    "power": {
+      "consumption": {
+        "header": "Consumo energetico",
+        "buh1": "Consumo energetico BUH1",
+        "buh2": "Consumo energetico BUH2",
+        "continuous": "Consumo base continuo",
+        "description": "Inserire i valori, in Watt, per il riscaldatore di riserva 1 e 2 e il consumo energetico base continuo. (Consumo energetico del sistema al di fuori del riscaldamento attivo.)"
+      },
+      "header": "Calcolo della potenza",
+      "useexternalvoltage": "Usa tensione esterna",
+      "mqtttopics": "Argomenti MQTT per le tensioni di fase",
+      "voltage1": "Tensione fase 1",
+      "voltage2": "Tensione fase 2",
+      "voltage3": "Tensione fase 3",
+      "save": "Salva"
+    },
+    "enabledebug": "Attiva la registrazione di debug",
+    "debuginfo": "Visualizza il log nel browser all'indirizzo: http://[homey-ip-address]:8008"
   }
 }

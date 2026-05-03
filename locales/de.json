@@ -1,5 +1,52 @@
 {
   "setup": {
     "notification": "Daikin Altherma ist installiert. Bitte öffnen Sie die App-Einstellungen, um sie zu konfigurieren."
+  },
+  "warning": {
+    "missingLabels": "Fehlende ESPAltherma Labels: {labels}"
+  },
+  "error": {
+    "log_prefix": "Fehler:",
+    "log_suffix": "Bitte konsultieren Sie das Bedienfeld Ihrer Daikin oder das Benutzerhandbuch für erforderliche Maßnahmen."
+  },
+  "settings": {
+    "title": "Ihre Daikin Altherma in Homey mit ESPAltherma",
+    "intro": "Um Ihre Daikin Altherma in Homey mit ESPAltherma zu verwenden, muss Homey bei Ihrem MQTT-Broker authentifiziert sein.",
+    "auth": {
+      "header": "MQTT-Broker Authentifizierungsstatus",
+      "authenticated": "Die Daikin Altherma App für Homey ist erfolgreich bei Ihrem MQTT-Broker authentifiziert.",
+      "disconnected": "Die Daikin Altherma App für Homey ist von Ihrem MQTT-Broker getrennt. Bitte überprüfen Sie den MQTT-Server und die Informationen und klicken Sie auf Verbinden.",
+      "reconnecting": "Die Daikin Altherma App für Homey verbindet sich erneut mit Ihrem MQTT-Broker. Bitte geben Sie den MQTT-Server und die Informationen ein und klicken Sie auf Verbinden.",
+      "notauthenticated": "Die Daikin Altherma App für Homey ist nicht bei Ihrem MQTT-Broker authentifiziert. Bitte geben Sie die Informationen ein und klicken Sie auf Verbinden."
+    },
+    "host": "MQTT-Adresse",
+    "port": "MQTT-Port",
+    "usetls": "TLS verwenden",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "connect": "Verbinden",
+    "phase": {
+      "header": "Phasenkonfiguration",
+      "use3phase": "3-Phasensystem",
+      "description": "Aktivieren für eine 3-Phasenkonfiguration, deaktivieren für eine 1-Phasenkonfiguration."
+    },
+    "power": {
+      "consumption": {
+        "header": "Stromverbrauch",
+        "buh1": "Stromverbrauch BUH1",
+        "buh2": "Stromverbrauch BUH2",
+        "continuous": "Kontinuierlicher Grundverbrauch",
+        "description": "Geben Sie die Werte in Watt für Reserveheizung 1 und 2 sowie den kontinuierlichen Grundstromverbrauch ein. (Stromverbrauch des Systems außerhalb der aktiven Heizung.)"
+      },
+      "header": "Leistungsberechnung",
+      "useexternalvoltage": "Externe Spannung verwenden",
+      "mqtttopics": "MQTT-Themen für Phasenspannungen",
+      "voltage1": "Spannung Phase 1",
+      "voltage2": "Spannung Phase 2",
+      "voltage3": "Spannung Phase 3",
+      "save": "Speichern"
+    },
+    "enabledebug": "Debug-Protokollierung aktivieren",
+    "debuginfo": "Protokoll im Browser anzeigen unter: http://[homey-ip-adresse]:8008"
   }
 }

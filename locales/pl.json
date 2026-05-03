@@ -1,5 +1,52 @@
 {
   "setup": {
     "notification": "Daikin Altherma jest zainstalowany. Otwórz ustawienia aplikacji, aby go skonfigurować."
+  },
+  "warning": {
+    "missingLabels": "Brakujące etykiety ESPAltherma: {labels}"
+  },
+  "error": {
+    "log_prefix": "Błąd:",
+    "log_suffix": "Skonsultuj się z panelem sterowania Daikin lub instrukcją obsługi, aby dowiedzieć się, jakie działania należy podjąć."
+  },
+  "settings": {
+    "title": "Twój Daikin Altherma w Homey z ESPAltherma",
+    "intro": "Aby używać Daikin Altherma w Homey z ESPAltherma, Homey musi być uwierzytelniony w Twoim brokerze MQTT.",
+    "auth": {
+      "header": "Stan uwierzytelnienia brokera MQTT",
+      "authenticated": "Aplikacja Daikin Altherma dla Homey jest pomyślnie uwierzytelniona w Twoim brokerze MQTT.",
+      "disconnected": "Aplikacja Daikin Altherma dla Homey jest odłączona od Twojego brokera MQTT. Sprawdź serwer MQTT i informacje i kliknij Połącz.",
+      "reconnecting": "Aplikacja Daikin Altherma dla Homey ponownie łączy się z Twoim brokerem MQTT. Wprowadź serwer MQTT i informacje i kliknij Połącz.",
+      "notauthenticated": "Aplikacja Daikin Altherma dla Homey nie jest uwierzytelniona w Twoim brokerze MQTT. Wprowadź informacje i kliknij Połącz."
+    },
+    "host": "Adres MQTT",
+    "port": "Port MQTT",
+    "usetls": "Użyj TLS",
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "connect": "Połącz",
+    "phase": {
+      "header": "Konfiguracja fazy",
+      "use3phase": "System 3-fazowy",
+      "description": "Włącz dla konfiguracji 3-fazowej, wyłącz dla konfiguracji 1-fazowej."
+    },
+    "power": {
+      "consumption": {
+        "header": "Zużycie energii",
+        "buh1": "Zużycie energii BUH1",
+        "buh2": "Zużycie energii BUH2",
+        "continuous": "Ciągłe zużycie podstawowe",
+        "description": "Wprowadź wartości w Watach dla grzałki rezerwowej 1 i 2 oraz ciągłego podstawowego zużycia energii. (Zużycie energii przez system poza aktywnym ogrzewaniem.)"
+      },
+      "header": "Obliczanie mocy",
+      "useexternalvoltage": "Użyj zewnętrznego napięcia",
+      "mqtttopics": "Tematy MQTT dla napięć fazowych",
+      "voltage1": "Napięcie faza 1",
+      "voltage2": "Napięcie faza 2",
+      "voltage3": "Napięcie faza 3",
+      "save": "Zapisz"
+    },
+    "enabledebug": "Włącz rejestrowanie debugowania",
+    "debuginfo": "Wyświetl dziennik w przeglądarce pod adresem: http://[homey-ip-address]:8008"
   }
 }

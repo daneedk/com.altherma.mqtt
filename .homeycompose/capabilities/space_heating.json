@@ -1,20 +1,50 @@
 {
   "type": "enum",
   "title": {
-    "en": "Space Heating"
+    "en": "Space Heating",
+    "da": "Rumopvarmning",
+    "de": "Raumheizung",
+    "es": "Calefacción de espacios",
+    "fr": "Chauffage des locaux",
+    "it": "Riscaldamento degli ambienti",
+    "ko": "공간 난방",
+    "nl": "Ruimteverwarming",
+    "no": "Romoppvarming",
+    "pl": "Ogrzewanie pomieszczeń",
+    "sv": "Rumsuppvärmning"
   },
   "values": [
-    { 
-      "id": "on", 
-      "title": { 
-        "en": "On" 
-      } 
+    {
+      "id": "on",
+      "title": {
+        "en": "On",
+        "da": "Til",
+        "de": "Ein",
+        "es": "Encendido",
+        "fr": "Activé",
+        "it": "Attivo",
+        "ko": "켜짐",
+        "nl": "Aan",
+        "no": "På",
+        "pl": "Włączony",
+        "sv": "På"
+      }
     },
-    { 
-      "id": "off", 
-      "title": { 
-        "en": "Off" 
-      } 
+    {
+      "id": "off",
+      "title": {
+        "en": "Off",
+        "da": "Fra",
+        "de": "Aus",
+        "es": "Apagado",
+        "fr": "Désactivé",
+        "it": "Disattivo",
+        "ko": "꺼짐",
+        "nl": "Uit",
+        "no": "Av",
+        "pl": "Wyłączony",
+        "sv": "Av"
+      }
     }
   ],
   "color": "#9033FC",
@@ -22,7 +52,17 @@
   "setable": false,
   "insights": true,
   "insightsTitle": {
-    "en": "Space Heating"
+    "en": "Space Heating",
+    "da": "Rumopvarmning",
+    "de": "Raumheizung",
+    "es": "Calefacción de espacios",
+    "fr": "Chauffage des locaux",
+    "it": "Riscaldamento degli ambienti",
+    "ko": "공간 난방",
+    "nl": "Ruimteverwarming",
+    "no": "Romoppvarming",
+    "pl": "Ogrzewanie pomieszczeń",
+    "sv": "Rumsuppvärmning"
   },
   "uiComponent": null,
   "uiQuickAction": false,
@@ -32,18 +72,54 @@
       {
         "id": "mode_on",
         "highlight": true,
-        "title": { "en": "Space Heating turned on" }
+        "title": {
+          "en": "Space Heating turned on",
+          "da": "Rumopvarmning aktiveret",
+          "de": "Raumheizung aktiviert",
+          "es": "Calefacción de espacios activada",
+          "fr": "Chauffage des locaux activé",
+          "it": "Riscaldamento degli ambienti attivato",
+          "ko": "공간 난방이 켜짐",
+          "nl": "Ruimteverwarming ingeschakeld",
+          "no": "Romoppvarming er aktivert",
+          "pl": "Ogrzewanie pomieszczeń włączone",
+          "sv": "Rumsuppvärmning aktiverad"
+        }
       },
       {
         "id": "mode_off",
         "highlight": true,
-        "title": { "en": "Space Heating turned off" }
+        "title": {
+          "en": "Space Heating turned off",
+          "da": "Rumopvarmning deaktiveret",
+          "de": "Raumheizung deaktiviert",
+          "es": "Calefacción de espacios desactivada",
+          "fr": "Chauffage des locaux désactivé",
+          "it": "Riscaldamento degli ambienti disattivato",
+          "ko": "공간 난방이 꺼짐",
+          "nl": "Ruimteverwarming uitgeschakeld",
+          "no": "Romoppvarming er deaktivert",
+          "pl": "Ogrzewanie pomieszczeń wyłączone",
+          "sv": "Rumsuppvärmning inaktiverad"
+        }
       }
     ],
     "conditions": [
       {
         "id": "is_on",
-        "title": { "en": "Space Heating is !{{on|off}}" }
+        "title": {
+          "en": "Space Heating is !{{on|off}}",
+          "da": "Rumopvarmning er !{{on|off}}",
+          "de": "Raumheizung ist !{{on|off}}",
+          "es": "La calefacción de espacios está !{{on|off}}",
+          "fr": "Le chauffage des locaux est !{{on|off}}",
+          "it": "Il riscaldamento degli ambienti è !{{on|off}}",
+          "ko": "공간 난방이 !{{on|off}}이면",
+          "nl": "Ruimteverwarming is !{{on|off}}",
+          "no": "Romoppvarming er !{{on|off}}",
+          "pl": "Ogrzewanie pomieszczeń jest !{{on|off}}",
+          "sv": "Rumsuppvärmning är !{{on|off}}"
+        }
       }
     ],
     "actions": []

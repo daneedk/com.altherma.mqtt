@@ -1,5 +1,52 @@
 {
   "setup": {
     "notification": "Daikin Altherma är installerad. Öppna appens inställningar för att konfigurera den."
+  },
+  "warning": {
+    "missingLabels": "Saknade ESPAltherma etiketter: {labels}"
+  },
+  "error": {
+    "log_prefix": "Fel:",
+    "log_suffix": "Konsultera Daikans kontrollpanel eller ägarhandboken för att ta reda på vilka åtgärder som ska vidtas."
+  },
+  "settings": {
+    "title": "Din Daikin Altherma i Homey med ESPAltherma",
+    "intro": "För att använda din Daikin Altherma i Homey med ESPAltherma måste Homey autentiseras hos din MQTT-mäklare.",
+    "auth": {
+      "header": "MQTT-mäklare autentiseringsstatus",
+      "authenticated": "Daikin Altherma-appen för Homey är framgångsrikt autentiserad hos din MQTT-mäklare.",
+      "disconnected": "Daikin Altherma-appen för Homey är frånkopplad från din MQTT-mäklare. Kontrollera MQTT-servern och informationen och klicka på Anslut.",
+      "reconnecting": "Daikin Altherma-appen för Homey återansluter till din MQTT-mäklare. Ange MQTT-servern och informationen och klicka på Anslut.",
+      "notauthenticated": "Daikin Altherma-appen för Homey är inte autentiserad hos din MQTT-mäklare. Ange informationen och klicka på Anslut."
+    },
+    "host": "MQTT-adress",
+    "port": "MQTT-port",
+    "usetls": "Använd TLS",
+    "username": "Användarnamn",
+    "password": "Lösenord",
+    "connect": "Anslut",
+    "phase": {
+      "header": "Faskonfiguration",
+      "use3phase": "3-fassystem",
+      "description": "Aktivera för en 3-faskonfiguration, inaktivera för en 1-faskonfiguration."
+    },
+    "power": {
+      "consumption": {
+        "header": "Energiförbrukning",
+        "buh1": "Energiförbrukning BUH1",
+        "buh2": "Energiförbrukning BUH2",
+        "continuous": "Kontinuerlig basförbrukning",
+        "description": "Ange värdena i Watt för reservvärmare 1 och 2 och den kontinuerliga basenergiförbrukningen. (Energiförbrukning av systemet utanför aktiv uppvärmning.)"
+      },
+      "header": "Effektberäkning",
+      "useexternalvoltage": "Använd extern spänning",
+      "mqtttopics": "MQTT-ämnen för fassspänningar",
+      "voltage1": "Spänning fas 1",
+      "voltage2": "Spänning fas 2",
+      "voltage3": "Spänning fas 3",
+      "save": "Spara"
+    },
+    "enabledebug": "Aktivera felsökningsloggning",
+    "debuginfo": "Visa loggen i din webbläsare på: http://[homey-ip-address]:8008"
   }
 }

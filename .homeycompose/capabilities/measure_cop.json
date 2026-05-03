@@ -1,7 +1,17 @@
 {
   "type": "number",
   "title": {
-    "en": "COP"
+    "en": "COP",
+    "da": "COP",
+    "de": "COP",
+    "es": "COP",
+    "fr": "COP",
+    "it": "COP",
+    "ko": "COP",
+    "nl": "COP",
+    "no": "COP",
+    "pl": "COP",
+    "sv": "COP"
   },
   "min": 0,
   "max": 10,
@@ -11,25 +21,75 @@
   "insights": true,
   "icon": "drivers/heatpump/assets/cop.svg",
   "insightsTitle": {
-    "en": "Coefficient of Performance"
+    "en": "Coefficient of Performance",
+    "da": "Ydelsesfaktor",
+    "de": "Leistungszahl",
+    "es": "Coeficiente de rendimiento",
+    "fr": "Coefficient de performance",
+    "it": "Coefficiente di prestazione",
+    "ko": "성능 계수",
+    "nl": "Prestatiecoëfficiënt",
+    "no": "Ytelseskoeffisient",
+    "pl": "Współczynnik efektywności",
+    "sv": "Effektivitetskoefficient"
   },
   "conditions": [
     {
       "id": "is_above",
       "title": {
-        "en": "COP is above"
+        "en": "COP is above",
+        "da": "COP er over",
+        "de": "COP ist über",
+        "es": "COP está por encima de",
+        "fr": "COP est supérieur à",
+        "it": "COP è superiore a",
+        "ko": "COP가 초과하면",
+        "nl": "COP is hoger dan",
+        "no": "COP er over",
+        "pl": "COP jest powyżej",
+        "sv": "COP är över"
       },
       "hint": {
-        "en": "Coefficient of Performance (COP) values are typically between 2 and 5 during heating."
+        "en": "Coefficient of Performance (COP) values are typically between 2 and 5 during heating.",
+        "da": "Ydelsesfaktor (COP)-værdier er typisk mellem 2 og 5 under opvarmning.",
+        "de": "Die Leistungszahl (COP) liegt typischerweise zwischen 2 und 5 beim Heizen.",
+        "es": "Los valores del Coeficiente de rendimiento (COP) suelen estar entre 2 y 5 durante la calefacción.",
+        "fr": "Les valeurs du Coefficient de performance (COP) sont généralement comprises entre 2 et 5 lors du chauffage.",
+        "it": "I valori del Coefficiente di prestazione (COP) sono tipicamente compresi tra 2 e 5 durante il riscaldamento.",
+        "ko": "성능 계수(COP) 값은 가열 중 일반적으로 2에서 5 사이입니다.",
+        "nl": "Prestatiecoëfficiënt (COP)-waarden liggen doorgaans tussen 2 en 5 tijdens verwarming.",
+        "no": "Ytelseskoeffisient (COP)-verdier er typisk mellom 2 og 5 under oppvarming.",
+        "pl": "Wartości współczynnika efektywności (COP) wynoszą zazwyczaj od 2 do 5 podczas ogrzewania.",
+        "sv": "Effektivitetskoefficient (COP)-värden är vanligtvis mellan 2 och 5 vid uppvärmning."
       }
     },
     {
       "id": "is_below",
       "title": {
-        "en": "COP is below"
+        "en": "COP is below",
+        "da": "COP er under",
+        "de": "COP ist unter",
+        "es": "COP está por debajo de",
+        "fr": "COP est inférieur à",
+        "it": "COP è inferiore a",
+        "ko": "COP가 미만이면",
+        "nl": "COP is lager dan",
+        "no": "COP er under",
+        "pl": "COP jest poniżej",
+        "sv": "COP är under"
       },
       "hint": {
-        "en": "A low Coefficient of Performance (COP) may occur during startup or defrost."
+        "en": "A low Coefficient of Performance (COP) may occur during startup or defrost.",
+        "da": "En lav ydelsesfaktor (COP) kan forekomme under opstart eller afrimning.",
+        "de": "Eine niedrige Leistungszahl (COP) kann beim Anlauf oder Abtauen auftreten.",
+        "es": "Un Coeficiente de rendimiento (COP) bajo puede ocurrir durante el arranque o el deshielo.",
+        "fr": "Un faible Coefficient de performance (COP) peut survenir lors du démarrage ou du dégivrage.",
+        "it": "Un basso Coefficiente di prestazione (COP) può verificarsi durante l'avvio o lo sbrinamento.",
+        "ko": "낮은 성능 계수(COP)는 시동 중이나 제상 중에 발생할 수 있습니다.",
+        "nl": "Een lage prestatiecoëfficiënt (COP) kan optreden tijdens het opstarten of ontdooien.",
+        "no": "En lav ytelseskoeffisient (COP) kan forekomme ved oppstart eller avriming.",
+        "pl": "Niski współczynnik efektywności (COP) może wystąpić podczas rozruchu lub odszraniania.",
+        "sv": "En låg effektivitetskoefficient (COP) kan förekomma vid uppstart eller avfrostning."
       }
     }
   ]

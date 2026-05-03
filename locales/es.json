@@ -1,5 +1,52 @@
 {
   "setup": {
     "notification": "Daikin Altherma está instalado. Por favor, abre la configuración de la app para configurarlo."
+  },
+  "warning": {
+    "missingLabels": "Etiquetas ESPAltherma faltantes: {labels}"
+  },
+  "error": {
+    "log_prefix": "Error:",
+    "log_suffix": "Consulte el panel de control de su Daikin o el manual del propietario para saber qué acción tomar."
+  },
+  "settings": {
+    "title": "Su Daikin Altherma en Homey con ESPAltherma",
+    "intro": "Para usar su Daikin Altherma en Homey con ESPAltherma, Homey debe estar autenticado en su broker MQTT.",
+    "auth": {
+      "header": "Estado de autenticación del broker MQTT",
+      "authenticated": "La aplicación Daikin Altherma para Homey está autenticada correctamente en su broker MQTT.",
+      "disconnected": "La aplicación Daikin Altherma para Homey está desconectada de su broker MQTT. Verifique el servidor MQTT y la información y haga clic en Conectar.",
+      "reconnecting": "La aplicación Daikin Altherma para Homey se está reconectando a su broker MQTT. Ingrese el servidor MQTT y la información y haga clic en Conectar.",
+      "notauthenticated": "La aplicación Daikin Altherma para Homey no está autenticada en su broker MQTT. Ingrese la información y haga clic en Conectar."
+    },
+    "host": "Dirección MQTT",
+    "port": "Puerto MQTT",
+    "usetls": "Usar TLS",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "connect": "Conectar",
+    "phase": {
+      "header": "Configuración de fase",
+      "use3phase": "Sistema trifásico",
+      "description": "Activar para una configuración trifásica, desactivar para una configuración monofásica."
+    },
+    "power": {
+      "consumption": {
+        "header": "Consumo de energía",
+        "buh1": "Consumo de energía BUH1",
+        "buh2": "Consumo de energía BUH2",
+        "continuous": "Consumo base continuo",
+        "description": "Ingrese los valores, en Vatios, para el calentador de respaldo 1 y 2, y el consumo de energía base continuo. (Consumo de energía del sistema fuera del calentamiento activo.)"
+      },
+      "header": "Cálculo de potencia",
+      "useexternalvoltage": "Usar voltaje externo",
+      "mqtttopics": "Temas MQTT para voltajes de fase",
+      "voltage1": "Voltaje fase 1",
+      "voltage2": "Voltaje fase 2",
+      "voltage3": "Voltaje fase 3",
+      "save": "Guardar"
+    },
+    "enabledebug": "Activar registro de depuración",
+    "debuginfo": "Ver el registro en su navegador en: http://[homey-ip-address]:8008"
   }
 }

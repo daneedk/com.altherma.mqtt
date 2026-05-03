@@ -1,5 +1,52 @@
 {
   "setup": {
     "notification": "Daikin Altherma er installert. Åpne appinnstillingene for å konfigurere den."
+  },
+  "warning": {
+    "missingLabels": "Manglende ESPAltherma etiketter: {labels}"
+  },
+  "error": {
+    "log_prefix": "Feil:",
+    "log_suffix": "Vennligst se kontrollpanelet til Daikin eller brukerhåndboken for å finne ut hvilke tiltak som skal iverksettes."
+  },
+  "settings": {
+    "title": "Din Daikin Altherma i Homey med ESPAltherma",
+    "intro": "For å bruke din Daikin Altherma i Homey med ESPAltherma må Homey være autentisert hos din MQTT-megler.",
+    "auth": {
+      "header": "MQTT-megler autentiseringsstatus",
+      "authenticated": "Daikin Altherma-appen for Homey er vellykket autentisert hos din MQTT-megler.",
+      "disconnected": "Daikin Altherma-appen for Homey er frakoblet fra din MQTT-megler. Kontroller MQTT-serveren og informasjonen og klikk på Koble til.",
+      "reconnecting": "Daikin Altherma-appen for Homey kobler til din MQTT-megler på nytt. Skriv inn MQTT-serveren og informasjonen og klikk på Koble til.",
+      "notauthenticated": "Daikin Altherma-appen for Homey er ikke autentisert hos din MQTT-megler. Skriv inn informasjonen og klikk på Koble til."
+    },
+    "host": "MQTT-adresse",
+    "port": "MQTT-port",
+    "usetls": "Bruk TLS",
+    "username": "Brukernavn",
+    "password": "Passord",
+    "connect": "Koble til",
+    "phase": {
+      "header": "Fasekonfigurasjon",
+      "use3phase": "3-fasesystem",
+      "description": "Aktiver for en 3-fasekonfigurasjon, deaktiver for en 1-fasekonfigurasjon."
+    },
+    "power": {
+      "consumption": {
+        "header": "Strømforbruk",
+        "buh1": "Strømforbruk BUH1",
+        "buh2": "Strømforbruk BUH2",
+        "continuous": "Kontinuerlig grunnforbruk",
+        "description": "Angi verdiene i Watt for reservevarmer 1 og 2 og det kontinuerlige grunnstrømforbruket. (Strømforbruk av systemet utenfor aktiv oppvarming.)"
+      },
+      "header": "Effektberegning",
+      "useexternalvoltage": "Bruk ekstern spenning",
+      "mqtttopics": "MQTT-emner for fasespenninger",
+      "voltage1": "Spenning fase 1",
+      "voltage2": "Spenning fase 2",
+      "voltage3": "Spenning fase 3",
+      "save": "Lagre"
+    },
+    "enabledebug": "Aktiver feilsøkingslogging",
+    "debuginfo": "Se loggen i nettleseren din på: http://[homey-ip-address]:8008"
   }
 }

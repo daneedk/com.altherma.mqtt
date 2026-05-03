@@ -1,5 +1,52 @@
 {
   "setup": {
-    "notification": "Daikin Altherma est installé. Veuillez ouvrir les paramètres de l’application pour le configurer."
+    "notification": "Daikin Altherma est installé. Veuillez ouvrir les paramètres de l'application pour le configurer."
+  },
+  "warning": {
+    "missingLabels": "Étiquettes ESPAltherma manquantes : {labels}"
+  },
+  "error": {
+    "log_prefix": "Erreur :",
+    "log_suffix": "Veuillez consulter le panneau de commande de votre Daikin ou le manuel du propriétaire pour savoir quelle action entreprendre."
+  },
+  "settings": {
+    "title": "Votre Daikin Altherma dans Homey avec ESPAltherma",
+    "intro": "Pour utiliser votre Daikin Altherma dans Homey avec ESPAltherma, Homey doit être authentifié auprès de votre broker MQTT.",
+    "auth": {
+      "header": "État d'authentification du broker MQTT",
+      "authenticated": "L'application Daikin Altherma pour Homey est correctement authentifiée auprès de votre broker MQTT.",
+      "disconnected": "L'application Daikin Altherma pour Homey est déconnectée de votre broker MQTT. Veuillez vérifier le serveur MQTT et les informations, puis cliquez sur Connecter.",
+      "reconnecting": "L'application Daikin Altherma pour Homey se reconnecte à votre broker MQTT. Veuillez saisir le serveur MQTT et les informations, puis cliquez sur Connecter.",
+      "notauthenticated": "L'application Daikin Altherma pour Homey n'est pas authentifiée auprès de votre broker MQTT. Veuillez saisir les informations et cliquer sur Connecter."
+    },
+    "host": "Adresse MQTT",
+    "port": "Port MQTT",
+    "usetls": "Utiliser TLS",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "connect": "Connecter",
+    "phase": {
+      "header": "Configuration de phase",
+      "use3phase": "Système triphasé",
+      "description": "Activer pour une configuration triphasée, désactiver pour une configuration monophasée."
+    },
+    "power": {
+      "consumption": {
+        "header": "Consommation électrique",
+        "buh1": "Consommation électrique BUH1",
+        "buh2": "Consommation électrique BUH2",
+        "continuous": "Consommation de base continue",
+        "description": "Entrez les valeurs, en Watts, pour le chauffage de secours 1 et 2, et la consommation électrique de base continue. (Consommation électrique du système en dehors du chauffage actif.)"
+      },
+      "header": "Calcul de puissance",
+      "useexternalvoltage": "Utiliser une tension externe",
+      "mqtttopics": "Sujets MQTT pour les tensions de phase",
+      "voltage1": "Tension phase 1",
+      "voltage2": "Tension phase 2",
+      "voltage3": "Tension phase 3",
+      "save": "Enregistrer"
+    },
+    "enabledebug": "Activer la journalisation de débogage",
+    "debuginfo": "Voir le journal dans votre navigateur à : http://[homey-ip-address]:8008"
   }
 }

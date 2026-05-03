@@ -1,20 +1,50 @@
 {
   "type": "enum",
   "title": {
-    "en": "Thermostat"
+    "en": "Thermostat",
+    "da": "Termostat",
+    "de": "Thermostat",
+    "es": "Termostato",
+    "fr": "Thermostat",
+    "it": "Termostato",
+    "ko": "온도 조절기",
+    "nl": "Thermostaat",
+    "no": "Termostat",
+    "pl": "Termostat",
+    "sv": "Termostat"
   },
   "values": [
-    { 
-      "id": "on", 
-      "title": { 
-        "en": "On" 
-      } 
+    {
+      "id": "on",
+      "title": {
+        "en": "On",
+        "da": "Til",
+        "de": "Ein",
+        "es": "Encendido",
+        "fr": "Activé",
+        "it": "Attivo",
+        "ko": "켜짐",
+        "nl": "Aan",
+        "no": "På",
+        "pl": "Włączony",
+        "sv": "På"
+      }
     },
-    { 
-      "id": "off", 
-      "title": { 
-        "en": "Off" 
-      } 
+    {
+      "id": "off",
+      "title": {
+        "en": "Off",
+        "da": "Fra",
+        "de": "Aus",
+        "es": "Apagado",
+        "fr": "Désactivé",
+        "it": "Disattivo",
+        "ko": "꺼짐",
+        "nl": "Uit",
+        "no": "Av",
+        "pl": "Wyłączony",
+        "sv": "Av"
+      }
     }
   ],
   "color": "#9033FC",
@@ -22,7 +52,17 @@
   "setable": false,
   "insights": true,
   "insightsTitle": {
-    "en": "Thermostat"
+    "en": "Thermostat",
+    "da": "Termostat",
+    "de": "Thermostat",
+    "es": "Termostato",
+    "fr": "Thermostat",
+    "it": "Termostato",
+    "ko": "온도 조절기",
+    "nl": "Thermostaat",
+    "no": "Termostat",
+    "pl": "Termostat",
+    "sv": "Termostat"
   },
   "uiComponent": "sensor",
   "uiQuickAction": false,
@@ -32,18 +72,54 @@
       {
         "id": "mode_on",
         "highlight": true,
-        "title": { "en": "Thermostat turned on" }
+        "title": {
+          "en": "Thermostat turned on",
+          "da": "Termostat aktiveret",
+          "de": "Thermostat aktiviert",
+          "es": "Termostato activado",
+          "fr": "Thermostat activé",
+          "it": "Termostato attivato",
+          "ko": "온도 조절기가 켜짐",
+          "nl": "Thermostaat ingeschakeld",
+          "no": "Termostat er aktivert",
+          "pl": "Termostat włączony",
+          "sv": "Termostat aktiverad"
+        }
       },
       {
         "id": "mode_off",
         "highlight": true,
-        "title": { "en": "Thermostat turned off" }
+        "title": {
+          "en": "Thermostat turned off",
+          "da": "Termostat deaktiveret",
+          "de": "Thermostat deaktiviert",
+          "es": "Termostato desactivado",
+          "fr": "Thermostat désactivé",
+          "it": "Termostato disattivato",
+          "ko": "온도 조절기가 꺼짐",
+          "nl": "Thermostaat uitgeschakeld",
+          "no": "Termostat er deaktivert",
+          "pl": "Termostat wyłączony",
+          "sv": "Termostat inaktiverad"
+        }
       }
     ],
     "conditions": [
       {
         "id": "is_on",
-        "title": { "en": "Thermostat is !{{on|off}}" }
+        "title": {
+          "en": "Thermostat is !{{on|off}}",
+          "da": "Termostat er !{{on|off}}",
+          "de": "Thermostat ist !{{on|off}}",
+          "es": "El termostato está !{{on|off}}",
+          "fr": "Le thermostat est !{{on|off}}",
+          "it": "Il termostato è !{{on|off}}",
+          "ko": "온도 조절기가 !{{on|off}}이면",
+          "nl": "Thermostaat is !{{on|off}}",
+          "no": "Termostat er !{{on|off}}",
+          "pl": "Termostat jest !{{on|off}}",
+          "sv": "Termostat är !{{on|off}}"
+        }
       }
     ],
     "actions": []

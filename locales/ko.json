@@ -1,5 +1,52 @@
 {
   "setup": {
     "notification": "Daikin Altherma가 설치되었습니다. 앱 설정을 열어 구성해 주세요."
+  },
+  "warning": {
+    "missingLabels": "누락된 ESPAltherma 레이블: {labels}"
+  },
+  "error": {
+    "log_prefix": "오류:",
+    "log_suffix": "취해야 할 조치에 대해 Daikin의 제어판 또는 사용 설명서를 참조하십시오."
+  },
+  "settings": {
+    "title": "ESPAltherma로 Homey에서 사용하는 Daikin Altherma",
+    "intro": "ESPAltherma로 Homey에서 Daikin Altherma를 사용하려면 Homey가 MQTT 브로커에서 인증되어야 합니다.",
+    "auth": {
+      "header": "MQTT 브로커 인증 상태",
+      "authenticated": "Homey용 Daikin Altherma 앱이 MQTT 브로커에서 성공적으로 인증되었습니다.",
+      "disconnected": "Homey용 Daikin Altherma 앱이 MQTT 브로커에서 연결이 끊겼습니다. MQTT 서버 및 정보를 확인하고 연결을 클릭하십시오.",
+      "reconnecting": "Homey용 Daikin Altherma 앱이 MQTT 브로커에 재연결 중입니다. MQTT 서버 및 정보를 입력하고 연결을 클릭하십시오.",
+      "notauthenticated": "Homey용 Daikin Altherma 앱이 MQTT 브로커에서 인증되지 않았습니다. 정보를 입력하고 연결을 클릭하십시오."
+    },
+    "host": "MQTT 주소",
+    "port": "MQTT 포트",
+    "usetls": "TLS 사용",
+    "username": "사용자 이름",
+    "password": "비밀번호",
+    "connect": "연결",
+    "phase": {
+      "header": "위상 구성",
+      "use3phase": "3상 시스템",
+      "description": "3상 구성에는 활성화, 1상 구성에는 비활성화하십시오."
+    },
+    "power": {
+      "consumption": {
+        "header": "전력 소비량",
+        "buh1": "전력 소비량 BUH1",
+        "buh2": "전력 소비량 BUH2",
+        "continuous": "연속 기준 소비량",
+        "description": "백업 히터 1 및 2와 연속 기준 전력 소비량에 대한 값을 와트 단위로 입력하십시오. (활성 가열 외 시스템의 전력 소비량.)"
+      },
+      "header": "전력 계산",
+      "useexternalvoltage": "외부 전압 사용",
+      "mqtttopics": "위상 전압용 MQTT 주제",
+      "voltage1": "전압 위상 1",
+      "voltage2": "전압 위상 2",
+      "voltage3": "전압 위상 3",
+      "save": "저장"
+    },
+    "enabledebug": "디버그 로깅 활성화",
+    "debuginfo": "브라우저에서 로그 보기: http://[homey-ip-address]:8008"
   }
 }

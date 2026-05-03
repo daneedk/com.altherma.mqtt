@@ -1,20 +1,50 @@
 {
   "type": "enum",
   "title": {
-    "en": "Powerful mode"
+    "en": "Powerful mode",
+    "da": "Kraftfuld tilstand",
+    "de": "Leistungsmodus",
+    "es": "Modo potente",
+    "fr": "Mode puissant",
+    "it": "Modalità potente",
+    "ko": "강력 모드",
+    "nl": "Krachtige modus",
+    "no": "Kraftmodus",
+    "pl": "Tryb intensywny",
+    "sv": "Kraftfullt läge"
   },
   "values": [
-    { 
-      "id": "on", 
-      "title": { 
-        "en": "On" 
-      } 
+    {
+      "id": "on",
+      "title": {
+        "en": "On",
+        "da": "Til",
+        "de": "Ein",
+        "es": "Encendido",
+        "fr": "Activé",
+        "it": "Attivo",
+        "ko": "켜짐",
+        "nl": "Aan",
+        "no": "På",
+        "pl": "Włączony",
+        "sv": "På"
+      }
     },
-    { 
-      "id": "off", 
-      "title": { 
-        "en": "Off" 
-      } 
+    {
+      "id": "off",
+      "title": {
+        "en": "Off",
+        "da": "Fra",
+        "de": "Aus",
+        "es": "Apagado",
+        "fr": "Désactivé",
+        "it": "Disattivo",
+        "ko": "꺼짐",
+        "nl": "Uit",
+        "no": "Av",
+        "pl": "Wyłączony",
+        "sv": "Av"
+      }
     }
   ],
   "color": "#9033FC",
@@ -22,7 +52,17 @@
   "setable": false,
   "insights": true,
   "insightsTitle": {
-    "en": "Powerful mode"
+    "en": "Powerful mode",
+    "da": "Kraftfuld tilstand",
+    "de": "Leistungsmodus",
+    "es": "Modo potente",
+    "fr": "Mode puissant",
+    "it": "Modalità potente",
+    "ko": "강력 모드",
+    "nl": "Krachtige modus",
+    "no": "Kraftmodus",
+    "pl": "Tryb intensywny",
+    "sv": "Kraftfullt läge"
   },
   "uiComponent": "sensor",
   "uiQuickAction": false,
@@ -32,18 +72,54 @@
       {
         "id": "mode_on",
         "highlight": true,
-        "title": { "en": "Powerful mode turned on" }
+        "title": {
+          "en": "Powerful mode turned on",
+          "da": "Kraftfuld tilstand aktiveret",
+          "de": "Leistungsmodus aktiviert",
+          "es": "Modo potente activado",
+          "fr": "Mode puissant activé",
+          "it": "Modalità potente attivata",
+          "ko": "강력 모드가 켜짐",
+          "nl": "Krachtige modus ingeschakeld",
+          "no": "Kraftmodus er aktivert",
+          "pl": "Tryb intensywny włączony",
+          "sv": "Kraftfullt läge aktiverat"
+        }
       },
       {
         "id": "mode_off",
         "highlight": true,
-        "title": { "en": "Powerful mode turned off" }
+        "title": {
+          "en": "Powerful mode turned off",
+          "da": "Kraftfuld tilstand deaktiveret",
+          "de": "Leistungsmodus deaktiviert",
+          "es": "Modo potente desactivado",
+          "fr": "Mode puissant désactivé",
+          "it": "Modalità potente disattivata",
+          "ko": "강력 모드가 꺼짐",
+          "nl": "Krachtige modus uitgeschakeld",
+          "no": "Kraftmodus er deaktivert",
+          "pl": "Tryb intensywny wyłączony",
+          "sv": "Kraftfullt läge inaktiverat"
+        }
       }
     ],
     "conditions": [
       {
         "id": "is_on",
-        "title": { "en": "Powerful mode is !{{on|off}}" }
+        "title": {
+          "en": "Powerful mode is !{{on|off}}",
+          "da": "Kraftfuld tilstand er !{{on|off}}",
+          "de": "Leistungsmodus ist !{{on|off}}",
+          "es": "El modo potente está !{{on|off}}",
+          "fr": "Le mode puissant est !{{on|off}}",
+          "it": "La modalità potente è !{{on|off}}",
+          "ko": "강력 모드가 !{{on|off}}이면",
+          "nl": "Krachtige modus is !{{on|off}}",
+          "no": "Kraftmodus er !{{on|off}}",
+          "pl": "Tryb intensywny jest !{{on|off}}",
+          "sv": "Kraftfullt läge är !{{on|off}}"
+        }
       }
     ],
     "actions": []

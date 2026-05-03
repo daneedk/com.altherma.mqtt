@@ -1,5 +1,52 @@
 {
   "setup": {
     "notification": "Daikin Altherma is geïnstalleerd. Open de app-instellingen om deze te configureren."
+  },
+  "warning": {
+    "missingLabels": "Ontbrekende ESPAltherma labels: {labels}"
+  },
+  "error": {
+    "log_prefix": "Fout:",
+    "log_suffix": "Raadpleeg het bedieningspaneel van uw Daikin of de handleiding voor de te ondernemen actie."
+  },
+  "settings": {
+    "title": "Uw Daikin Altherma in Homey met ESPAltherma",
+    "intro": "Om uw Daikin Altherma in Homey te gebruiken met ESPAltherma, moet Homey worden geverifieerd bij uw MQTT-broker.",
+    "auth": {
+      "header": "MQTT-broker authenticatiestatus",
+      "authenticated": "De Daikin Altherma App voor Homey is succesvol geverifieerd bij uw MQTT-broker.",
+      "disconnected": "De Daikin Altherma App voor Homey is verbroken van uw MQTT-broker. Controleer de MQTT-server en de informatie en klik op Verbinden.",
+      "reconnecting": "De Daikin Altherma App voor Homey verbindt opnieuw met uw MQTT-broker. Voer de MQTT-server en de informatie in en klik op Verbinden.",
+      "notauthenticated": "De Daikin Altherma App voor Homey is niet geverifieerd bij uw MQTT-broker. Voer de informatie in en klik op Verbinden."
+    },
+    "host": "MQTT-adres",
+    "port": "MQTT-poort",
+    "usetls": "TLS gebruiken",
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "connect": "Verbinden",
+    "phase": {
+      "header": "Faseconfiguratie",
+      "use3phase": "3-fasesysteem",
+      "description": "Inschakelen voor een 3-faseconfiguratie, uitschakelen voor een 1-faseconfiguratie."
+    },
+    "power": {
+      "consumption": {
+        "header": "Stroomverbruik",
+        "buh1": "Stroomverbruik BUH1",
+        "buh2": "Stroomverbruik BUH2",
+        "continuous": "Continu basisverbruik",
+        "description": "Voer de waarden in, in Watt, voor back-upverwarmer 1 en 2, en het continue basisstroomverbruik. (Stroomverbruik van het systeem buiten actieve verwarming.)"
+      },
+      "header": "Vermogensberekening",
+      "useexternalvoltage": "Externe spanning gebruiken",
+      "mqtttopics": "MQTT-onderwerpen voor fasespanningen",
+      "voltage1": "Spanning fase 1",
+      "voltage2": "Spanning fase 2",
+      "voltage3": "Spanning fase 3",
+      "save": "Opslaan"
+    },
+    "enabledebug": "Foutopsporing inschakelen",
+    "debuginfo": "Bekijk het logboek in uw browser op: http://[homey-ip-adres]:8008"
   }
 }
