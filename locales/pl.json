@@ -3,7 +3,7 @@
     "notification": "Daikin Altherma jest zainstalowany. Otwórz ustawienia aplikacji, aby go skonfigurować."
   },
   "warning": {
-    "missingLabels": "Brakujące etykiety ESPAltherma: {labels}"
+    "missingLabels": "Brakujące etykiety ESPAltherma: __labels__"
   },
   "error": {
     "log_prefix": "Błąd:",

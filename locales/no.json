@@ -3,7 +3,7 @@
     "notification": "Daikin Altherma er installert. Åpne appinnstillingene for å konfigurere den."
   },
   "warning": {
-    "missingLabels": "Manglende ESPAltherma etiketter: {labels}"
+    "missingLabels": "Manglende ESPAltherma etiketter: __labels__"
   },
   "error": {
     "log_prefix": "Feil:",

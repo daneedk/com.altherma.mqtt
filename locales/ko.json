@@ -3,7 +3,7 @@
     "notification": "Daikin Altherma가 설치되었습니다. 앱 설정을 열어 구성해 주세요."
   },
   "warning": {
-    "missingLabels": "누락된 ESPAltherma 레이블: {labels}"
+    "missingLabels": "누락된 ESPAltherma 레이블: __labels__"
   },
   "error": {
     "log_prefix": "오류:",

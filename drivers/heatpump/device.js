@@ -230,7 +230,9 @@ module.exports = class Heatpump extends Homey.Device {
 
       const electricalPowerW = estimatePowerWFromInvPrimaryWithFallback(data.invPrimaryCurrent, data.voltageL1, data.voltageL2, data.voltageL3,{eta: 0.90, is3phaseEnabled: this.homey.app.is3phaseEnabled,});
 
-      const continuousPowerW = this.homey.app.getContinuousPowerW();
+      const jitter = 1 + (Math.random() * 0.08 - 0.04);
+      const continuousPowerW = this.homey.app.getContinuousPowerW() * jitter;
+
       let buhPowerW = 0;
       if (data.buhStep1On) buhPowerW += this.homey.app.getBuhStep1W();
       if (data.buhStep2On) buhPowerW += this.homey.app.getBuhStep2W();
@@ -264,6 +266,7 @@ module.exports = class Heatpump extends Homey.Device {
       //let logLine = new Date().toISOString()+',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.flowLpm + ',' + data.invFrequencyRps + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW);
       
       console.log(logLine);
+      //console.log(data.indoorAmbientTemp);
 
     } catch (error) {
       this.error('device.js _processMqttData error', error)

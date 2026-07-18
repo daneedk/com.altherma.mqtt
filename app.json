@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.altherma.mqtt",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "compatibility": ">=12.11.0",
   "sdk": 3,
   "platforms": [
@@ -442,7 +442,17 @@
     "measure_cop": {
       "type": "number",
       "title": {
-        "en": "COP"
+        "en": "COP",
+        "da": "COP",
+        "de": "COP",
+        "es": "COP",
+        "fr": "COP",
+        "it": "COP",
+        "ko": "COP",
+        "nl": "COP",
+        "no": "COP",
+        "pl": "COP",
+        "sv": "COP"
       },
       "min": 0,
       "max": 10,
@@ -452,25 +462,75 @@
       "insights": true,
       "icon": "drivers/heatpump/assets/cop.svg",
       "insightsTitle": {
-        "en": "Coefficient of Performance"
+        "en": "Coefficient of Performance",
+        "da": "Ydelsesfaktor",
+        "de": "Leistungszahl",
+        "es": "Coeficiente de rendimiento",
+        "fr": "Coefficient de performance",
+        "it": "Coefficiente di prestazione",
+        "ko": "성능 계수",
+        "nl": "Prestatiecoëfficiënt",
+        "no": "Ytelseskoeffisient",
+        "pl": "Współczynnik efektywności",
+        "sv": "Effektivitetskoefficient"
       },
       "conditions": [
         {
           "id": "is_above",
           "title": {
-            "en": "COP is above"
+            "en": "COP is above",
+            "da": "COP er over",
+            "de": "COP ist über",
+            "es": "COP está por encima de",
+            "fr": "COP est supérieur à",
+            "it": "COP è superiore a",
+            "ko": "COP가 초과하면",
+            "nl": "COP is hoger dan",
+            "no": "COP er over",
+            "pl": "COP jest powyżej",
+            "sv": "COP är över"
           },
           "hint": {
-            "en": "Coefficient of Performance (COP) values are typically between 2 and 5 during heating."
+            "en": "Coefficient of Performance (COP) values are typically between 2 and 5 during heating.",
+            "da": "Ydelsesfaktor (COP)-værdier er typisk mellem 2 og 5 under opvarmning.",
+            "de": "Die Leistungszahl (COP) liegt typischerweise zwischen 2 und 5 beim Heizen.",
+            "es": "Los valores del Coeficiente de rendimiento (COP) suelen estar entre 2 y 5 durante la calefacción.",
+            "fr": "Les valeurs du Coefficient de performance (COP) sont généralement comprises entre 2 et 5 lors du chauffage.",
+            "it": "I valori del Coefficiente di prestazione (COP) sono tipicamente compresi tra 2 e 5 durante il riscaldamento.",
+            "ko": "성능 계수(COP) 값은 가열 중 일반적으로 2에서 5 사이입니다.",
+            "nl": "Prestatiecoëfficiënt (COP)-waarden liggen doorgaans tussen 2 en 5 tijdens verwarming.",
+            "no": "Ytelseskoeffisient (COP)-verdier er typisk mellom 2 og 5 under oppvarming.",
+            "pl": "Wartości współczynnika efektywności (COP) wynoszą zazwyczaj od 2 do 5 podczas ogrzewania.",
+            "sv": "Effektivitetskoefficient (COP)-värden är vanligtvis mellan 2 och 5 vid uppvärmning."
           }
         },
         {
           "id": "is_below",
           "title": {
-            "en": "COP is below"
+            "en": "COP is below",
+            "da": "COP er under",
+            "de": "COP ist unter",
+            "es": "COP está por debajo de",
+            "fr": "COP est inférieur à",
+            "it": "COP è inferiore a",
+            "ko": "COP가 미만이면",
+            "nl": "COP is lager dan",
+            "no": "COP er under",
+            "pl": "COP jest poniżej",
+            "sv": "COP är under"
           },
           "hint": {
-            "en": "A low Coefficient of Performance (COP) may occur during startup or defrost."
+            "en": "A low Coefficient of Performance (COP) may occur during startup or defrost.",
+            "da": "En lav ydelsesfaktor (COP) kan forekomme under opstart eller afrimning.",
+            "de": "Eine niedrige Leistungszahl (COP) kann beim Anlauf oder Abtauen auftreten.",
+            "es": "Un Coeficiente de rendimiento (COP) bajo puede ocurrir durante el arranque o el deshielo.",
+            "fr": "Un faible Coefficient de performance (COP) peut survenir lors du démarrage ou du dégivrage.",
+            "it": "Un basso Coefficiente di prestazione (COP) può verificarsi durante l'avvio o lo sbrinamento.",
+            "ko": "낮은 성능 계수(COP)는 시동 중이나 제상 중에 발생할 수 있습니다.",
+            "nl": "Een lage prestatiecoëfficiënt (COP) kan optreden tijdens het opstarten of ontdooien.",
+            "no": "En lav ytelseskoeffisient (COP) kan forekomme ved oppstart eller avriming.",
+            "pl": "Niski współczynnik efektywności (COP) może wystąpić podczas rozruchu lub odszraniania.",
+            "sv": "En låg effektivitetskoefficient (COP) kan förekomma vid uppstart eller avfrostning."
           }
         }
       ]
@@ -478,7 +538,17 @@
     "operation_mode": {
       "type": "enum",
       "title": {
-        "en": "Operation Mode"
+        "en": "Operation Mode",
+        "da": "Driftstilstand",
+        "de": "Betriebsmodus",
+        "es": "Modo de operación",
+        "fr": "Mode de fonctionnement",
+        "it": "Modalità di funzionamento",
+        "ko": "작동 모드",
+        "nl": "Bedrijfsmodus",
+        "no": "Driftsmodus",
+        "pl": "Tryb pracy",
+        "sv": "Driftläge"
       },
       "desc": {
         "en": ""
@@ -487,25 +557,65 @@
         {
           "id": "heating",
           "title": {
-            "en": "Heating"
+            "en": "Heating",
+            "da": "Opvarmning",
+            "de": "Heizen",
+            "es": "Calefacción",
+            "fr": "Chauffage",
+            "it": "Riscaldamento",
+            "ko": "난방",
+            "nl": "Verwarming",
+            "no": "Oppvarming",
+            "pl": "Ogrzewanie",
+            "sv": "Uppvärmning"
           }
         },
         {
           "id": "heatingdhw",
           "title": {
-            "en": "Heating + DHW"
+            "en": "Heating + DHW",
+            "da": "Opvarmning + VVB",
+            "de": "Heizen + Warmwasser",
+            "es": "Calefacción + ACS",
+            "fr": "Chauffage + ECS",
+            "it": "Riscaldamento + ACS",
+            "ko": "난방 + 급탕",
+            "nl": "Verwarming + tapwater",
+            "no": "Oppvarming + VV",
+            "pl": "Ogrzewanie + CWU",
+            "sv": "Uppvärmning + VV"
           }
         },
         {
           "id": "fanonly",
           "title": {
-            "en": "Idle (no demand)"
+            "en": "Idle (no demand)",
+            "da": "Inaktiv (ingen efterspørgsel)",
+            "de": "Bereitschaft (kein Bedarf)",
+            "es": "Inactivo (sin demanda)",
+            "fr": "Inactif (sans demande)",
+            "it": "Inattivo (nessuna richiesta)",
+            "ko": "대기 중 (수요 없음)",
+            "nl": "Inactief (geen vraag)",
+            "no": "Inaktiv (ingen etterspørsel)",
+            "pl": "Bezczynny (brak zapotrzebowania)",
+            "sv": "Inaktiv (ingen efterfrågan)"
           }
         },
         {
           "id": "dhw",
           "title": {
-            "en": "DHW"
+            "en": "DHW",
+            "da": "VVB",
+            "de": "Warmwasser",
+            "es": "ACS",
+            "fr": "ECS",
+            "it": "ACS",
+            "ko": "급탕",
+            "nl": "Tapwater",
+            "no": "VV",
+            "pl": "CWU",
+            "sv": "VV"
           }
         }
       ],
@@ -518,19 +628,49 @@
     "powerful_dhwtank": {
       "type": "enum",
       "title": {
-        "en": "Powerful mode"
+        "en": "Powerful mode",
+        "da": "Kraftfuld tilstand",
+        "de": "Leistungsmodus",
+        "es": "Modo potente",
+        "fr": "Mode puissant",
+        "it": "Modalità potente",
+        "ko": "강력 모드",
+        "nl": "Krachtige modus",
+        "no": "Kraftmodus",
+        "pl": "Tryb intensywny",
+        "sv": "Kraftfullt läge"
       },
       "values": [
         {
           "id": "on",
           "title": {
-            "en": "On"
+            "en": "On",
+            "da": "Til",
+            "de": "Ein",
+            "es": "Encendido",
+            "fr": "Activé",
+            "it": "Attivo",
+            "ko": "켜짐",
+            "nl": "Aan",
+            "no": "På",
+            "pl": "Włączony",
+            "sv": "På"
           }
         },
         {
           "id": "off",
           "title": {
-            "en": "Off"
+            "en": "Off",
+            "da": "Fra",
+            "de": "Aus",
+            "es": "Apagado",
+            "fr": "Désactivé",
+            "it": "Disattivo",
+            "ko": "꺼짐",
+            "nl": "Uit",
+            "no": "Av",
+            "pl": "Wyłączony",
+            "sv": "Av"
           }
         }
       ],
@@ -539,7 +679,17 @@
       "setable": false,
       "insights": true,
       "insightsTitle": {
-        "en": "Powerful mode"
+        "en": "Powerful mode",
+        "da": "Kraftfuld tilstand",
+        "de": "Leistungsmodus",
+        "es": "Modo potente",
+        "fr": "Mode puissant",
+        "it": "Modalità potente",
+        "ko": "강력 모드",
+        "nl": "Krachtige modus",
+        "no": "Kraftmodus",
+        "pl": "Tryb intensywny",
+        "sv": "Kraftfullt läge"
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,
@@ -548,19 +698,49 @@
     "space_heating": {
       "type": "enum",
       "title": {
-        "en": "Space Heating"
+        "en": "Space Heating",
+        "da": "Rumopvarmning",
+        "de": "Raumheizung",
+        "es": "Calefacción de espacios",
+        "fr": "Chauffage des locaux",
+        "it": "Riscaldamento degli ambienti",
+        "ko": "공간 난방",
+        "nl": "Ruimteverwarming",
+        "no": "Romoppvarming",
+        "pl": "Ogrzewanie pomieszczeń",
+        "sv": "Rumsuppvärmning"
       },
       "values": [
         {
           "id": "on",
           "title": {
-            "en": "On"
+            "en": "On",
+            "da": "Til",
+            "de": "Ein",
+            "es": "Encendido",
+            "fr": "Activé",
+            "it": "Attivo",
+            "ko": "켜짐",
+            "nl": "Aan",
+            "no": "På",
+            "pl": "Włączony",
+            "sv": "På"
           }
         },
         {
           "id": "off",
           "title": {
-            "en": "Off"
+            "en": "Off",
+            "da": "Fra",
+            "de": "Aus",
+            "es": "Apagado",
+            "fr": "Désactivé",
+            "it": "Disattivo",
+            "ko": "꺼짐",
+            "nl": "Uit",
+            "no": "Av",
+            "pl": "Wyłączony",
+            "sv": "Av"
           }
         }
       ],
@@ -569,7 +749,17 @@
       "setable": false,
       "insights": true,
       "insightsTitle": {
-        "en": "Space Heating"
+        "en": "Space Heating",
+        "da": "Rumopvarmning",
+        "de": "Raumheizung",
+        "es": "Calefacción de espacios",
+        "fr": "Chauffage des locaux",
+        "it": "Riscaldamento degli ambienti",
+        "ko": "공간 난방",
+        "nl": "Ruimteverwarming",
+        "no": "Romoppvarming",
+        "pl": "Ogrzewanie pomieszczeń",
+        "sv": "Rumsuppvärmning"
       },
       "uiComponent": null,
       "uiQuickAction": false,
@@ -664,19 +854,49 @@
     "thermostat_on_off": {
       "type": "enum",
       "title": {
-        "en": "Thermostat"
+        "en": "Thermostat",
+        "da": "Termostat",
+        "de": "Thermostat",
+        "es": "Termostato",
+        "fr": "Thermostat",
+        "it": "Termostato",
+        "ko": "온도 조절기",
+        "nl": "Thermostaat",
+        "no": "Termostat",
+        "pl": "Termostat",
+        "sv": "Termostat"
       },
       "values": [
         {
           "id": "on",
           "title": {
-            "en": "On"
+            "en": "On",
+            "da": "Til",
+            "de": "Ein",
+            "es": "Encendido",
+            "fr": "Activé",
+            "it": "Attivo",
+            "ko": "켜짐",
+            "nl": "Aan",
+            "no": "På",
+            "pl": "Włączony",
+            "sv": "På"
           }
         },
         {
           "id": "off",
           "title": {
-            "en": "Off"
+            "en": "Off",
+            "da": "Fra",
+            "de": "Aus",
+            "es": "Apagado",
+            "fr": "Désactivé",
+            "it": "Disattivo",
+            "ko": "꺼짐",
+            "nl": "Uit",
+            "no": "Av",
+            "pl": "Wyłączony",
+            "sv": "Av"
           }
         }
       ],
@@ -685,7 +905,17 @@
       "setable": false,
       "insights": true,
       "insightsTitle": {
-        "en": "Thermostat"
+        "en": "Thermostat",
+        "da": "Termostat",
+        "de": "Thermostat",
+        "es": "Termostato",
+        "fr": "Thermostat",
+        "it": "Termostato",
+        "ko": "온도 조절기",
+        "nl": "Thermostaat",
+        "no": "Termostat",
+        "pl": "Termostat",
+        "sv": "Termostat"
       },
       "uiComponent": "sensor",
       "uiQuickAction": false,

@@ -279,8 +279,10 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
       // errors
       errorType: raw['Error type'] ?? null,
-      errorCode: raw['Error Code'] && raw['Error detailed code'] !== undefined
-        ? `${raw['Error Code'].trim()}-${String(raw['Error detailed code']).padStart(2, '0')}`
+      errorCode: raw['Error Code']
+        ? raw['Error detailed code'] !== undefined
+          ? `${raw['Error Code'].trim()}-${String(raw['Error detailed code']).padStart(2, '0')}`
+          : raw['Error Code'].trim()
         : null,
 
       // temperatures (°C)
