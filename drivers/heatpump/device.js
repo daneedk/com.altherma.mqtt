@@ -243,7 +243,6 @@ module.exports = class Heatpump extends Homey.Device {
 
       if (first) {
         console.log('timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]');
-        //console.log('Timestamp,threeWayValveDhw,Defrost,buhStep1On,buhStep2On,flowLpm,invFrequencyRps,electricalPowerW,TotalElectricalPowerW');
       }
 
       if (isSpaceHeating) {
@@ -266,7 +265,6 @@ module.exports = class Heatpump extends Homey.Device {
       //let logLine = new Date().toISOString()+',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.flowLpm + ',' + data.invFrequencyRps + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW);
       
       console.log(logLine);
-      //console.log(data.indoorAmbientTemp);
 
     } catch (error) {
       this.error('device.js _processMqttData error', error)

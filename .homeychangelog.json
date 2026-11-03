@@ -91,5 +91,18 @@
     "no": "• La til manglende oversettelser",
     "pl": "• Dodano brakujące tłumaczenia",
     "sv": "• Lade till saknade översättningar"
+  },
+  "1.0.0": {
+    "en": "• App store release",
+    "nl": "• App Store-release",
+    "da": "• App Store-udgivelse",
+    "de": "• App-Store-Veröffentlichung",
+    "es": "• Lanzamiento en la App Store",
+    "fr": "• Publication sur l'App Store",
+    "it": "• Pubblicazione sull'App Store",
+    "ko": "• 앱스토어 출시",
+    "no": "• App Store-utgivelse",
+    "pl": "• Wydanie w App Store",
+    "sv": "• App Store-utgivning"
   }
 }
