@@ -1,5 +1,6 @@
 var mqtt = {};
 var powerTopics = {};
+var indoorTempTopic = '';
 var csvLogDates = [];
 
 function onHomeyReady(Homey) {
@@ -110,6 +111,14 @@ function onHomeyReady(Homey) {
         onExternalVoltage(Homey);
     });
 
+    document.getElementById('topic-indoortemp').addEventListener('blur', function(elem) {
+        onIndoorTempTopic(Homey);
+    });
+
+    document.getElementById('use-external-indoortemp').addEventListener('click', function(elem) {
+        onExternalIndoorTemp(Homey);
+    });
+
     Homey.get('mqtt', function(err, mqtt) {
         if ( err ) {
             Homey.alert( err );
@@ -134,6 +143,17 @@ function onHomeyReady(Homey) {
                 document.getElementById('topic-voltage1').value = powerTopics.voltage1
                 document.getElementById('topic-voltage2').value = powerTopics.voltage2
                 document.getElementById('topic-voltage3').value = powerTopics.voltage3
+            }
+        }
+    });
+
+    Homey.get('indoorTempTopic', function(err, data) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (data != (null || undefined)) {
+                indoorTempTopic = data;
+                document.getElementById('topic-indoortemp').value = data
             }
         }
     });
@@ -192,6 +212,17 @@ function onHomeyReady(Homey) {
             if (isExternalVoltageEnabled != (null || undefined)) {
                 document.getElementById('use-external-voltage').checked = isExternalVoltageEnabled
                 onExternalVoltage(Homey);
+            }
+        }
+    });
+
+    Homey.get('isExternalIndoorTempEnabled', function(err, isExternalIndoorTempEnabled) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (isExternalIndoorTempEnabled != (null || undefined)) {
+                document.getElementById('use-external-indoortemp').checked = isExternalIndoorTempEnabled
+                onExternalIndoorTemp(Homey);
             }
         }
     });
@@ -343,6 +374,21 @@ function onExternalVoltage(Homey) {
         document.getElementById('setting-external-voltage').style.display = 'block';
     } else {
         document.getElementById('setting-external-voltage').style.display = 'none';
+    }
+}
+
+function onIndoorTempTopic(Homey) {
+    indoorTempTopic = document.getElementById('topic-indoortemp')?.value || '';
+    Homey.set('indoorTempTopic', indoorTempTopic);
+}
+
+function onExternalIndoorTemp(Homey) {
+    const isExternalIndoorTempEnabled = document.getElementById('use-external-indoortemp').checked
+    Homey.set('isExternalIndoorTempEnabled', isExternalIndoorTempEnabled);
+    if (isExternalIndoorTempEnabled) {
+        document.getElementById('setting-external-indoortemp').style.display = 'block';
+    } else {
+        document.getElementById('setting-external-indoortemp').style.display = 'none';
     }
 }
 

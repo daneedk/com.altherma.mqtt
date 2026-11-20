@@ -40,6 +40,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     this._voltageL1 = 230;
     this._voltageL2 = 230;
     this._voltageL3 = 230;
+    this._indoorTemp = 20;
 
     // On first run, inform user to go to the apps settings to configure the app.
     const warned = this.homey.settings.get('setup_notified');
@@ -64,6 +65,13 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.homey.settings.set('powerTopics',this.powerTopics);
     }
 
+    // get Actual indoor temperature when configured in the app settings
+    this.indoorTempTopic = this.homey.settings.get('indoorTempTopic');
+    if (!this.indoorTempTopic) {
+      this.indoorTempTopic = 'espaltherma/temperature/room';
+      this.homey.settings.set('indoorTempTopic', this.indoorTempTopic);
+    }
+
     this.is3phaseEnabled = this.homey.settings.get('is3phaseEnabled');
 
     // Default to true if the setting doesn't exist (null/undefined)
@@ -76,6 +84,13 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.isExternalVoltageEnabled = false;
     } else {
       this.isExternalVoltageEnabled = true;
+    }
+
+    let isExternalIndoorTempEnabled = this.homey.settings.get('isExternalIndoorTempEnabled');
+    if (!isExternalIndoorTempEnabled) {
+      this.isExternalIndoorTempEnabled = false;
+    } else {
+      this.isExternalIndoorTempEnabled = true;
     }
 
     // Act when settings change
@@ -176,6 +191,12 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     else if (name === 'powerTopics') {
       this.powerTopics = this.homey.settings.get(name);
     }
+    else if (name === 'indoorTempTopic') {
+      this.indoorTempTopic = this.homey.settings.get(name);
+    }
+    else if (name === 'isExternalIndoorTempEnabled') {
+      this.isExternalIndoorTempEnabled = this.homey.settings.get(name);
+    }
   }
 
   async _handleMqttMessage(topic, msg) {
@@ -196,6 +217,19 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
         topic === this.powerTopics.voltage2 ||
         topic === this.powerTopics.voltage3
       ) {
+        return;
+      }
+    }
+
+    if (this.isExternalIndoorTempEnabled === true) {
+
+      const t = Number(msg);
+
+      if (t >= 0 && t <= 40) {
+        if (topic === this.indoorTempTopic) this._indoorTemp = t;
+      }
+
+      if (topic === this.indoorTempTopic) {
         return;
       }
     }
@@ -222,6 +256,9 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     normalized.voltageL1 = this._voltageL1;
     normalized.voltageL2 = this._voltageL2;
     normalized.voltageL3 = this._voltageL3;
+    normalized.indoorTemp = this.isExternalIndoorTempEnabled === true
+      ? this._indoorTemp
+      : normalized.mainRtHeating;
     normalized.receivedAt = this._lastMqttMessageAt;
 
     this.emit('sendMqttData', normalized);

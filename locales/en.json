@@ -49,6 +49,10 @@
       "voltage1": "Voltage phase 1",
       "voltage2": "Voltage phase 2",
       "voltage3": "Voltage phase 3",
+      "header2": "Indoor temperature",
+      "useexternalindoortemp": "Use external indoor temperature",
+      "mqtttopicindoortemp": "MQTT Topic for indoor temperature",
+      "indoortemptopic": "Indoor temperature",
       "save": "Save"
     },
     "enabledebug": "Turn on debug logging",

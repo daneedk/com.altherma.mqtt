@@ -189,7 +189,37 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="settings-spacer"></div>
+        <div data-i18n="settings.power.header2" class="text-header">-INDOOR TEMPERATURE-</div>
+        <div id="setting-indoortemp" class="settings-itemgroup">
+            <div class="settings-item">
+                <div class="settings-item-text">
+                    <span data-i18n="settings.power.useexternalindoortemp">-Use external indoor temperature from MQTT-</span>
+                </div>
+                <div class="settings-item-last">
+                    <label class="form-switch">
+                        <input id="use-external-indoortemp" type="checkbox">
+                        <i></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="setting-external-indoortemp" style="display: none;">
+            <div class="settings-spacer"></div>
+            <div data-i18n="settings.power.mqtttopicindoortemp" class="text-header">-MQTT Topic-</div>
+            <div class="settings-itemgroup">
+                <div class="settings-item">
+                    <div class="settings-item-text">
+                        <span data-i18n="settings.power.indoortemptopic">-mqtt path indoor temperature-</span>
+                    </div>
+                    <div class="settings-item-input">
+                        <input class="hy-nostyle" id="topic-indoortemp" type="text" value="">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="settings-spacer"></div>

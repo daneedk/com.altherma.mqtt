@@ -9,7 +9,7 @@
   ],
   "brandColor": "#00A0E4",
   "name": {
-    "en": "Daikin Altherma"
+    "en": "Daikin Altherma (ESPAltherma)"
   },
   "bugs": {
     "url": "https://community.homey.app/t/149281"
@@ -152,6 +152,7 @@
         "operation_mode",
         "thermostat_on_off",
         "measure_temperature.outdoor",
+        "measure_temperature.indoor",
         "target_temperature_own",
         "measure_temperature.leavingWater",
         "measure_temperature.returningWater",
@@ -180,6 +181,24 @@
             "no": "Utetemperatur",
             "pl": "Temperatura zewnętrzna",
             "sv": "Utomhustemperatur"
+          },
+          "units": "°C",
+          "insights": true
+        },
+        "measure_temperature.indoor": {
+          "title": {
+            "en": "Indoor temperature",
+            "da": "Indendørstemperatur",
+            "de": "Innentemperatur",
+            "es": "Temperatura interior",
+            "fi": "Sisälämpötila",
+            "fr": "Température intérieure",
+            "it": "Temperatura interna",
+            "ko": "실내 온도",
+            "nl": "Binnentemperatuur",
+            "no": "Innetemperatur",
+            "pl": "Temperatura wewnętrzna",
+            "sv": "Inomhustemperatur"
           },
           "units": "°C",
           "insights": true

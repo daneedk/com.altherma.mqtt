@@ -4,7 +4,7 @@ const Homey = require('homey');
 const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh, } = require('../../lib/power');
 const createCsvLogger = require('../../lib/csv-logger');
 
-const CSV_HEADER = 'timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]';
+const CSV_HEADER = 'timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],indoorTemp[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -36,6 +36,9 @@ module.exports = class Heatpump extends Homey.Device {
     // temporary code for getting the correct capabilities
     if (!this.hasCapability('target_temperature_own')) {
       await this.addCapability('target_temperature_own');
+    }
+    if (!this.hasCapability('measure_temperature.indoor')) {
+      await this.addCapability('measure_temperature.indoor');
     }
     if (this.hasCapability('measure_temperature.target')) {
       await this.removeCapability('measure_temperature.target');
@@ -225,6 +228,7 @@ module.exports = class Heatpump extends Homey.Device {
       await this.setCapabilityValue('thermostat_on_off',data.thermostatOn ? 'on' : 'off');
       await this.setCapabilityValue('space_heating',data.spaceHeatingOn ? 'on' : 'off');
       await this.setCapabilityValue('measure_temperature.outdoor', data.outdoorAirTemp);
+      await this.setCapabilityValue('measure_temperature.indoor', data.indoorTemp);
       await this.setCapabilityValue('measure_temperature.leavingWater', data.leavingWaterTemp);
       await this.setCapabilityValue('measure_temperature.returningWater', data.inletWaterTemp);
 
@@ -271,7 +275,7 @@ module.exports = class Heatpump extends Homey.Device {
       const { thermalPowerKW, cop } = this._calculateThermalPowerAndCop(data, electricalPowerW);
 
       if (first) {
-        console.log('timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]');
+        console.log(CSV_HEADER);
       }
 
       if (isSpaceHeating) {
@@ -290,8 +294,7 @@ module.exports = class Heatpump extends Homey.Device {
         if (this.getCapabilityValue('measure_cop') !== 0) await this.setCapabilityValue('measure_cop', 0);
       }
 
-      let logLine = new Date().toISOString()+','+ data.operationMode + ',' + data.IUoperationMode + ',' + data.thermostatOn + ',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.dhwSetpoint + ',' + data.dhwTankTemp + ',' + data.lwSetpointMain + ',' + data.rtSetpoint + ',' + data.outdoorAirTemp + ',' + data.leavingWaterTempBeforeBUH + ',' + data.inletWaterTemp + ',' + data.flowLpm + ',' + data.invPrimaryCurrent + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW) + ',' + Math.round(thermalPowerKW*1000) + ',' +  Math.round(cop * 10) / 10 + ',' + Math.round((deltaKWh*1000) * 10) / 10
-      //let logLine = new Date().toISOString()+',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.flowLpm + ',' + data.invFrequencyRps + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW);
+      let logLine = new Date().toISOString()+','+ data.operationMode + ',' + data.IUoperationMode + ',' + data.thermostatOn + ',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.dhwSetpoint + ',' + data.dhwTankTemp + ',' + data.lwSetpointMain + ',' + data.rtSetpoint + ',' + (data.indoorTemp ?? '') + ',' + data.outdoorAirTemp + ',' + data.leavingWaterTempBeforeBUH + ',' + data.inletWaterTemp + ',' + data.flowLpm + ',' + data.invPrimaryCurrent + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW) + ',' + Math.round(thermalPowerKW*1000) + ',' +  Math.round(cop * 10) / 10 + ',' + Math.round((deltaKWh*1000) * 10) / 10
 
       console.log(logLine);
 
