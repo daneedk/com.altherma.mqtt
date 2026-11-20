@@ -2,6 +2,9 @@
 
 const Homey = require('homey');
 const { estimatePowerWFromInvPrimaryWithFallback, integrateKwh, } = require('../../lib/power');
+const createCsvLogger = require('../../lib/csv-logger');
+
+const CSV_HEADER = 'timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -11,12 +14,15 @@ module.exports = class Heatpump extends Homey.Device {
   _lastThermalPowerKW = 0;
   _lastCop = 0;
   _lastErrorLogTime = 0;
+  csvLogger = null;
 
   async onInit() {
     this.log('Heat Pump has been initialized');
 
     this._onMqttData = this._processMqttData.bind(this);
     this.homey.app.on('sendMqttData', this._onMqttData);
+    await this._updateCsvLogger();
+    this.homey.settings.on('set', (name) => this._onSettingsChanged(name));
 
     this._resetInterval = this.homey.setInterval(
       () => this.checkResets().catch(this.error),
@@ -46,7 +52,7 @@ module.exports = class Heatpump extends Homey.Device {
     if (this.hasCapability('meter_power.day')) {
       await this.removeCapability('meter_power.day');
     }
-    
+
     // Reorder the capabilties once
     const reorderHPCapabilities = this.homey.settings.get('reorderHPCapabilities');
     if (!reorderHPCapabilities) {
@@ -131,9 +137,32 @@ module.exports = class Heatpump extends Homey.Device {
     this.log('Heatpump was renamed');
   }
 
+  async _onSettingsChanged(name) {
+    if (name === 'isDebugEnabled' || name === 'csvLogRetentionDays') {
+      await this._updateCsvLogger();
+    }
+  }
+
+  async _updateCsvLogger() {
+    const isDebugEnabled = !!this.homey.settings.get('isDebugEnabled');
+    const storedRetentionDays = Number(this.homey.settings.get('csvLogRetentionDays'));
+    const retentionDays = Number.isFinite(storedRetentionDays) && storedRetentionDays > 0 ? storedRetentionDays : 30;
+
+    if (isDebugEnabled && !this.csvLogger) {
+      this.csvLogger = await createCsvLogger(CSV_HEADER, { retentionDays });
+    } else if (!isDebugEnabled && this.csvLogger) {
+      await this.csvLogger.stop();
+      this.csvLogger = null;
+    }
+  }
+
   async onDeleted() {
     if (this._onMqttData) {
       this.homey.app.off('sendMqttData', this._onMqttData);
+    }
+    if (this.csvLogger) {
+      await this.csvLogger.stop();
+      this.csvLogger = null;
     }
 
     this.log('Heatpump has been deleted');
@@ -214,7 +243,7 @@ module.exports = class Heatpump extends Homey.Device {
 
       }
 
-      await this.setCapabilityValue('measure_temperature.lwSetPoint', data.lwSetpointMain);      
+      await this.setCapabilityValue('measure_temperature.lwSetPoint', data.lwSetpointMain);
       await this.setCapabilityValue('target_temperature_own', data.rtSetpoint);
       await this.setCapabilityValue('measure_water', data.flowLpm);
 
@@ -263,14 +292,18 @@ module.exports = class Heatpump extends Homey.Device {
 
       let logLine = new Date().toISOString()+','+ data.operationMode + ',' + data.IUoperationMode + ',' + data.thermostatOn + ',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.dhwSetpoint + ',' + data.dhwTankTemp + ',' + data.lwSetpointMain + ',' + data.rtSetpoint + ',' + data.outdoorAirTemp + ',' + data.leavingWaterTempBeforeBUH + ',' + data.inletWaterTemp + ',' + data.flowLpm + ',' + data.invPrimaryCurrent + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW) + ',' + Math.round(thermalPowerKW*1000) + ',' +  Math.round(cop * 10) / 10 + ',' + Math.round((deltaKWh*1000) * 10) / 10
       //let logLine = new Date().toISOString()+',' + data.threeWayValveDhw + ',' + data.defrostOperation + ',' + data.buhStep1On + ',' + data.buhStep2On + ',' + data.flowLpm + ',' + data.invFrequencyRps + ',' + Math.round(electricalPowerW) + ',' + Math.round(totalElectricalPowerW);
-      
+
       console.log(logLine);
+
+      if (this.csvLogger) {
+        await this.csvLogger.writeRow(logLine);
+      }
 
     } catch (error) {
       this.error('device.js _processMqttData error', error)
       throw error;
-    } 
-    
+    }
+
   }
 
   // helper
@@ -381,18 +414,18 @@ module.exports = class Heatpump extends Homey.Device {
         Defrost: data.defrostOperation,
         buhStep1On: data.buhStep1On,
         buhStep2On: data.buhStep2On,
-        dhwSet: data.dhwSetpoint,        
+        dhwSet: data.dhwSetpoint,
         dhwTemp: data.dhwTankTemp,
         lwSetpointMain: data.lwSetpointMain,
         rtSetpoint: data.rtSetpoint,
-        outdoorAirTemp: data.outdoorAirTemp,        
+        outdoorAirTemp: data.outdoorAirTemp,
         LeavingWaterTemp: data.leavingWaterTempBeforeBUH,
         InletWaterTemp: data.inletWaterTemp,
         flow: data.flowLpm,
         invPrimaryCurrent: data.invPrimaryCurrent,
         V1: data.voltageL1,
         V2: data.voltageL2,
-        V3: data.voltageL3,        
+        V3: data.voltageL3,
         electricalPowerW,
         totalElectricalPowerW,
         thermalPowerKW,

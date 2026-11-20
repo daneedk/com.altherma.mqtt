@@ -1,11 +1,10 @@
 var mqtt = {};
 var powerTopics = {};
+var csvLogDates = [];
 
 function onHomeyReady(Homey) {
     Homey.ready();
 
-    this.doubleClicked = false;
-    this.keysEntered = "";
     this.isDebugEnabled = false
 
     writeAuthenticationState();
@@ -22,8 +21,34 @@ function onHomeyReady(Homey) {
             document.getElementById('settings-enable-debug').checked = data;
 
             if (data) {
-                document.getElementById('setting-debuginfo').style.display = 'block';
+                document.getElementById('setting-csvretention').style.display = 'table';
             }
+        }
+    });
+
+    Homey.get('csvLogRetentionDays', function (err, data) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            if (data != (null || undefined)) {
+                document.getElementById('settings-csv-retention-days').value = data
+            } else {
+                document.getElementById('settings-csv-retention-days').value = 30
+            }
+        }
+    });
+
+    Homey.api('GET', '/logs', function (err, dates) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            csvLogDates = dates;
+            var months = [];
+            dates.forEach(function (date) {
+                var month = date.slice(0, 7);
+                if (months.indexOf(month) === -1) months.push(month);
+            });
+            populateCsvMonthOptions(months, Homey);
         }
     });
 
@@ -35,6 +60,22 @@ function onHomeyReady(Homey) {
 
     document.getElementById('settings-enable-debug').addEventListener('click', function(elem) {
         onSetDebug(Homey);
+    });
+
+    document.getElementById('settings-csv-retention-days').addEventListener('blur', function(elem) {
+        onCsvRetentionDays(Homey);
+    });
+
+    document.getElementById('settings-csv-month').addEventListener('change', function(elem) {
+        onCsvMonthChange(Homey);
+    });
+
+    document.getElementById('settings-csv-day').addEventListener('change', function(elem) {
+        onCsvDayChange();
+    });
+
+    document.getElementById('settings-csv-download').addEventListener('click', function(elem) {
+        onCsvDownload(Homey);
     });
 
     document.getElementById('use-3phase').addEventListener('click', function(elem) {
@@ -68,10 +109,6 @@ function onHomeyReady(Homey) {
     document.getElementById('use-external-voltage').addEventListener('click', function(elem) {
         onExternalVoltage(Homey);
     });
-
-    //document.getElementById('save').addEventListener('click', function(elem) {
-    //    savePowerTopics();
-    //});
 
     Homey.get('mqtt', function(err, mqtt) {
         if ( err ) {
@@ -161,46 +198,6 @@ function onHomeyReady(Homey) {
 
 }
 
-function configureDebug() {
-    // The stuff below is just for troubleshooting in the Developer Tools and will only work in a browser on a computer
-    // Will not work on:
-    let regexp = /android|iphone|ipad/i;
-    let isMobileDevice = regexp.test(navigator.userAgent);
-    let _this = this;
-    if (!isMobileDevice) {
-        document.getElementById('setting-debuginfo').style.display = 'block';
-        console.clear();
-        console.log('Single Click the app logo to see the log');
-        console.log('Type "Clearlog" to clear the log');
-        console.log('Press the Enter key to clear the type buffer');
-        // single Click show the log
-        document.getElementById('login-credentials-logo').addEventListener('click', function(elem) {
-            Homey.get('mqttLog', function(err, logging){
-                if( err ) {
-                    console.error('showHistory: Could not get history', err);
-                    return
-                }
-                console.clear();
-                console.log(logging);
-            });
-        });
-        // Check type text, if its Clearlog, clear it.
-        document.addEventListener('keypress', function(event) {
-            _this.keysEntered += event.key;
-            if (_this.keysEntered == "Clearlog" ) {
-                Homey.set('mqttLog','');
-                console.clear();
-                console.log("log was cleared");
-                _this.keysEntered = "";
-            }
-            if (event.key == "Enter") {
-                console.log("Try again...");
-                _this.keysEntered = "";
-            }
-        });
-    }
-}
-
 async function writeAuthenticationState() {
     console.log('Settingspage loaded');
     await Homey.get('mqttStatus')
@@ -222,15 +219,73 @@ async function writeAuthenticationState() {
         })
 }
 
-function onSetDebug(Homey) {    
+function onSetDebug(Homey) {
     const isDebugEnabled = document.getElementById('settings-enable-debug').checked
     Homey.set('isDebugEnabled', isDebugEnabled);
     if (isDebugEnabled) {
-        //configureDebug()
-        document.getElementById('setting-debuginfo').style.display = 'block';        
+        document.getElementById('setting-csvretention').style.display = 'table';
     } else {
-        document.getElementById('setting-debuginfo').style.display = 'none';
+        document.getElementById('setting-csvretention').style.display = 'none';
     }
+}
+
+function onCsvRetentionDays(Homey) {
+    const csvLogRetentionDays = document.getElementById('settings-csv-retention-days').value
+    Homey.set('csvLogRetentionDays', csvLogRetentionDays);
+}
+
+function populateCsvMonthOptions(months, Homey) {
+    var select = document.getElementById('settings-csv-month');
+    select.innerHTML = '';
+    var placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.text = Homey.__('settings.csvdownload.selectmonth');
+    select.appendChild(placeholder);
+    months.forEach(function (month) {
+        var option = document.createElement('option');
+        option.value = month;
+        option.text = month;
+        select.appendChild(option);
+    });
+}
+
+function populateCsvDayOptions(month) {
+    var select = document.getElementById('settings-csv-day');
+    select.innerHTML = '';
+    var days = csvLogDates.filter(function (date) {
+        return date.slice(0, 7) === month;
+    });
+    days.forEach(function (date) {
+        var option = document.createElement('option');
+        option.value = date;
+        option.text = date;
+        select.appendChild(option);
+    });
+    select.disabled = days.length === 0;
+    document.getElementById('settings-csv-download').disabled = days.length === 0;
+}
+
+function onCsvMonthChange(Homey) {
+    var month = document.getElementById('settings-csv-month').value;
+    populateCsvDayOptions(month);
+}
+
+function onCsvDayChange() {
+    var day = document.getElementById('settings-csv-day').value;
+    document.getElementById('settings-csv-download').disabled = !day;
+}
+
+function onCsvDownload(Homey) {
+    var date = document.getElementById('settings-csv-day').value;
+    if (!date) return;
+
+    Homey.api('GET', '/logs/' + date + '/url', function (err, url) {
+        if ( err ) {
+            Homey.alert( err );
+        } else {
+            Homey.openURL(url);
+        }
+    });
 }
 
 function on3phase(Homey) {
@@ -299,11 +354,4 @@ function saveSettings() {
     mqtt.user = document.getElementById('username')?.value || '';
     mqtt.pass = document.getElementById('password')?.value || '';
     Homey.set('mqtt', mqtt);
-}
-
-function savePowerTopics() {
-    powerTopics.voltage1 = document.getElementById('topic-voltage1')?.value || '';
-    powerTopics.voltage2 = document.getElementById('topic-voltage2')?.value || '';
-    powerTopics.voltage3 = document.getElementById('topic-voltage3')?.value || '';
-    Homey.set('powerTopics', powerTopics);
 }

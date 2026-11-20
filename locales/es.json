@@ -2,6 +2,11 @@
   "setup": {
     "notification": "Daikin Altherma está instalado. Por favor, abre la configuración de la app para configurarlo."
   },
+  "update": {
+    "notification": {
+      "v1_0_1": "La aplicación Daikin Altherma se ha actualizado. El visor de registro basado en el navegador ha sido eliminado. Ahora puede descargar el registro de la bomba de calor por día desde los ajustes de la aplicación. Más información en la Comunidad Homey: https://community.homey.app/t/149281"
+    }
+  },
   "warning": {
     "missingLabels": "Etiquetas ESPAltherma faltantes: __labels__"
   },
@@ -47,6 +52,15 @@
       "save": "Guardar"
     },
     "enabledebug": "Activar registro de depuración",
-    "debuginfo": "Ver el registro en su navegador en: http://[homey-ip-address]:8008"
+    "debuginfo": "Ver el registro en su navegador en: http://[homey-ip-address]:8008",
+    "csvretention": "Guardar registro de los últimos ... días",
+    "csvdownload": {
+      "header": "Descargar registro de la bomba de calor",
+      "month": "Mes",
+      "selectmonth": "Seleccione un mes",
+      "day": "Día",
+      "button": "Descargar",
+      "closetab": "Cierre esta pestaña después de descargar"
+    }
   }
 }

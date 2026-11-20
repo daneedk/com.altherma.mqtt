@@ -2,6 +2,11 @@
   "setup": {
     "notification": "Daikin Altherma is geïnstalleerd. Open de app-instellingen om deze te configureren."
   },
+  "update": {
+    "notification": {
+      "v1_0_1": "De Daikin Altherma-app is bijgewerkt. De browsergebaseerde logboekweergave is verwijderd. U kunt het warmtepomplogboek nu per dag downloaden vanuit de app-instellingen. Meer informatie op de Homey Community: https://community.homey.app/t/149281"
+    }
+  },
   "warning": {
     "missingLabels": "Ontbrekende ESPAltherma labels: __labels__"
   },
@@ -47,6 +52,15 @@
       "save": "Opslaan"
     },
     "enabledebug": "Foutopsporing inschakelen",
-    "debuginfo": "Bekijk het logboek in uw browser op: http://[homey-ip-adres]:8008"
+    "debuginfo": "Bekijk het logboek in uw browser op: http://[homey-ip-adres]:8008",
+    "csvretention": "Bewaar logboek van de laatste ... dagen",
+    "csvdownload": {
+      "header": "Download warmtepomplogboek",
+      "month": "Maand",
+      "selectmonth": "Selecteer een maand",
+      "day": "Dag",
+      "button": "Downloaden",
+      "closetab": "Sluit dit tabblad na het downloaden"
+    }
   }
 }

@@ -2,6 +2,11 @@
   "setup": {
     "notification": "Daikin Altherma is installed, please open the app settings to configure it."
   },
+  "update": {
+    "notification": {
+      "v1_0_1": "The Daikin Altherma app has been updated. The browser-based log viewer has been removed. You can now download the heat pump log per day from the app settings. More information on the Homey Community: https://community.homey.app/t/149281"
+    }
+  },
   "warning": {
     "missingLabels": "Missing ESPAltherma labels: __labels__"
   },
@@ -47,6 +52,14 @@
       "save": "Save"
     },
     "enabledebug": "Turn on debug logging",
-    "debuginfo": "View the log in you browser at: http://[homey-ip-address]:8008"
+    "csvretention": "Save log for the last ... days",
+    "csvdownload": {
+      "header": "Download heat pump log",
+      "month": "Month",
+      "selectmonth": "Select a month",
+      "day": "Day",
+      "button": "Download",
+      "closetab": "Please close this tab after downloading"
+    }
   }
 }

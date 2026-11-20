@@ -2,6 +2,11 @@
   "setup": {
     "notification": "Daikin Altherma è installato. Apri le impostazioni dell'app per configurarlo."
   },
+  "update": {
+    "notification": {
+      "v1_0_1": "L'app Daikin Altherma è stata aggiornata. Il visualizzatore del log basato su browser è stato rimosso. Ora puoi scaricare il log della pompa di calore giorno per giorno dalle impostazioni dell'app. Maggiori informazioni sulla Homey Community: https://community.homey.app/t/149281"
+    }
+  },
   "warning": {
     "missingLabels": "Etichette ESPAltherma mancanti: __labels__"
   },
@@ -47,6 +52,15 @@
       "save": "Salva"
     },
     "enabledebug": "Attiva la registrazione di debug",
-    "debuginfo": "Visualizza il log nel browser all'indirizzo: http://[homey-ip-address]:8008"
+    "debuginfo": "Visualizza il log nel browser all'indirizzo: http://[homey-ip-address]:8008",
+    "csvretention": "Conserva il log degli ultimi ... giorni",
+    "csvdownload": {
+      "header": "Scarica il log della pompa di calore",
+      "month": "Mese",
+      "selectmonth": "Seleziona un mese",
+      "day": "Giorno",
+      "button": "Scarica",
+      "closetab": "Chiudi questa scheda dopo il download"
+    }
   }
 }

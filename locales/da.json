@@ -2,6 +2,11 @@
   "setup": {
     "notification": "Daikin Altherma er installeret. Åbn venligst appens indstillinger for at konfigurere den."
   },
+  "update": {
+    "notification": {
+      "v1_0_1": "Daikin Altherma-appen er blevet opdateret. Den browserbaserede logvisning er fjernet. Du kan nu downloade varmepumpeloggen pr. dag fra app-indstillingerne. Mere information på Homey Community: https://community.homey.app/t/149281"
+    }
+  },
   "warning": {
     "missingLabels": "Manglende ESPAltherma labels: __labels__"
   },
@@ -47,6 +52,15 @@
       "save": "Gem"
     },
     "enabledebug": "Aktivér fejlretningslogning",
-    "debuginfo": "Se loggen i din browser på: http://[homey-ip-adresse]:8008"
+    "debuginfo": "Se loggen i din browser på: http://[homey-ip-adresse]:8008",
+    "csvretention": "Gem log i de sidste ... dage",
+    "csvdownload": {
+      "header": "Download varmepumpelog",
+      "month": "Måned",
+      "selectmonth": "Vælg en måned",
+      "day": "Dag",
+      "button": "Download",
+      "closetab": "Luk venligst denne fane efter download"
+    }
   }
 }

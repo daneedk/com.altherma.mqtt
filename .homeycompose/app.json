@@ -1,6 +1,6 @@
 {
   "id": "com.altherma.mqtt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": ">=12.11.0",
   "sdk": 3,
   "platforms": [
@@ -34,6 +34,16 @@
     "climate"
   ],
   "permissions": [],
+  "api": {
+    "getLogs": {
+      "method": "GET",
+      "path": "/logs"
+    },
+    "getLogDownloadUrl": {
+      "method": "GET",
+      "path": "/logs/:date/url"
+    }
+  },
   "images": {
     "small": "/assets/images/small.png",
     "large": "/assets/images/large.png"

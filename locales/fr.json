@@ -2,6 +2,11 @@
   "setup": {
     "notification": "Daikin Altherma est installé. Veuillez ouvrir les paramètres de l'application pour le configurer."
   },
+  "update": {
+    "notification": {
+      "v1_0_1": "L'application Daikin Altherma a été mise à jour. Le visualiseur de journal basé sur le navigateur a été supprimé. Vous pouvez désormais télécharger le journal de la pompe à chaleur par jour depuis les paramètres de l'application. Plus d'informations sur la communauté Homey : https://community.homey.app/t/149281"
+    }
+  },
   "warning": {
     "missingLabels": "Étiquettes ESPAltherma manquantes : __labels__"
   },
@@ -47,6 +52,15 @@
       "save": "Enregistrer"
     },
     "enabledebug": "Activer la journalisation de débogage",
-    "debuginfo": "Voir le journal dans votre navigateur à : http://[homey-ip-address]:8008"
+    "debuginfo": "Voir le journal dans votre navigateur à : http://[homey-ip-address]:8008",
+    "csvretention": "Conserver le journal des ... derniers jours",
+    "csvdownload": {
+      "header": "Télécharger le journal de la pompe à chaleur",
+      "month": "Mois",
+      "selectmonth": "Sélectionnez un mois",
+      "day": "Jour",
+      "button": "Télécharger",
+      "closetab": "Veuillez fermer cet onglet après le téléchargement"
+    }
   }
 }

@@ -2,6 +2,11 @@
   "setup": {
     "notification": "Daikin Altherma jest zainstalowany. Otwórz ustawienia aplikacji, aby go skonfigurować."
   },
+  "update": {
+    "notification": {
+      "v1_0_1": "Aplikacja Daikin Altherma została zaktualizowana. Przeglądarkowy podgląd dziennika został usunięty. Teraz możesz pobierać dziennik pompy ciepła dzień po dniu z ustawień aplikacji. Więcej informacji na Homey Community: https://community.homey.app/t/149281"
+    }
+  },
   "warning": {
     "missingLabels": "Brakujące etykiety ESPAltherma: __labels__"
   },
@@ -47,6 +52,15 @@
       "save": "Zapisz"
     },
     "enabledebug": "Włącz rejestrowanie debugowania",
-    "debuginfo": "Wyświetl dziennik w przeglądarce pod adresem: http://[homey-ip-address]:8008"
+    "debuginfo": "Wyświetl dziennik w przeglądarce pod adresem: http://[homey-ip-address]:8008",
+    "csvretention": "Zachowaj dziennik z ostatnich ... dni",
+    "csvdownload": {
+      "header": "Pobierz dziennik pompy ciepła",
+      "month": "Miesiąc",
+      "selectmonth": "Wybierz miesiąc",
+      "day": "Dzień",
+      "button": "Pobierz",
+      "closetab": "Zamknij tę kartę po pobraniu"
+    }
   }
 }

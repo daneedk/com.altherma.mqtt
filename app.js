@@ -2,7 +2,6 @@
 
 const Homey = require('homey');
 const { MqttManager } = require('./lib/mqtt');
-const LogToFile = require('./lib/log-to-file'); // https://github.com/robertklep/homey-log-to-file
 const requiredLabels = [
   'INV primary current (A)',
   'DHW tank temp. (R5T)',
@@ -30,16 +29,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
   async onInit() {
 
-    //temporary
-    this.homey.settings.unset('mqttLog');
-
-    this.logger = null;
-    this.isDebugEnabled = !!(await this.homey.settings.get('isDebugEnabled'));
-    if (this.isDebugEnabled) {
-      if (!this.logger) this.logger = await LogToFile('/userdata/std.log', 8008, 'a'); 
-      this.logger.startAutoTrim();
-    }
-
     this.log('AlthermaMQTTApp initializing');
     this.mqtt = new MqttManager({
       app: this,
@@ -62,6 +51,8 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.homey.settings.set('setup_notified', true);
     }
 
+    await this._notifyUpdate();
+
     // get Actual voltages when configured in the app settings
     this.powerTopics = this.homey.settings.get('powerTopics');
     if (!this.powerTopics) {
@@ -73,14 +64,14 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
       this.homey.settings.set('powerTopics',this.powerTopics);
     }
 
-    this.is3phaseEnabled = this.homey.settings.get('is3phaseEnabled'); 
+    this.is3phaseEnabled = this.homey.settings.get('is3phaseEnabled');
 
     // Default to true if the setting doesn't exist (null/undefined)
     if (this.is3phaseEnabled === null || this.is3phaseEnabled === undefined) {
       this.is3phaseEnabled = true;
     }
 
-    let isExternalVoltageEnabled = this.homey.settings.get('isExternalVoltageEnabled'); 
+    let isExternalVoltageEnabled = this.homey.settings.get('isExternalVoltageEnabled');
     if (!isExternalVoltageEnabled) {
       this.isExternalVoltageEnabled = false;
     } else {
@@ -137,6 +128,23 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     this.log('AlthermaMQTTApp has been initialized');
   }
 
+  async _notifyUpdate() {
+    const currentVersion = this.manifest.version;
+    const lastNotifiedVersion = this.homey.settings.get('lastNotifiedUpdateVersion');
+
+    if (lastNotifiedVersion === currentVersion) return;
+
+    if (lastNotifiedVersion) {
+      const key = 'update.notification.v' + currentVersion.replace(/\./g, '_');
+      const text = this.homey.__(key);
+      if (text && text !== key) {
+        await this.homey.notifications.createNotification({ excerpt: text });
+      }
+    }
+
+    this.homey.settings.set('lastNotifiedUpdateVersion', currentVersion);
+  }
+
   async onUninit() {
     // remove the MQTT watchdog
     if (this._mqttWatchdog) clearInterval(this._mqttWatchdog);
@@ -158,20 +166,6 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     if (name == 'mqtt') {
       this.log('MQTT settings changed, reconnecting…');
       this.mqtt.reconnect().catch(this.error);
-    }
-    else if (name === 'isDebugEnabled') {
-      const isDebugEnabled = this.homey.settings.get(name)
-      this.isDebugEnabled = isDebugEnabled;
-      if (isDebugEnabled) {
-        if (!this.logger) this.logger = await LogToFile('/userdata/std.log', 8008, 'a');
-        console.log('timestamp,operationMode,IUoperationMode,thermostat,threeWayValveDhw,defrost,buhStep1On,buhStep2On,dhwSet[C],dhwTemp[C],lwSetpointMain[C],rtSetpoint[C],outdoorAirTemp[C],leavingWaterTemp[C],inletWaterTemp[C],flow[Lpm],invPrimaryCurrent[A],electricalPower[W],totalElectricalPower[W],thermalPower[W],COP,delta[Wh]');
-        //console.log('Timestamp,threeWayValveDhw,Defrost,buhStep1On,buhStep2On,flowLpm,invFrequencyRps,electricalPowerW,TotalElectricalPowerW');
-      } else {
-        if (this.logger) {
-          await this.logger.stop();
-          this.logger = null;
-        }
-      }
     }
     else if (name === 'is3phaseEnabled') {
       this.is3phaseEnabled = this.homey.settings.get(name);
@@ -217,7 +211,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     const raw = this._parseJson(msg);
     if (!raw || typeof raw !== 'object') return;
 
-//this.log(raw);    
+//this.log(raw);
 
     if ( raw['Operation Mode'] != 'Fan Only' && raw['Operation Mode'] != 'Heating' ) {
       this.log('Operation Mode:',raw['Operation Mode'])
@@ -229,7 +223,7 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
     normalized.voltageL2 = this._voltageL2;
     normalized.voltageL3 = this._voltageL3;
     normalized.receivedAt = this._lastMqttMessageAt;
-    
+
     this.emit('sendMqttData', normalized);
   }
 
@@ -294,10 +288,10 @@ module.exports = class AlthermaMQTTApp extends Homey.App {
 
       // power related information
       invPrimaryCurrent: raw['INV primary current (A)'],
-      
+
       // Compressor revolutions per second (~HZ)
       invFrequencyRps: raw['INV frequency (rps)'],
-      
+
       // room temperatures (°C)
       mainRtHeating:
         raw['Main RT Heating'] === 'OFF'

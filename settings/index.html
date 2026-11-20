@@ -10,7 +10,7 @@
         <div id="login-credentials-logo" class="logo">
             <img src="../assets/images/small.png" alt="Logo">
         </div>
-    
+
         <br />
 
         <div data-i18n="settings.title" class="text-header">-Your Daikin Altherma in Homey with ESPAltherma-</div>
@@ -20,7 +20,7 @@
 
         <div class="settings-spacer"></div>
         <div data-i18n="settings.auth.header" class="text-header">-HOMEY AUTHENTICATION STATE-</div>
-        
+
         <div class="settings-itemgroup">
             <div class="settings-item">
                 <fieldset>
@@ -124,8 +124,8 @@
                 <div class="settings-item-input">
                     <input class="hy-nostyle" id="power-buh2" type="text" value="">
                 </div>
-            </div>      
-            
+            </div>
+
             <div class="settings-item">
                 <div class="settings-item-text">
                     <span data-i18n="settings.power.consumption.continuous">-Power consumption continuous (W)-</span>
@@ -162,7 +162,7 @@
 
         <div id="setting-external-voltage"  style="display: none;">
             <div class="settings-spacer"></div>
-            <div data-i18n="settings.power.mqtttopics" class="text-header">-MQTT Topics-</div>        
+            <div data-i18n="settings.power.mqtttopics" class="text-header">-MQTT Topics-</div>
             <div class="settings-itemgroup">
                 <div class="settings-item">
                     <div class="settings-item-text">
@@ -192,9 +192,6 @@
 
         </div>
 
-        <!--div class="settings-spacer"></div>
-        <button id="save" class="homey-button-primary-full" data-i18n="settings.power.save">-Save-</button-->
-
         <div class="settings-spacer"></div>
             <div id="setting-enabledebug" class="settings-itemgroup">
                 <div class="settings-item">
@@ -209,13 +206,44 @@
                         </label>
                     </div>
                 </div>
-                <div id="setting-debuginfo" class="settings-item" style="display: none;">
-                    <fieldset>
-                        <span data-i18n="settings.debuginfo">-Open the browser console to view the debug log-</span>
-                    </fieldset>
+            </div>
+        </div>
+
+        <div id="setting-csvretention" class="settings-itemgroup" style="display: none;">
+            <div class="settings-item">
+                <div class="settings-item-text">
+                    <span data-i18n="settings.csvretention">-Save log for the last x days-</span>
+                </div>
+                <div class="settings-item-input">
+                    <input class="hy-nostyle" id="settings-csv-retention-days" type="text" value="">
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="settings-spacer"></div>
+        <div data-i18n="settings.csvdownload.header" class="text-header">-DOWNLOAD HEAT PUMP LOG-</div>
+
+        <div id="setting-csvdownload" class="settings-itemgroup">
+            <div class="settings-item">
+                <div class="settings-item-text">
+                    <span data-i18n="settings.csvdownload.month">-Month-</span>
+                </div>
+                <div class="settings-item-input">
+                    <select class="hy-nostyle" id="settings-csv-month"></select>
+                </div>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-text">
+                    <span data-i18n="settings.csvdownload.day">-Day-</span>
+                </div>
+                <div class="settings-item-input">
+                    <select class="hy-nostyle" id="settings-csv-day" disabled></select>
                 </div>
             </div>
         </div>
 
+        <button id="settings-csv-download" class="homey-button-primary-full" disabled data-i18n="settings.csvdownload.button">-Download-</button>
     </body>
 </html>
