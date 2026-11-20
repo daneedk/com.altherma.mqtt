@@ -2,7 +2,7 @@
 
 Get all information from your Daikin Altherma.
 
-The information is obtained over MQTT from an ESPAltherma device 
+The information is obtained locally over MQTT from an ESPAltherma device (Requires a separate MQTT Broker) and does not need a connection to the Daikin Cloud Environment.
 (see: https://github.com/daneedk/ESPAltherma which is a fork of: https://github.com/raomin/ESPAltherma)
 
 ```Important, everything is read only, it is and will not be possible to control your heat pump with this app!```
@@ -43,7 +43,7 @@ The folowing information is needed from ESPAltherma, make sure to uncomment the 
 {0x10,4,203,1,-1,"Error type"},
 {0x10,5,204,1,-1,"Error Code"},
 {0x20,0,105,2,1,"R1T-Outdoor air temp."},
-{0x21,0,105,2,-1,"INV primary current (A)"},    
+{0x21,0,105,2,-1,"INV primary current (A)"},
 {0x21,2,105,2,-1,"INV secondary current (A)"},
 {0x60,2,315,1,-1,"I/U operation mode"},
 {0x60,7,105,2,1,"DHW setpoint"},
@@ -70,7 +70,5 @@ The folowing information is needed from ESPAltherma, make sure to uncomment the 
 
 As the Daikin Althermas returns no good measurement for power consumption other then the used current at the DC part of the device the power and energy comsumption are calculated values based on assumptions, so keep that in mind. (The grid voltage is assumed to be 230v and the efficiency in converting AC to DC is assumed to be 90%)
 
-In a future version, these readings will be made more accurate, but that will require making the actual grid voltage available over MQTT or additional hardware in the form of a smart meter that measures the actual usage of your heat pump.
-
-
+When you have the actual voltages per phase available, you can write them to the MQTT broker and the ESP Altherma will use the actual voltages to do the calculations.
 
