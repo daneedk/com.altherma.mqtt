@@ -60,7 +60,8 @@
       "selectmonth": "월 선택",
       "day": "일",
       "button": "다운로드",
-      "closetab": "다운로드 후 이 탭을 닫아주세요"
+      "closetab": "다운로드 후 이 탭을 닫아주세요",
+      "selectfirst": "먼저 월과 일을 선택하세요"
     }
   }
 }

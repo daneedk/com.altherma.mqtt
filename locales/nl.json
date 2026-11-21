@@ -60,7 +60,8 @@
       "selectmonth": "Selecteer een maand",
       "day": "Dag",
       "button": "Downloaden",
-      "closetab": "Sluit dit tabblad na het downloaden"
+      "closetab": "Sluit dit tabblad na het downloaden",
+      "selectfirst": "Selecteer eerst een maand en een dag"
     }
   }
 }

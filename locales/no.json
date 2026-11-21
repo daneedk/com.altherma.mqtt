@@ -60,7 +60,8 @@
       "selectmonth": "Velg en måned",
       "day": "Dag",
       "button": "Last ned",
-      "closetab": "Lukk denne fanen etter nedlasting"
+      "closetab": "Lukk denne fanen etter nedlasting",
+      "selectfirst": "Velg først en måned og en dag"
     }
   }
 }

@@ -60,7 +60,8 @@
       "selectmonth": "Sélectionnez un mois",
       "day": "Jour",
       "button": "Télécharger",
-      "closetab": "Veuillez fermer cet onglet après le téléchargement"
+      "closetab": "Veuillez fermer cet onglet après le téléchargement",
+      "selectfirst": "Veuillez d'abord sélectionner un mois et un jour"
     }
   }
 }

@@ -60,7 +60,8 @@
       "selectmonth": "Wybierz miesiąc",
       "day": "Dzień",
       "button": "Pobierz",
-      "closetab": "Zamknij tę kartę po pobraniu"
+      "closetab": "Zamknij tę kartę po pobraniu",
+      "selectfirst": "Najpierw wybierz miesiąc i dzień"
     }
   }
 }

@@ -63,7 +63,8 @@
       "selectmonth": "Select a month",
       "day": "Day",
       "button": "Download",
-      "closetab": "Please close this tab after downloading"
+      "closetab": "Please close this tab after downloading",
+      "selectfirst": "First select a month and a day"
     }
   }
 }

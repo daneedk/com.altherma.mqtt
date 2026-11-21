@@ -71,10 +71,6 @@ function onHomeyReady(Homey) {
         onCsvMonthChange(Homey);
     });
 
-    document.getElementById('settings-csv-day').addEventListener('change', function(elem) {
-        onCsvDayChange();
-    });
-
     document.getElementById('settings-csv-download').addEventListener('click', function(elem) {
         onCsvDownload(Homey);
     });
@@ -293,7 +289,6 @@ function populateCsvDayOptions(month) {
         select.appendChild(option);
     });
     select.disabled = days.length === 0;
-    document.getElementById('settings-csv-download').disabled = days.length === 0;
 }
 
 function onCsvMonthChange(Homey) {
@@ -301,14 +296,12 @@ function onCsvMonthChange(Homey) {
     populateCsvDayOptions(month);
 }
 
-function onCsvDayChange() {
-    var day = document.getElementById('settings-csv-day').value;
-    document.getElementById('settings-csv-download').disabled = !day;
-}
-
 function onCsvDownload(Homey) {
     var date = document.getElementById('settings-csv-day').value;
-    if (!date) return;
+    if (!date) {
+        Homey.alert(Homey.__('settings.csvdownload.selectfirst'));
+        return;
+    }
 
     Homey.api('GET', '/logs/' + date + '/url', function (err, url) {
         if ( err ) {

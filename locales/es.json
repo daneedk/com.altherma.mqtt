@@ -60,7 +60,8 @@
       "selectmonth": "Seleccione un mes",
       "day": "Día",
       "button": "Descargar",
-      "closetab": "Cierre esta pestaña después de descargar"
+      "closetab": "Cierre esta pestaña después de descargar",
+      "selectfirst": "Primero seleccione un mes y un día"
     }
   }
 }
